@@ -1,0 +1,28 @@
+{
+  "name": "dimac",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "jsproject --serve www",
+    "w": "rollup -c -w",
+    "build": "rollup -c"
+  },
+  "description": "project template scaffold",
+  "repository": "https://github.com/vandeurenglenn/dimac",
+  "author": "vandeurenglenn <vandeurenglenn@gmail.com>",
+  "devDependencies": {
+    "rollup": "^2.68.0"
+  },
+  "dependencies": {
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@vandeurenglenn/flex-elements": "^0.1.0",
+    "custom-pages": "^0.12.1",
+    "custom-selector": "^0.2.1",
+    "custom-svg-icon": "^1.0.1",
+    "custom-svg-iconset": "^1.0.1",
+    "lit": "^2.4.0",
+    "typed.js": "^2.0.12"
+  }
+}
