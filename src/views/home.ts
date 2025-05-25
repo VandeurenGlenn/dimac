@@ -93,7 +93,7 @@ export default customElements.define(
           .carousel-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: fill;
             aspect-ratio: 16 / 9;
             transition: opacity 0.7s;
             opacity: 1;
