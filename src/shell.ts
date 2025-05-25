@@ -2,7 +2,6 @@ import '@vandeurenglenn/lite-elements/drawer-layout.js'
 import '@vandeurenglenn/lite-elements/icon.js'
 import '@vandeurenglenn/lite-elements/icon-set.js'
 import '@vandeurenglenn/lite-elements/selector.js'
-import '@vandeurenglenn/lite-elements/theme.js'
 import { LiteElement, html, property, query } from '@vandeurenglenn/lite'
 import style from './shell.css' with {type: 'css'}
 import icons from './icons.js'

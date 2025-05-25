@@ -11,7 +11,9 @@ export default customElements.define(
     carouselImages = [
       './assets/schulen/IMG_7616.webp',
       './assets/schulen/IMG_7618.webp',
-      './assets/schulen/IMG_8033.webp'
+      './assets/schulen/IMG_8033.webp',
+      './assets/sintjansstraatdiest/IMG_1345.webp',
+      './assets/sintjansstraatdiest/IMG_1343.webp'
     ]
 
     startTyping() {
@@ -137,7 +139,6 @@ export default customElements.define(
 
           <section>
             <h4>Van huis naar thuis, stap voor stap</h4>
-            <p>Van ruwbouw tot renovatie, wij realiseren jouw project.</p>
 
             <div>
               <span class="typer"> </span>

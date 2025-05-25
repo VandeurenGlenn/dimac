@@ -50,13 +50,15 @@
         top: 0;
         right: 0;
       }
-      body {
-        margin: 0;
-        overflow: hidden;
+      * {
         text-rendering: optimizeLegibility;
         font-feature-settings: 'liga', 'clig', 'kern';
         font-family: 'Cinzel', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
           'Apple Color Emoji', 'Segoe UI Emoji';
+      }
+      body {
+        margin: 0;
+        overflow: hidden;
       }
       :root {
         --md-sys-color-primary: rgb(255 182 147);
@@ -111,6 +113,8 @@
         --md-sys-color-surface-container: rgb(31 31 31);
         --md-sys-color-surface-container-high: rgb(42 42 42);
         --md-sys-color-surface-container-highest: rgb(53 53 53);
+
+        --md-sys-typescale-title-large-font-family-name: 'Cinzel';
       }
     </style>
 
