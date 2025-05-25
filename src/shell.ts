@@ -11,7 +11,7 @@ export class DimacShell extends LiteElement {
   @query('custom-selector') accessor selector
 
   @property({ type: String }) accessor selected
-  #lastTop = 0
+
   #hashBang = '#!/'
 
   static styles = [style]
@@ -68,6 +68,12 @@ export class DimacShell extends LiteElement {
       <home-view></home-view>
       `
     }
+
+    if (selected === 'about') {
+      return html`
+      <about-view></about-view>
+      `
+    }
   }
 
   #renderFooter() {
@@ -115,10 +121,10 @@ export class DimacShell extends LiteElement {
 
         <img src="./assets/dimac-full.png" alt="Dimac Logo" class="logo">
         <custom-selector .selected=${this.selected}>
-          <a href="#!/home">HOME<custom-icon icon="home"></custom-icon></a>
-          <a href="#!/info">INFO</a>
-          <a href="#!/team">TEAM</a>
-          <a href="#!/projecten">PROJECTEN</a>
+          <a href="#!/home">Home<custom-icon icon="home"></custom-icon></a>
+          <a href="#!/about">Over Dimac</a>
+          <a href="#!/team">Team</a>
+          <a href="#!/projecten">Realisaties</a>
         </custom-selector>
       </span>
 
