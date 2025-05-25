@@ -76,8 +76,7 @@ export default customElements.define(
             font-size: 32px;
             font-weight: 700;
             text-align: center;
-            margin: 0;
-            padding: 0 24px;
+            margin: 16px 0;
           }
 
           .carousel-container {
@@ -108,8 +107,13 @@ export default customElements.define(
           section {
             flex-direction: column;
             display: flex;
-            height: 100%;
             align-items: center;
+          }
+
+          p {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 32px;
           }
 
           custom-button {
@@ -133,7 +137,7 @@ export default customElements.define(
 
           <section>
             <h4>Bouwen met vertrouwen</h4>
-            <p style="margin: 32px 0;">Van ruwbouw tot renovatie, wij realiseren jouw project.</p>
+            <p>Van ruwbouw tot renovatie, wij realiseren jouw project.</p>
 
             <div>
               <span class="typer"> </span>
