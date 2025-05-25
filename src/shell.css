@@ -46,18 +46,14 @@ span[slot="drawer-content"] img {
     width: 100%;;
     margin-bottom: 24px;
     box-sizing: border-box;
-    padding: 12px;
+    padding: 12px 24px;
 }
 
 
     main {
     overflow-y: auto;
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    height: 100%;
+    display: block;
     }
 
     footer a {
@@ -68,9 +64,6 @@ span[slot="drawer-content"] img {
     section {
     flex-direction: column;
     display: flex;
-    min-height: 720px;
-    max-height: 720px;
-    height: 100%;
     align-items: center;
     }
 
