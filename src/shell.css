@@ -1,0 +1,136 @@
+:host {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+img {
+    max-height: 480px;
+    height: 100%;
+}
+a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    border-radius: var(--md-sys-shape-corner-medium);
+}
+
+custom-selector a {
+    padding: 12px;
+}
+
+custom-selector {
+    pointer-events: auto;
+}
+
+a img {
+    width: 72px;
+}
+
+span[slot="drawer-content"] {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 24px;
+}
+
+span[slot="drawer-content"] img {
+    width: 100%;;
+    margin-bottom: 24px;
+    box-sizing: border-box;
+    padding: 12px;
+}
+
+
+    main {
+    overflow-y: auto;
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    }
+
+    footer a {
+    text-decoration: none;
+    color: #fff;
+    }
+
+    section {
+    flex-direction: column;
+    display: flex;
+    min-height: 720px;
+    max-height: 720px;
+    height: 100%;
+    align-items: center;
+    }
+
+    footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--accent-color);
+    min-height: 180px;
+    box-sizing: border-box;
+    padding: 32px 24px 16px 24px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 12px 12px 0 0;
+    margin-top: 48px;
+    }
+    .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    }
+    .footer-contact {
+    margin-top: 8px;
+    font-size: 15px;
+    opacity: 0.85;
+    }
+    .footer-email {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #fff;
+    text-decoration: underline;
+    }
+
+    .typer {
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    }
+
+    .container {
+    max-width: 1200px;
+    width: 100%;
+    }
+
+    flex-row {
+    align-items: center;
+    }
+
+    small {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    }
+
+    small img {
+    width: 24px;
+    height: 24px;
+    padding: 0 8px;
+    }
