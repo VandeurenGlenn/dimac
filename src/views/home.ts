@@ -136,7 +136,7 @@ export default customElements.define(
           </div>
 
           <section>
-            <h4>Bouwen met vertrouwen</h4>
+            <h4>Van huis naar thuis, stap voor stap</h4>
             <p>Van ruwbouw tot renovatie, wij realiseren jouw project.</p>
 
             <div>
