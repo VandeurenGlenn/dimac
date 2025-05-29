@@ -119,11 +119,11 @@ export class DimacShell extends LiteElement {
       <span  slot="drawer-content">
 
         <img src="./assets/dimac-full.png" alt="Dimac Logo" class="logo">
-        <custom-selector .selected=${this.selected}>
-          <a href="#!/home">Home<custom-icon icon="home"></custom-icon></a>
-          <a href="#!/about">Over Dimac</a>
-          <a href="#!/team">Team</a>
-          <a href="#!/projecten">Realisaties</a>
+        <custom-selector .selected=${this.selected} attr-for-selected="data-route">
+          <a href="#!/home" data-route="home">Home<custom-icon icon="home"></custom-icon></a>
+          <a href="#!/about" data-route="about">Over Dimac <custom-icon icon="info"></custom-icon></a>
+          <a href="#!/team" data-route="team">Team</a>
+          <a href="#!/realizations" data-route="realizations">Realisaties</a>
         </custom-selector>
       </span>
 

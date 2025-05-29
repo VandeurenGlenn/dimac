@@ -55,6 +55,7 @@ span[slot="drawer-content"] img {
     overflow-y: auto;
     width: 100%;
     display: block;
+    height: 100%;
     }
 
     footer a {

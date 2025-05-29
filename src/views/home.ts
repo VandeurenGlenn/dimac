@@ -96,7 +96,7 @@ export default customElements.define(
             width: 100%;
             height: 100%;
             object-fit: fill;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 16 / 10;
             transition: opacity 0.7s;
             opacity: 1;
             display: block;
