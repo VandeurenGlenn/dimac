@@ -25,18 +25,15 @@ export default customElements.define(
           h4 {
             font-size: 24px;
             font-weight: 700;
-            text-align: center;
             margin: 16px 0;
           }
           h5 {
             font-size: 20px;
             font-weight: 600;
-            text-align: center;
           }
           h6 {
             font-size: 16px;
             font-weight: 500;
-            text-align: center;
           }
           main {
             max-width: 860px;

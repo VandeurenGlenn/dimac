@@ -25,20 +25,16 @@ export default customElements.define(
           h4 {
             font-size: 32px;
             font-weight: 700;
-            text-align: center;
           }
           h5 {
             font-size: 24px;
             font-weight: 600;
-            text-align: center;
           }
           h6 {
             font-size: 20px;
             font-weight: 500;
-            text-align: center;
           }
           p {
-            text-align: center;
             margin-bottom: 24px;
           }
           main {
@@ -46,12 +42,6 @@ export default customElements.define(
             margin-bottom: 24px;
             box-sizing: border-box;
             height: 100%;
-          }
-
-          ul {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
           }
 
           @media (max-width: 1200px) {
