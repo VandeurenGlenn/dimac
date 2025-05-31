@@ -79,6 +79,16 @@ export class DimacShell extends LiteElement {
       <about-view></about-view>
       `
     }
+    if (selected === 'realizations') {
+      return html`
+      <realizations-view></realizations-view>
+      `
+    }
+    if (selected === 'contact') {
+      return html`
+      <contact-view></contact-view>
+      `
+    }
   }
 
   #renderFooter() {
@@ -86,7 +96,8 @@ export class DimacShell extends LiteElement {
     <footer>
     <div class="footer-content">
       <span><strong>Dimac BV</strong></span>
-      <span class="footer-contact">Beringenbaan 43, 3290 Diest</span>
+      <span class="footer-contact">Beringenbaan 43</span>
+      <span class="footer-contact">3290 Diest</span>
       <span class="footer-contact">BE 0479.917.693</span>
       <a
         class="footer-email"
@@ -94,27 +105,30 @@ export class DimacShell extends LiteElement {
         target="_top"
         >info@dimac.be</a
       >
+
       <a
         class="footer-instagram"
         href="https://instagram.com/dimac_bv"
         target="_blank"
         rel="noopener"
         title="Instagram"
-        style="margin-left: 12px;"
+        style=" margin-top: 14px;"
       >
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="height: 20px; width: 20px; vertical-align: middle;" />
+
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="height: 20px; width: 20px; vertical-align: middle; margin-right: 14px;" />
+        Instagram
       </a>
     </div>
 
-    
-  </footer>
-  <small
+    <small
     >Made with
     <img
       alt="love"
       src="https://leofcoin.org/sources/icons/heart.svg" />
     by team <strong style="padding-left: 4px;">Dimac</strong></small
   >
+    
+  </footer>
     `
   }
 
@@ -129,8 +143,8 @@ export class DimacShell extends LiteElement {
           <a href="#!/home" data-route="home">Home<custom-icon icon="home"></custom-icon></a>
           <a href="#!/about" data-route="about">Over Dimac <custom-icon icon="info"></custom-icon></a>
           <a href="#!/services" data-route="services">Onze diensten <custom-icon icon="home_repair_service"></custom-icon></a>
-          <a href="#!/team" data-route="team">Team</a>
           <a href="#!/realizations" data-route="realizations">Realisaties</a>
+          <a href="#!/contact" data-route="contact">Contact<custom-icon icon="phone_in_talk"></custom-icon></a>
         </custom-selector>
       </span>
 
