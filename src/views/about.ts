@@ -9,8 +9,6 @@ export default customElements.define(
           :host {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            width: 100%;
             align-items: center;
           }
 
@@ -28,10 +26,32 @@ export default customElements.define(
             font-size: 32px;
             font-weight: 700;
             text-align: center;
-            margin: 16px 0;
+          }
+          h5 {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+          }
+          h6 {
+            font-size: 20px;
+            font-weight: 500;
+            text-align: center;
+          }
+          p {
+            text-align: center;
+            margin-bottom: 24px;
           }
           main {
             max-width: 860px;
+            margin-bottom: 24px;
+            box-sizing: border-box;
+            height: 100%;
+          }
+
+          ul {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
           }
 
           @media (max-width: 1200px) {
@@ -42,8 +62,33 @@ export default customElements.define(
           }
         </style>
         <main>
-          <h4>Dimac</h4>
-          <h4>Wie we zijn</h4>
+          <h4>Dimac BV</h4>
+          <h5>Bouwkwaliteit tot in de puntjes.</h5>
+
+          <h6>Van vastgoed tot vakmanschap</h6>
+          <p>Dimac BV is gegroeid uit een passie voor kwaliteit.</p>
+          <p>
+            Waar we ooit begonnen als immokantoor, vonden we onze echte voldoening in het realiseren van betaalbare,
+            hoogwaardig afgewerkte bouwprojecten.
+          </p>
+          <p>Wat ons drijft? Oog voor detail, sterke uitvoering en klanten die écht tevreden zijn.</p>
+          <h6>Wat doen we?</h6>
+          <p>
+            We ontwikkelen en realiseren onze eigen projecten, maar vanaf nu zetten we onze kennis en vakmanschap ook in
+            voor particuliere klanten. Of het nu gaat om een nieuwbouw, renovatie of totaalproject: Dimac staat voor een
+            strakke planning, afwerking tot in de kleinste details en samenwerking met betrouwbare vakmannen en
+            leveranciers.
+          </p>
+          <h6>Waarom kiezen voor Dimac?</h6>
+          <ul>
+            <li>Eigen team van vaklui</li>
+            <li>Onberispelijke afwerking</li>
+            <li>Heldere communicatie en opvolging</li>
+            <li>Ervaring als ontwikkelaar én aannemer</li>
+            <li>Correcte prijzen zonder in te boeten op kwaliteit</li>
+          </ul>
+          <h6>Samenwerken?</h6>
+          <p>Neem vrijblijvend contact op. We bekijken graag hoe we jouw droomproject kunnen realiseren.</p>
         </main>
       `
     }
