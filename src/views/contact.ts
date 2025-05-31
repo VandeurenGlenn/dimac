@@ -13,6 +13,24 @@ export default customElements.define(
       this.addListener('click', (e) => {
         this.shadowRoot.querySelector('data-input').dropdown.open = false
       })
+
+      // iOS keyboard fix using Visual Viewport API
+      if ('visualViewport' in window) {
+        window.visualViewport.addEventListener('resize', () => {
+          const active = this.shadowRoot.activeElement as HTMLElement
+          if (
+            active &&
+            (active.tagName === 'MD-OUTLINED-TEXT-FIELD' ||
+              active.tagName === 'DATA-INPUT' ||
+              active.tagName === 'MD-OUTLINED-SELECT')
+          ) {
+            // Scroll the active input into view if it's hidden by the keyboard
+            setTimeout(() => {
+              active.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }, 100)
+          }
+        })
+      }
     }
 
     #send = async () => {
