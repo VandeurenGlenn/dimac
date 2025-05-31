@@ -9,6 +9,10 @@ export default customElements.define(
     carouselInterval
 
     carouselImages = [
+      './assets/postbaan/IMG_0142.webp',
+      './assets/postbaan/IMG_0460.webp',
+      './assets/postbaan/IMG_0468.webp',
+      './assets/postbaan/IMG_0474.webp',
       './assets/schulen/IMG_7616.webp',
       './assets/schulen/IMG_7618.webp',
       './assets/schulen/IMG_8033.webp',
