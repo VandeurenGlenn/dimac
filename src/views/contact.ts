@@ -30,7 +30,7 @@ export default customElements.define(
           valid = false
           input.reportValidity()
         } else {
-          data[input.dataset.label] = input.value
+          data[input.dataset.label] = input.place?.formattedAddress || input.value
         }
       }
       if (valid) {
