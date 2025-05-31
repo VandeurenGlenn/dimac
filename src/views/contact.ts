@@ -1,9 +1,56 @@
 import { html, LiteElement, property } from '@vandeurenglenn/lite'
 import '@vandeurenglenn/lite-elements/button.js'
 import '@material/web/textfield/outlined-text-field.js'
+import '@material/web/select/outlined-select.js'
+import '@material/web/select/select-option.js'
+import './../elements/data-input.js'
+import { DataInput } from '../elements/data-input.js'
+import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js'
 export default customElements.define(
   'contact-view',
   class extends LiteElement {
+    firstRender(): void {
+      this.addListener('click', (e) => {
+        this.shadowRoot.querySelector('data-input').dropdown.open = false
+      })
+    }
+
+    #send = async () => {
+      const inputs = this.shadowRoot.querySelectorAll(
+        'md-outlined-text-field, md-outlined-select, data-input'
+      ) as NodeListOf<DataInput | MdOutlinedTextField>
+      const values = Array.from(inputs).map((input) => input.value)
+      console.log('Values:', values)
+      console.log('Inputs:', inputs)
+
+      let valid = true
+      const data = {}
+      for (const input of inputs) {
+        if (input.required && !input.value) {
+          valid = false
+          input.reportValidity()
+        } else {
+          data[input.dataset.label] = input.value
+        }
+      }
+      if (valid) {
+        const response = await fetch('https://keepit.dimac.be/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        if (!response.ok) {
+          alert('Er is een fout opgetreden bij het verzenden van uw bericht. Probeer het later opnieuw.')
+          return
+        }
+        inputs.forEach((input) => {
+          input.value = ''
+        })
+        alert('Bedankt voor uw bericht! We nemen zo snel mogelijk contact met u op.')
+      }
+    }
     render() {
       return html`
         <style>
@@ -50,6 +97,15 @@ export default customElements.define(
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: space-between;
+
+            gap: 8px;
+          }
+          .column {
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+            width: 100%;
           }
           ul {
             align-items: center;
@@ -57,15 +113,12 @@ export default customElements.define(
             flex-direction: column;
           }
 
-          md-outlined-text-field {
+          md-outlined-text-field,
+          md-outlined-select,
+          data-input {
+            flex: 1;
             margin-top: 16px;
-            margin-bottom: 8px;
-          }
-
-          .row md-outlined-text-field {
-            max-width: 48%;
-            gap: 16px;
-            width: 100%;
+            margin-bottom: 16px;
           }
 
           @media (max-width: 1200px) {
@@ -73,7 +126,9 @@ export default customElements.define(
               box-sizing: border-box;
               padding: 0 16px;
             }
-            .row md-outlined-text-field {
+            .row md-outlined-text-field,
+            .row md-outlined-select,
+            md-outlined-select-option {
               max-width: 100%;
             }
           }
@@ -81,26 +136,72 @@ export default customElements.define(
         <main>
           <h5>Heeft u vragen of wilt u een offerte aanvragen?</h5>
           <h6>Vul onderstaand formulier in en we nemen zo snel mogelijk contact met u op.</h6>
-          <small>U kan ons ook bereiken via e-mail of sociale media.</small>
           <span class="row">
-            <md-outlined-text-field label="Naam"></md-outlined-text-field>
-            <md-outlined-text-field label="E-mail"></md-outlined-text-field>
+            <md-outlined-text-field
+              label="Naam"
+              data-label="name"
+              required></md-outlined-text-field>
+            <data-input
+              label="adres"
+              data-label="address"
+              required
+              type="place">
+              <custom-icon
+                slot="leading-icon"
+                icon="location_on"></custom-icon
+            ></data-input>
+            <custom-dropdown></custom-dropdown>
           </span>
-          <md-outlined-text-field label="Onderwerp"></md-outlined-text-field>
+
+          <span class="row">
+            <md-outlined-text-field
+              data-label="phoneNumber"
+              label="Telefoon"
+              type="tel"
+              pattern="^+?[0-9s-()]{7,15}$"
+              required></md-outlined-text-field>
+            <md-outlined-text-field
+              label="E-mail"
+              data-label="email"
+              type="email"
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+              required></md-outlined-text-field>
+          </span>
+          <span class="row">
+            <md-outlined-select
+              label="Project type"
+              data-label="projectType"
+              required>
+              <md-select-option value="nieuwbouw">Nieuwbouw</md-select-option>
+              <md-select-option value="renovatie">Renovatie</md-select-option>
+              <md-select-option value="projectontwikkeling">Projectontwikkeling</md-select-option>
+              <md-select-option value="overig">Overig</md-select-option>
+            </md-outlined-select>
+            <md-outlined-select
+              label="Onderwerp"
+              data-label="subject"
+              required>
+              <md-select-option value="offerte">Offerte</md-select-option>
+              <md-select-option value="vraag">Vraag</md-select-option>
+              <md-select-option value="samenwerking">Samenwerking</md-select-option>
+              <md-select-option value="overig">Overig</md-select-option>
+            </md-outlined-select>
+          </span>
           <md-outlined-text-field
             label="Bericht"
+            data-label="message"
             type="textarea"
+            required
             textarea></md-outlined-text-field>
           <span
-            class="row"
-            style="justify-content: center;">
+            class="column"
+            style="align-items: center;">
+            <small><strong>tip:</strong> U kan ons ook bereiken via e-mail of sociale media.</small>
             <custom-button
               type="tertiary"
               style="width: 100%; max-width: 400px; margin-top: 16px;"
               label="Verstuur"
-              @click=${() => {
-                alert('Bedankt voor uw bericht! We nemen zo snel mogelijk contact met u op.')
-              }}></custom-button>
+              @click=${this.#send}></custom-button>
           </span>
         </main>
       `
