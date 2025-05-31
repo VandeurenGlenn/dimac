@@ -68,6 +68,12 @@ export class DimacShell extends LiteElement {
       `
     }
 
+    if (selected === 'services') {
+      return html`
+      <services-view></services-view>
+      `
+    }
+
     if (selected === 'about') {
       return html`
       <about-view></about-view>
@@ -122,6 +128,7 @@ export class DimacShell extends LiteElement {
         <custom-selector .selected=${this.selected} attr-for-selected="data-route">
           <a href="#!/home" data-route="home">Home<custom-icon icon="home"></custom-icon></a>
           <a href="#!/about" data-route="about">Over Dimac <custom-icon icon="info"></custom-icon></a>
+          <a href="#!/services" data-route="services">Onze diensten <custom-icon icon="home_repair_service"></custom-icon></a>
           <a href="#!/team" data-route="team">Team</a>
           <a href="#!/realizations" data-route="realizations">Realisaties</a>
         </custom-selector>
