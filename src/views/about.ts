@@ -44,6 +44,18 @@ export default customElements.define(
             height: 100%;
           }
 
+          img {
+            position: absolute;
+            top: 54px;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: calc(100% - 54px);
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+          }
+
           @media (max-width: 1200px) {
             main {
               box-sizing: border-box;
@@ -52,6 +64,9 @@ export default customElements.define(
           }
         </style>
         <main>
+          <img
+            src="./assets/sketch.svg"
+            alt="Sketch" />
           <h4>Dimac BV</h4>
           <h5>Bouwkwaliteit tot in de puntjes.</h5>
 
