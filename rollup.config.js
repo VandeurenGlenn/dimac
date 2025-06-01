@@ -15,6 +15,7 @@ try {
 
 await cp('node_modules/@vandeurenglenn/lite-elements/exports/themes', 'www/themes', { recursive: true })
 await cp('src/assets', 'www/assets', { recursive: true })
+await cp('src/manifest.json', 'www/manifest.json')
 const views = await Array.fromAsync(glob('src/views/*.ts'))
 
 export default [
