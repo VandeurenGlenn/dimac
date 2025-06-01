@@ -214,7 +214,7 @@ export default customElements.define(
           <span
             class="column"
             style="align-items: center;">
-            <small><strong>tip:</strong> U kan ons ook bereiken via e-mail of sociale media.</small>
+            <small><strong>tip:</strong> U kan ons ook bereiken via e-mail of whatsapp.</small>
             <custom-button
               type="tertiary"
               style="width: 100%; max-width: 400px; margin-top: 16px;"

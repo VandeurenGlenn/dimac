@@ -46,7 +46,7 @@ export default customElements.define(
             bottom: 0;
             width: 100%;
             height: calc(100% - 54px);
-            opacity: 0.1;
+            opacity: 0.2;
             z-index: -1;
             pointer-events: none;
           }
