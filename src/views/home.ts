@@ -1,12 +1,11 @@
-import { html, LiteElement, property } from '@vandeurenglenn/lite'
+import { html, LiteElement, property, query } from '@vandeurenglenn/lite'
 import Typed from 'typed.js'
 import '@vandeurenglenn/lite-elements/button.js'
+import './../elements/carousel.js'
 export default customElements.define(
   'home-view',
   class extends LiteElement {
-    @property({ type: Number }) accessor carouselIndex = 0
-
-    carouselInterval
+    @query('custom-carousel') accessor carousel
 
     carouselImages = [
       './assets/postbaan/IMG_0142.webp',
@@ -32,28 +31,8 @@ export default customElements.define(
     }
 
     firstRender() {
-      this.carouselInterval = setInterval(() => {
-        this.carouselIndex = (this.carouselIndex + 1) % this.carouselImages.length
-      }, 3500)
-
       this.startTyping()
-    }
-
-    disconnectedCallback() {
-      super.disconnectedCallback()
-      clearInterval(this.carouselInterval)
-    }
-
-    _nextImage() {
-      this.carouselIndex = (this.carouselIndex + 1) % this.carouselImages.length
-    }
-
-    _prevImage() {
-      this.carouselIndex = (this.carouselIndex - 1 + this.carouselImages.length) % this.carouselImages.length
-    }
-
-    _goToImage(index) {
-      this.carouselIndex = index
+      this.carousel.images = this.carouselImages
     }
 
     render() {
@@ -134,12 +113,7 @@ export default customElements.define(
           }
         </style>
         <main>
-          <div class="carousel-container">
-            <img
-              class="carousel-image"
-              src="${this.carouselImages[this.carouselIndex]}"
-              alt="Project foto ${this.carouselIndex + 1}" />
-          </div>
+          <custom-carousel></custom-carousel>
 
           <section>
             <h4>Van huis naar thuis, stap voor stap</h4>
