@@ -138,7 +138,7 @@ export class DimacShell extends LiteElement {
       <custom-drawer-layout>
       <span  slot="drawer-content">
 
-        <img src="./assets/dimac-full.png" alt="Dimac Logo" class="logo">
+        <img src="./assets/dimac.svg" alt="Dimac Logo" class="logo">
         <custom-selector .selected=${this.selected} attr-for-selected="data-route">
           <a href="#!/home" data-route="home">Home<custom-icon icon="home"></custom-icon></a>
           <a href="#!/about" data-route="about">Over Dimac <custom-icon icon="info"></custom-icon></a>
