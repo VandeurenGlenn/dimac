@@ -63,28 +63,6 @@ export default customElements.define(
             text-align: center;
             margin: 16px 0;
           }
-
-          .carousel-container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto 32px auto;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            position: relative;
-            background: #eee;
-            display: flex;
-          }
-          .carousel-image {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-            aspect-ratio: 16 / 10;
-            transition: opacity 0.7s;
-            opacity: 1;
-            display: block;
-          }
-
           main {
             max-width: 860px;
           }

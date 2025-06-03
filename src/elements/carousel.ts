@@ -36,21 +36,24 @@ export class CustomCarousel extends LiteElement {
           display: block;
           position: relative;
           overflow: hidden;
+          border-radius: 16px;
         }
         .carousel {
           display: flex;
-          transition: transform 1s ease-in;
+          transition: transform 0.5s ease-in-out opacity 1s;
           transform: translateX(-${this.carouselIndex * 100}%);
         }
         .carousel img {
           width: 100%;
           flex-shrink: 0;
-          opacity: 0;
-          transition: opacity 0.8s ease-out;
         }
-        .carousel img[active] {
+        img[active] {
           opacity: 1;
-          transition: opacity 0.5s ease-in;
+          transition: opacity 0.5s ease-in-out;
+        }
+        img:not([active]) {
+          opacity: 0;
+          transition: opacity 0.5s ease-in-out;
         }
         .indicators {
           position: absolute;
