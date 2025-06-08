@@ -33,10 +33,12 @@ export class CustomCarousel extends LiteElement {
     return html`
       <style>
         :host {
-          display: block;
           position: relative;
           overflow: hidden;
           border-radius: 16px;
+          height: auto;
+          max-height: 645px;
+          display: block;
         }
         .carousel {
           display: flex;
@@ -46,6 +48,10 @@ export class CustomCarousel extends LiteElement {
         .carousel img {
           width: 100%;
           flex-shrink: 0;
+
+          aspect-ratio: 4/3;
+          object-fit: scale-down;
+          background-color: var(--md-sys-color-surface);
         }
         img[active] {
           opacity: 1;

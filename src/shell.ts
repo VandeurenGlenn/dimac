@@ -57,17 +57,6 @@ export class DimacShell extends LiteElement {
   }
 
   #renderSelected(selected) {
-    console.log(`rendering ${selected}`);
-    
-    if (!selected) return html``
-    const view = customElements.get(`${selected}-view`)
-
-    if (selected === 'home') {
-      return html`
-      <home-view></home-view>
-      `
-    }
-
     if (selected === 'services') {
       return html`
       <services-view></services-view>
@@ -88,7 +77,10 @@ export class DimacShell extends LiteElement {
       return html`
       <contact-view></contact-view>
       `
-    }
+    }   
+    return html`
+    <home-view></home-view>
+    `
   }
 
   #renderFooter() {

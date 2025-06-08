@@ -8,15 +8,15 @@ export default customElements.define(
     @query('custom-carousel') accessor carousel
 
     carouselImages = [
-      './assets/postbaan/IMG_0142.webp',
-      './assets/postbaan/IMG_0460.webp',
-      './assets/postbaan/IMG_0468.webp',
-      './assets/postbaan/IMG_0474.webp',
-      './assets/schulen/IMG_7616.webp',
-      './assets/schulen/IMG_7618.webp',
-      './assets/schulen/IMG_8033.webp',
-      './assets/sintjansstraatdiest/IMG_1345.webp',
-      './assets/sintjansstraatdiest/IMG_1343.webp'
+      './assets/postbaan schaffen/IMG_0142_1200x900.webp',
+      './assets/postbaan schaffen/IMG_0460_1200x900.webp',
+      './assets/postbaan schaffen/IMG_0468_1200x900.webp',
+      './assets/postbaan schaffen/IMG_0474_1200x900.webp',
+      './assets/oudebaan schulen/IMG_7616_1200x900.webp',
+      './assets/oudebaan schulen/IMG_7618_1200x900.webp',
+      './assets/oudebaan schulen/IMG_8033_1200x900.webp',
+      './assets/sintjansstraat diest/IMG_1345_1200x900.webp',
+      './assets/sintjansstraat diest/IMG_1343_1200x900.webp'
     ]
 
     startTyping() {
@@ -32,7 +32,6 @@ export default customElements.define(
 
     firstRender() {
       this.startTyping()
-      this.carousel.images = this.carouselImages
     }
 
     render() {
@@ -80,7 +79,7 @@ export default customElements.define(
           }
 
           custom-button {
-            margin-top: 64px;
+            margin-top: 36px;
           }
 
           @media (max-width: 1200px) {
@@ -91,7 +90,7 @@ export default customElements.define(
           }
         </style>
         <main>
-          <custom-carousel></custom-carousel>
+          <custom-carousel .images=${this.carouselImages}></custom-carousel>
 
           <section>
             <h4>Van huis naar thuis, stap voor stap</h4>
