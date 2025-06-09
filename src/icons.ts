@@ -13,6 +13,7 @@ export default html`
       <span name="construction">@symbol-construction</span>
       <span name="location_on">@symbol-location_on</span>
       <span name="mail">@symbol-mail</span>
+      <span name="cheer">@symbol-cheer</span>
     </template>
   </custom-icon-set>
 `

@@ -1,10 +1,17 @@
-import { LiteElement, property, html, css } from '@vandeurenglenn/lite'
+import { LiteElement, property, html, css, query } from '@vandeurenglenn/lite'
 import './carousel.js'
+import { CustomCarousel } from './carousel.js'
 export class CustomCarouselCard extends LiteElement {
   @property({ type: String }) accessor title
   @property({ type: String }) accessor description
   @property({ type: Array }) accessor images
 
+  @query('custom-carousel') accessor carousel: CustomCarousel
+
+  private loadedResolve: (value: boolean) => void
+  loaded = new Promise<boolean>((resolve) => {
+    this.loadedResolve = resolve
+  })
   static styles = [
     css`
       :host {
@@ -20,10 +27,15 @@ export class CustomCarouselCard extends LiteElement {
     `
   ]
 
+  async firstRender(): Promise<void> {
+    await this.carousel.loaded
+    this.loadedResolve(true)
+  }
+
   render() {
     return html`
       <custom-carousel .images=${this.images}></custom-carousel>
-      <h2>${this.title}</h2>
+      <h4>${this.title}</h4>
       <p>${this.description}</p>
     `
   }

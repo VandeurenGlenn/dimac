@@ -4,6 +4,13 @@ import './../elements/carousel-card.js'
 export default customElements.define(
   'services-view',
   class extends LiteElement {
+    private loadedResolve: (value: boolean) => void
+    loaded = new Promise<boolean>((resolve) => {
+      this.loadedResolve = resolve
+    })
+    async firstRender(): Promise<void> {
+      this.loadedResolve(true)
+    }
     get carousel1Images() {
       return ['./assets/postbaan schaffen/IMG_0474_1200x900.webp']
     }
@@ -142,6 +149,7 @@ export default customElements.define(
             box-sizing: border-box;
             margin-bottom: 16px;
           }
+
           @media (max-width: 1200px) {
             main {
               box-sizing: border-box;
@@ -157,6 +165,12 @@ export default customElements.define(
               max-width: calc(50% - 8px);
             }
           }
+
+          @media (max-width: 680px) {
+            custom-carousel-card {
+              max-width: 100%;
+            }
+          }
         </style>
         <main>
           <img
@@ -164,16 +178,6 @@ export default customElements.define(
             alt="Sketch" />
 
           <span class="card-container">
-            <custom-carousel-card
-              title="Nieuwbouw"
-              description="Wij bouwen uw woning van A tot Z, volledig naar uw wensen."
-              .images=${this.carousel1Images}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Renovaties"
-              description="Wij renoveren uw woning, van keuken tot badkamer, van zolder tot kelder."
-              .images=${this.renovationImages}></custom-carousel-card>
-
             <custom-carousel-card
               title="Badkamers"
               description="Wij ontwerpen en installeren uw droom badkamer, van modern tot klassiek."
@@ -198,19 +202,10 @@ export default customElements.define(
               title="Hernieuwbare energie"
               description="Wij installeren zonnepanelen, warmtepompen en andere hernieuwbare energie systemen."
               .images=${this.renewingEnergyImages}></custom-carousel-card>
-            <custom-carousel-card
-              title="Isolatie"
-              description="Wij zorgen voor de isolatie van uw woning, van spouwmuurisolatie tot dakisolatie."
-              .images=${this.insulationImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Dakwerken"
               description="Wij verzorgen al uw dakwerken, van hellende daken tot platte daken."
-              .images=${this.carousel1Images}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Projectontwikkeling"
-              description="Wij ontwikkelen uw project, van idee tot realisatie."
               .images=${this.carousel1Images}></custom-carousel-card>
 
             <custom-carousel-card
@@ -219,18 +214,8 @@ export default customElements.define(
               .images=${this.finishingImages}></custom-carousel-card>
 
             <custom-carousel-card
-              title="Tuinaanleg"
-              description="Wij leggen uw tuin aan, van gras tot terras, van beplanting tot verlichting."
-              .images=${this.carousel1Images}></custom-carousel-card>
-
-            <custom-carousel-card
               title="Bouwadvies"
               description="Wij geven u advies over uw bouwproject, van vergunning tot uitvoering."
-              .images=${this.carousel1Images}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Onderhoud"
-              description="Wij zorgen voor het onderhoud van uw woning, van kleine herstellingen tot grote renovaties."
               .images=${this.carousel1Images}></custom-carousel-card>
 
             <custom-carousel-card

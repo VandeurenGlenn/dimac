@@ -2,20 +2,27 @@ import { html, LiteElement, property, query } from '@vandeurenglenn/lite'
 import Typed from 'typed.js'
 import '@vandeurenglenn/lite-elements/button.js'
 import './../elements/carousel.js'
+import { CustomCarousel } from './../elements/carousel.js'
 export default customElements.define(
   'home-view',
   class extends LiteElement {
-    @query('custom-carousel') accessor carousel
+    @query('custom-carousel') accessor carousel: CustomCarousel
+
+    private loadedResolve: (value: boolean) => void
+    loaded = new Promise<boolean>((resolve) => {
+      this.loadedResolve = resolve
+    })
 
     carouselImages = [
-      './assets/postbaan schaffen/IMG_0142_1200x900.webp',
-      './assets/postbaan schaffen/IMG_0460_1200x900.webp',
-      './assets/postbaan schaffen/IMG_0468_1200x900.webp',
+      './assets/postbaan schaffen/badkamer_lot3_1200x900.webp',
+      './assets/postbaan schaffen/keuken_lot3_1200x900.webp',
+      './assets/oudebaan schulen/IMG-20201207-WA0018_1200x900.webp',
+      './assets/oudebaan schulen/IMG-20201207-WA0019_1200x900.webp',
+      './assets/oudebaan schulen/IMG-20201207-WA0015_1200x900.webp',
+      './assets/sintjansstraat diest/IMG_1345_1200x900.webp',
       './assets/postbaan schaffen/IMG_0474_1200x900.webp',
-      './assets/oudebaan schulen/IMG_7616_1200x900.webp',
       './assets/oudebaan schulen/IMG_7618_1200x900.webp',
       './assets/oudebaan schulen/IMG_8033_1200x900.webp',
-      './assets/sintjansstraat diest/IMG_1345_1200x900.webp',
       './assets/sintjansstraat diest/IMG_1343_1200x900.webp'
     ]
 
@@ -30,7 +37,9 @@ export default customElements.define(
       })
     }
 
-    firstRender() {
+    async firstRender() {
+      await this.carousel.loaded
+      this.loadedResolve(true)
       this.startTyping()
     }
 
@@ -100,6 +109,9 @@ export default customElements.define(
             </div>
 
             <custom-button
+              @click=${() => {
+                location.hash = '#!/contact'
+              }}
               label="Vraag vandaag nog een gratis offerte aan"
               type="tonal"></custom-button>
           </section>

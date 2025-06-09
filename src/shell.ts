@@ -9,7 +9,13 @@ import icons from './icons.js'
 export class DimacShell extends LiteElement {
   @query('custom-selector') accessor selector
 
+  @query('main') accessor main
+
   @property({ type: String }) accessor selected
+
+  @property({ type: Boolean }) accessor loaded
+
+  @property({ type: Object, provides: 'realizationsManifest' }) accessor realizationsManifest
 
   #hashBang = '#!/'
 
@@ -44,6 +50,33 @@ export class DimacShell extends LiteElement {
     if (!location.hash || !this.#validView(hash)) return (location.hash = this.#addHashBang('home'))
     if (!customElements.get(`${hash}-view`)) await import(`./${hash}.js`)
     this.selected = hash
+
+    this.main?.scrollTo(0, 0)
+
+    
+    if (hash === 'about') {
+      document.title = 'Dimac - Over ons'
+    }
+    if (hash === 'services') {
+      document.title = 'Dimac - Onze diensten'
+    }
+    if (hash === 'realizations') {
+      const response = await fetch('./realizations-manifest.json')
+      if (response.ok) {
+        this.realizationsManifest = await response.json()
+      }
+      document.title = 'Dimac - Realisaties'
+    }
+    if (hash === 'contact') {
+      document.title = 'Dimac - Contact'
+    }
+    if (hash === 'home' || hash === '') {
+      document.title = 'Dimac - Home'
+    }
+
+    await this.shadowRoot.querySelector(`${hash}-view`).loaded
+
+    this.loaded = true
   }
 
   #onqueryChange({ matches }) {
@@ -135,7 +168,7 @@ export class DimacShell extends LiteElement {
           <a href="#!/home" data-route="home">Home<custom-icon icon="home"></custom-icon></a>
           <a href="#!/about" data-route="about">Over Dimac <custom-icon icon="info"></custom-icon></a>
           <a href="#!/services" data-route="services">Onze diensten <custom-icon icon="home_repair_service"></custom-icon></a>
-          <a href="#!/realizations" data-route="realizations">Realisaties</a>
+          <a href="#!/realizations" data-route="realizations">Realisaties <custom-icon icon="cheer"></custom-icon></a>
           <a href="#!/contact" data-route="contact">Contact<custom-icon icon="phone_in_talk"></custom-icon></a>
         </custom-selector>
       </span>
@@ -143,7 +176,7 @@ export class DimacShell extends LiteElement {
         
       <main slot="content">
          ${this.#renderSelected(this.selected)}
-        ${this.#renderFooter()}
+        ${this.loaded?this.#renderFooter(): ''}
         
       </main>
       </custom-drawer-layout>

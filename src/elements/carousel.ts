@@ -7,6 +7,12 @@ export class CustomCarousel extends LiteElement {
   @property({ type: Number, attribute: 'delay' }) accessor timeout = 4500
   carouselTimeout
 
+  private loadedResolve: (value: boolean) => void
+
+  loaded = new Promise<boolean>((resolve) => {
+    this.loadedResolve = resolve
+  })
+
   setTimeout() {
     clearInterval(this.carouselTimeout)
     this.carouselTimeout = setTimeout(() => {
@@ -16,7 +22,12 @@ export class CustomCarousel extends LiteElement {
   }
 
   firstRender() {
-    this.setTimeout()
+    const img = this.shadowRoot.querySelector('img')
+    img?.addEventListener('load', () => {
+      // Ensure the first image is fully loaded before starting the carousel
+      this.loadedResolve(true)
+      this.setTimeout()
+    })
   }
 
   disconnectedCallback() {

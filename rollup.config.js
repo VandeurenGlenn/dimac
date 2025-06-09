@@ -8,22 +8,22 @@ import { generateSW } from 'rollup-plugin-workbox'
 import { exec, execSync } from 'child_process'
 import imageSize from 'image-size'
 import sharp from 'sharp'
+import terser from '@rollup/plugin-terser'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
 try {
-  console.log(await Array.fromAsync(glob('www/**/*')))
-
   await Promise.all((await Array.fromAsync(glob('www/**/*'))).map((file) => unlink(file)))
-
   await mkdir('www', { recursive: true })
 } catch (error) {
   await mkdir('www', { recursive: true })
 }
 
 const assets = await Array.fromAsync(glob('src/assets/**/*.{png,jpg,heic,JPG,HEIC}'))
+
+const existingAssets = await Array.fromAsync(glob('src/assets/**/*.{png,jpg,heic,JPG,HEIC}'))
 const target_width = 1200
-const assetSizes = await Promise.all(
+await Promise.all(
   assets.map(async (asset) => {
     const buffer = await readFile(asset)
     const size = await imageSize(buffer)
@@ -42,7 +42,8 @@ const assetSizes = await Promise.all(
     console.log(`Processing asset ${asset} with size ${size.width}x${size.height}`)
     // Calculate target size maintaining aspect ratio
     const target = { width: target_width, height: Math.round((size.height / size.width) * target_width) }
-
+    const mobileTarget = { width: 600, height: Math.round((size.height / size.width) * 600) }
+    const tabletTarget = { width: 960, height: Math.round((size.height / size.width) * 960) }
     const info = execSync(`exiftool ${asset}`).toString()
 
     for (const string of info.split('\n')) {
@@ -57,8 +58,24 @@ const assetSizes = await Promise.all(
       .keepExif()
       .withMetadata()
       .rotate() // Automatically rotate based on EXIF orientation
-      .webp({ quality: 80, effort: 6 })
+      .webp({ quality: 100, effort: 6 })
       .toFile(asset.replace(`.${asset.split('.').pop()}`, `_${target.width}x${target.height}.webp`))
+
+    await sharp(buffer)
+      .resize({ width: mobileTarget.width })
+      .keepExif()
+      .withMetadata()
+      .rotate() // Automatically rotate based on EXIF orientation
+      .webp({ quality: 100, effort: 6 })
+      .toFile(asset.replace(`.${asset.split('.').pop()}`, `_${mobileTarget.width}x${mobileTarget.height}.webp`))
+
+    await sharp(buffer)
+      .resize({ width: tabletTarget.width })
+      .keepExif()
+      .withMetadata()
+      .rotate() // Automatically rotate based on EXIF orientation
+      .webp({ quality: 100, effort: 6 })
+      .toFile(asset.replace(`.${asset.split('.').pop()}`, `_${tabletTarget.width}x${tabletTarget.height}.webp`))
 
     console.log(`Processed asset ${asset} to ${target.width}x${target.height}`)
     // Return the asset with its size and target dimensions
@@ -92,18 +109,37 @@ await cp('node_modules/@vandeurenglenn/lite-elements/exports/themes', 'www/theme
 await cp('src/assets', 'www/assets', { recursive: true })
 await cp('src/manifest.json', 'www/manifest.json')
 
+const buildAssets = await Array.fromAsync(glob('www/assets/**/*.webp'))
+
+const realizationsManifest = {}
+
+for (const asset of buildAssets) {
+  const parts = asset.split('/')
+  console.log({ parts })
+  if (parts.length < 4) continue // Skip if not in the expected format
+  const filename = parts[parts.length - 1]
+  const target = parts[parts.length - 2]
+  const targetPath = `./assets/${target}/${filename}`
+
+  realizationsManifest[target] = realizationsManifest[target] || []
+  realizationsManifest[target].push(targetPath)
+}
+
+await writeFile('www/realizations-manifest.json', JSON.stringify(realizationsManifest, null, 2))
+
 const views = await Array.fromAsync(glob('src/views/*.ts'))
 
 const plugins = [cssModules(), nodeResolve(), typescript(), materialSymbols({ placeholderPrefix: 'symbol' })]
 
 if (isProduction) {
-  plugins.push(
+  plugins.push([
     generateSW({
       swDest: 'www/service-worker.js',
       globDirectory: 'www',
       globPatterns: ['**/*.{html,js,css,svg,png,jpg}']
-    })
-  )
+    }),
+    terser()
+  ])
 }
 
 export default [
