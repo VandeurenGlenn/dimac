@@ -28,7 +28,7 @@ export default customElements.define(
 
     startTyping() {
       var typed3 = new Typed(this.shadowRoot.querySelector('.typer'), {
-        strings: ['Topkwaliteit', 'wij maken jouw droom', 'betaalbaar', 'duurzaam', 'nieuwbouw', 'automatisatie'],
+        strings: ['wij maken jouw droom', 'snel', 'betaalbaar', 'duurzaam', 'slim', 'met oog voor detail'],
         typeSpeed: 100,
         backSpeed: 25,
         cursorChar: '_',
@@ -66,13 +66,13 @@ export default customElements.define(
             margin-top: 24px;
           }
           h4 {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 700;
             text-align: center;
             margin: 16px 0;
           }
           main {
-            max-width: 860px;
+            max-width: 740px;
           }
 
           section {

@@ -48,7 +48,6 @@ export class CustomCarousel extends LiteElement {
           overflow: hidden;
           border-radius: 16px;
           height: auto;
-          max-height: 645px;
           display: block;
         }
         .carousel {
@@ -78,14 +77,21 @@ export class CustomCarousel extends LiteElement {
           left: 50%;
           transform: translateX(-50%);
           display: flex;
-          gap: 5px;
+        }
+        .indecator-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 4px;
+          cursor: pointer;
         }
         .indicator {
           width: 10px;
           height: 10px;
           background: gray;
           border-radius: 50%;
-          cursor: pointer;
           transition: background 0.3s;
         }
         .indicator.active {
@@ -107,10 +113,13 @@ export class CustomCarousel extends LiteElement {
         ${this.images?.map(
           (image, index) => html`
             <div
-              class="indicator ${this.carouselIndex === index ? 'active' : ''}"
-              @click="${() => this._goToImage(index)}"></div>
+              class="indecator-wrapper"
+              @click="${() => this._goToImage(index)}">
+              <div class="indicator ${this.carouselIndex === index ? 'active' : ''}"></div>
+            </div>
           `
         )}
+        </div>
       </div>
     `
   }

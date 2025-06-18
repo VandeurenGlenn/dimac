@@ -14,6 +14,13 @@ export default customElements.define(
       await this.shadowRoot.querySelector('custom-carousel-card').loaded
       this.loadedResolve(true)
     }
+
+    async onChange(propertyKey: string, value: any): Promise<void> {
+      if (propertyKey === 'manifest') {
+        await this.shadowRoot.querySelector('custom-carousel-card').loaded
+        this.loadedResolve(true)
+      }
+    }
     render() {
       return html`
         <style>

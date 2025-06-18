@@ -5,6 +5,7 @@ import '@vandeurenglenn/lite-elements/selector.js'
 import { LiteElement, html, property, query } from '@vandeurenglenn/lite'
 import style from './shell.css' with {type: 'css'}
 import icons from './icons.js'
+import './elements/footer.js'
 
 export class DimacShell extends LiteElement {
   @query('custom-selector') accessor selector
@@ -116,47 +117,6 @@ export class DimacShell extends LiteElement {
     `
   }
 
-  #renderFooter() {
-    return html`
-    <footer>
-    <div class="footer-content">
-      <span><strong>Dimac BV</strong></span>
-      <span class="footer-contact">Beringenbaan 43</span>
-      <span class="footer-contact">3290 Diest</span>
-      <span class="footer-contact">BE 0479.917.693</span>
-      <a
-        class="footer-email"
-        href="mailto:info@dimac.be"
-        target="_top"
-        >info@dimac.be</a
-      >
-
-      <a
-        class="footer-instagram"
-        href="https://instagram.com/dimac_bv"
-        target="_blank"
-        rel="noopener"
-        title="Instagram"
-        style=" margin-top: 14px;"
-      >
-
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="height: 20px; width: 20px; vertical-align: middle; margin-right: 14px;" />
-        Instagram
-      </a>
-    </div>
-
-    <small
-    >Made with
-    <img
-      alt="love"
-      src="https://leofcoin.org/sources/icons/heart.svg" />
-    by team <strong style="padding-left: 4px;">Dimac</strong></small
-  >
-    
-  </footer>
-    `
-  }
-
   render() {
     return html`
     ${icons}
@@ -176,7 +136,8 @@ export class DimacShell extends LiteElement {
         
       <main slot="content">
          ${this.#renderSelected(this.selected)}
-        ${this.loaded?this.#renderFooter(): ''}
+        ${this.loaded?
+          html`<custom-footer></custom-footer>`: ''}
         
       </main>
       </custom-drawer-layout>
