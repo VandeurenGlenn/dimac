@@ -42,8 +42,6 @@ span[slot='drawer-content'] {
 }
 
 span[slot='drawer-content'] img {
-  width: 100%;
-  margin-bottom: 24px;
   box-sizing: border-box;
   padding: 12px 24px;
 }
@@ -76,10 +74,6 @@ flex-row {
 
 span[slot='drawer-content'] {
   height: 100%;
-}
-
-span[slot='drawer-content'] img {
-  max-height: 480px;
 }
 
 main[slot='content'] {
