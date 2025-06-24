@@ -110,7 +110,7 @@ export class CustomFooter extends LiteElement {
           }
 
           .footer-contact {
-            max-width: 180px;
+            max-width: 190px;
             width: 100%;
             margin-top: 4px;
           }
