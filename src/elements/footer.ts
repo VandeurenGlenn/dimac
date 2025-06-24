@@ -8,8 +8,6 @@ export class CustomFooter extends LiteElement {
           flex-direction: column;
           width: 100%;
           box-sizing: border-box;
-          font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-            'Segoe UI Emoji';
           margin-top: 86px;
           align-items: center;
         }
