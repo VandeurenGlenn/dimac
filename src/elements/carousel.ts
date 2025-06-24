@@ -78,7 +78,7 @@ export class CustomCarousel extends LiteElement {
           transform: translateX(-50%);
           display: flex;
         }
-        .indecator-wrapper {
+        .indicator-wrapper {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -113,7 +113,7 @@ export class CustomCarousel extends LiteElement {
         ${this.images?.map(
           (image, index) => html`
             <div
-              class="indecator-wrapper"
+              class="indicator-wrapper"
               @click="${() => this._goToImage(index)}">
               <div class="indicator ${this.carouselIndex === index ? 'active' : ''}"></div>
             </div>
