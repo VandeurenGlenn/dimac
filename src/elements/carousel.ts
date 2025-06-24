@@ -51,25 +51,28 @@ export class CustomCarousel extends LiteElement {
           display: block;
         }
         .carousel {
-          display: flex;
-          transition: transform 0.5s ease-in-out opacity 1s;
-          transform: translateX(-${this.carouselIndex * 100}%);
+          position: relative;
+          width: 100%;
+          height: 0;
+          padding-bottom: 75%; /* 4:3 aspect ratio */
         }
         .carousel img {
+          position: absolute;
+          top: 0; left: 0;
           width: 100%;
+          height: 100%;
           flex-shrink: 0;
 
           aspect-ratio: 4/3;
           object-fit: scale-down;
           background-color: var(--md-sys-color-surface);
-        }
-        img[active] {
-          opacity: 1;
-          transition: opacity 0.5s ease-in-out;
-        }
-        img:not([active]) {
           opacity: 0;
-          transition: opacity 0.5s ease-in-out;
+          transition: opacity 2s cubic-bezier(.4,0,.2,1);
+          pointer-events: none;
+        }
+        .carousel img[active] {
+          opacity: 1;
+          pointer-events: auto;
         }
         .indicators {
           position: absolute;
