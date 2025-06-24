@@ -136,7 +136,53 @@ if (isProduction) {
     generateSW({
       swDest: 'www/service-worker.js',
       globDirectory: 'www',
-      globPatterns: ['**/*.{html,js,css,svg,png,jpg}']
+      globPatterns: ['**/*.{html,js,css,svg,png,jpg}'],
+      runtimeCaching: [
+        {
+          urlPattern: /\.(?:js|css|html|svg|png|jpg)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'static-resources',
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
+            }
+          }
+        },
+        {
+          urlPattern: /\/assets\/.*\.(?:webp)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'image-assets',
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
+            }
+          }
+        },
+        {
+          urlPattern: /\/themes\/.*\.(?:css)$/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'theme-styles',
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
+            }
+          }
+        },
+        {
+          urlPattern: /fonts.(googleapis|gstatic).com/,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'font-assets',
+            expiration: {
+              maxEntries: 1,
+              maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
+            }
+          }
+        }
+      ]
     }),
     terser()
   ])
