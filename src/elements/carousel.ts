@@ -17,6 +17,11 @@ export class CustomCarousel extends LiteElement {
     clearInterval(this.carouselTimeout)
     this.carouselTimeout = setTimeout(() => {
       this.carouselIndex = (this.carouselIndex + 1) % this.images.length
+      this.shadowRoot.querySelector('.previous')?.classList.remove('previous')
+      const currentImage = this.shadowRoot.querySelector(`img:nth-child(${this.carouselIndex})`)
+      if (currentImage) {
+        currentImage.classList.add('previous')
+      }
       this.setTimeout()
     }, this.timeout)
   }
@@ -28,6 +33,15 @@ export class CustomCarousel extends LiteElement {
       this.loadedResolve(true)
       this.setTimeout()
     })
+
+    const images = this.shadowRoot.querySelectorAll('img')
+    for (let i = 0; i < images.length; i++) {
+      if (i % 2 === 0) {
+        images[i].classList.add('even')
+      } else {
+        images[i].classList.add('odd')
+      }
+    }
   }
 
   disconnectedCallback() {
@@ -58,7 +72,8 @@ export class CustomCarousel extends LiteElement {
         }
         .carousel img {
           position: absolute;
-          top: 0; left: 0;
+          top: 0;
+          right: 0;
           width: 100%;
           height: 100%;
           flex-shrink: 0;
@@ -67,11 +82,19 @@ export class CustomCarousel extends LiteElement {
           object-fit: scale-down;
           background-color: var(--md-sys-color-surface);
           opacity: 0;
-          transition: opacity 2s cubic-bezier(.4,0,.2,1);
+          transform: translateX(100%);
+          transition: transform 2s cubic-bezier(.4,0,.2,1), opacity 2s cubic-bezier(.4,0,.2,1);
           pointer-events: none;
+          will-change: transform, opacity;
+          
+        }
+        .previous {
+          transform-origin: left;
+          transform: translateX(-100%);
         }
         .carousel img[active] {
           opacity: 1;
+          transform: translateX(0);
           pointer-events: auto;
         }
         .indicators {
