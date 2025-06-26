@@ -84,10 +84,12 @@ export default customElements.define(
             gap: 16px;
           }
           custom-carousel-card {
+            width: 100%;
             max-width: calc(33% - 8px);
             box-sizing: border-box;
             margin-bottom: 16px;
           }
+
           @media (max-width: 1200px) {
             main {
               box-sizing: border-box;
