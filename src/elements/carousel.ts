@@ -16,14 +16,29 @@ export class CustomCarousel extends LiteElement {
   setTimeout() {
     clearInterval(this.carouselTimeout)
     this.carouselTimeout = setTimeout(() => {
+      const prevIndex = this.carouselIndex
+
       this.carouselIndex = (this.carouselIndex + 1) % this.images.length
-      this.shadowRoot.querySelector('.previous')?.classList.remove('previous')
-      const currentImage = this.shadowRoot.querySelector(`img:nth-child(${this.carouselIndex})`)
-      if (currentImage) {
-        currentImage.classList.add('previous')
-      }
+      this._setTransitionClasses(prevIndex, this.carouselIndex)
       this.setTimeout()
     }, this.timeout)
+  }
+
+  _setTransitionClasses(prevIndex, currentIndex) {
+    const images = this.shadowRoot.querySelectorAll('.carousel img')
+    images.forEach((img, idx) => {
+      img.classList.remove('active', 'previous', 'first')
+      if (idx === 0 && currentIndex === 0) {
+        img.classList.add('active', 'first')
+      } else {
+        if (idx === prevIndex) {
+          img.classList.add('previous')
+        }
+        if (idx === currentIndex) {
+          img.classList.add('active')
+        }
+      }
+    })
   }
 
   firstRender() {
@@ -31,26 +46,15 @@ export class CustomCarousel extends LiteElement {
     img?.addEventListener('load', () => {
       // Ensure the first image is fully loaded before starting the carousel
       this.loadedResolve(true)
+      this._setTransitionClasses(0, 0)
       this.setTimeout()
     })
-
-    const images = this.shadowRoot.querySelectorAll('img')
-    for (let i = 0; i < images.length; i++) {
-      if (i % 2 === 0) {
-        images[i].classList.add('even')
-      } else {
-        images[i].classList.add('odd')
-      }
-    }
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback()
-    clearTimeout(this.carouselTimeout)
   }
 
   _goToImage(index) {
+    const prevIndex = this.carouselIndex
     this.carouselIndex = index
+    this._setTransitionClasses(prevIndex, index)
     this.setTimeout()
   }
 
@@ -73,11 +77,11 @@ export class CustomCarousel extends LiteElement {
         .carousel img {
           position: absolute;
           top: 0;
+          left: 0;
           right: 0;
           width: 100%;
           height: 100%;
           flex-shrink: 0;
-
           aspect-ratio: 4/3;
           object-fit: scale-down;
           background-color: var(--md-sys-color-surface);
@@ -86,16 +90,22 @@ export class CustomCarousel extends LiteElement {
           transition: transform 2s cubic-bezier(.4,0,.2,1), opacity 2s cubic-bezier(.4,0,.2,1);
           pointer-events: none;
           will-change: transform, opacity;
-          
         }
-        .previous {
+        .carousel img.previous {
           transform-origin: left;
           transform: translateX(-100%);
+          opacity: 0;
+          z-index: 1;
         }
-        .carousel img[active] {
+        .carousel img.active {
           opacity: 1;
           transform: translateX(0);
           pointer-events: auto;
+          z-index: 2;
+        }
+        .carousel img.first {
+          transform: none !important;
+          opacity: 1 !important;
         }
         .indicators {
           position: absolute;
@@ -131,7 +141,7 @@ export class CustomCarousel extends LiteElement {
               loading=${index === 0 ? 'eager' : 'lazy'}
               fetchpriority=${index === 0 ? 'high' : 'low'}
               src="${image}"
-              ?active="${this.carouselIndex === index}"
+              class="${index === 0 ? 'first' : ''}"
               alt="Carousel Image ${index + 1}" />
           `
         )}
