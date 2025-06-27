@@ -17,7 +17,6 @@ export class CustomCarousel extends LiteElement {
     clearInterval(this.carouselTimeout)
     this.carouselTimeout = setTimeout(() => {
       const prevIndex = this.carouselIndex
-
       this.carouselIndex = (this.carouselIndex + 1) % this.images.length
       this._setTransitionClasses(prevIndex, this.carouselIndex)
       this.setTimeout()
@@ -29,7 +28,7 @@ export class CustomCarousel extends LiteElement {
     images.forEach((img, idx) => {
       img.classList.remove('active', 'previous', 'first')
       if (idx === 0 && currentIndex === 0) {
-        img.classList.add('active', 'first')
+        img.classList.add('first', 'active')
       } else {
         if (idx === prevIndex) {
           img.classList.add('previous')
@@ -113,6 +112,7 @@ export class CustomCarousel extends LiteElement {
           left: 50%;
           transform: translateX(-50%);
           display: flex;
+          z-index: 3;
         }
         .indicator-wrapper {
           display: flex;
