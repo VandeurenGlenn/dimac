@@ -13,6 +13,8 @@ export class CustomCarousel extends LiteElement {
     this.loadedResolve = resolve
   })
 
+  carouselPaused = false
+
   setTimeout() {
     clearInterval(this.carouselTimeout)
     this.carouselTimeout = setTimeout(() => {
@@ -55,6 +57,18 @@ export class CustomCarousel extends LiteElement {
     this.carouselIndex = index
     this._setTransitionClasses(prevIndex, index)
     this.setTimeout()
+  }
+
+  _togglePause = (e) => {
+    // Only toggle pause if in fullscreen and not clicking on controls
+    if (!document.fullscreenElement) return
+    if (e.target.closest('.close-btn, .arrow-btn')) return
+    this.carouselPaused = !this.carouselPaused
+    if (this.carouselPaused) {
+      clearInterval(this.carouselTimeout)
+    } else {
+      this.setTimeout()
+    }
   }
 
   render() {
@@ -133,8 +147,61 @@ export class CustomCarousel extends LiteElement {
         .indicator.active {
           background: white;
         }
+        .close-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          z-index: 10;
+          background: rgba(0,0,0,0.6);
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          font-size: 20px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0.8;
+          transition: opacity 0.2s;
+        }
+        .close-btn:hover {
+          opacity: 1;
+        }
+        .arrow-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+          background: rgba(0,0,0,0.6);
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          font-size: 24px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0.8;
+          transition: opacity 0.2s;
+        }
+        .arrow-btn.left {
+          left: 12px;
+        }
+        .arrow-btn.right {
+          right: 12px;
+        }
+        .arrow-btn:hover {
+          opacity: 1;
+        }
       </style>
-      <div class="carousel">
+      <div class="carousel" @click=${this._fullscreen} @dblclick=${this._togglePause}>
+        <button class="close-btn" @click=${this._closeFullscreen} title="Close" style="display:none">✕</button>
+        <button class="arrow-btn left" @click=${this._prevImage} title="Previous">&#x2039;</button>
+        <button class="arrow-btn right" @click=${this._nextImage} title="Next">&#x203A;</button>
         ${this.images?.map(
           (image, index) => html`
             <img
@@ -142,7 +209,9 @@ export class CustomCarousel extends LiteElement {
               fetchpriority=${index === 0 ? 'high' : 'low'}
               src="${image}"
               class="${index === 0 ? 'first' : ''}"
-              alt="Carousel Image ${index + 1}" />
+              alt="Carousel Image ${index + 1}"
+              @click=${this._togglePause}
+            />
           `
         )}
       </div>
@@ -159,6 +228,64 @@ export class CustomCarousel extends LiteElement {
         </div>
       </div>
     `
+  }
+
+  _fullscreen = (e) => {
+    // Only trigger fullscreen if the click is on the carousel container, not on indicators
+    const el = this.shadowRoot.querySelector('.carousel')
+    if (el.requestFullscreen) {
+      el.requestFullscreen()
+    } else {
+      // @ts-ignore for vendor-prefixed fullscreen methods
+      if (el['webkitRequestFullscreen']) {
+        el['webkitRequestFullscreen']()
+      } else if (el['mozRequestFullScreen']) {
+        el['mozRequestFullScreen']()
+      } else if (el['msRequestFullscreen']) {
+        el['msRequestFullscreen']()
+      }
+    }
+    // Show close button in fullscreen
+    setTimeout(() => {
+      const btn = this.shadowRoot.querySelector('.close-btn')
+      if (btn) btn.style.display = 'flex'
+    }, 200)
+  }
+
+  _closeFullscreen = (e) => {
+    e.stopPropagation()
+    if (document.fullscreenElement) {
+      document.exitFullscreen()
+    } else if (document['webkitExitFullscreen']) {
+      document['webkitExitFullscreen']()
+    } else if (document['mozCancelFullScreen']) {
+      document['mozCancelFullScreen']()
+    } else if (document['msExitFullscreen']) {
+      document['msExitFullscreen']()
+    }
+    // Hide close button after exit
+    setTimeout(() => {
+      const btn = this.shadowRoot.querySelector('.close-btn')
+      if (btn) btn.style.display = 'none'
+    }, 200)
+  }
+
+  _prevImage = (e) => {
+    e.stopPropagation()
+    const prevIndex = this.carouselIndex
+    const newIndex = (this.carouselIndex - 1 + this.images.length) % this.images.length
+    this.carouselIndex = newIndex
+    this._setTransitionClasses(prevIndex, newIndex)
+    this.setTimeout()
+  }
+
+  _nextImage = (e) => {
+    e.stopPropagation()
+    const prevIndex = this.carouselIndex
+    const newIndex = (this.carouselIndex + 1) % this.images.length
+    this.carouselIndex = newIndex
+    this._setTransitionClasses(prevIndex, newIndex)
+    this.setTimeout()
   }
 }
 
