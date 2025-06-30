@@ -210,8 +210,7 @@ export class CustomCarousel extends LiteElement {
               src="${image}"
               class="${index === 0 ? 'first' : ''}"
               alt="Carousel Image ${index + 1}"
-              @click=${this._togglePause}
-            />
+              @click=${this._togglePause} />
           `
         )}
       </div>
@@ -233,22 +232,31 @@ export class CustomCarousel extends LiteElement {
   _fullscreen = (e) => {
     // Only trigger fullscreen if the click is on the carousel container, not on indicators
     const el = this.shadowRoot.querySelector('.carousel')
-    if (el.requestFullscreen) {
-      el.requestFullscreen()
+    // Try element fullscreen first
+    if (el && el.requestFullscreen) {
+      el.requestFullscreen().catch(() => {
+        // fallback below
+      })
+    } else if (el && el['webkitRequestFullscreen']) {
+      el['webkitRequestFullscreen']()
+    } else if (el && el['msRequestFullscreen']) {
+      el['msRequestFullscreen']()
+    } else if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen()
+    } else if (document.documentElement['webkitRequestFullscreen']) {
+      document.documentElement['webkitRequestFullscreen']()
+    } else if (document.documentElement['msRequestFullscreen']) {
+      document.documentElement['msRequestFullscreen']()
     } else {
-      // @ts-ignore for vendor-prefixed fullscreen methods
-      if (el['webkitRequestFullscreen']) {
-        el['webkitRequestFullscreen']()
-      } else if (el['mozRequestFullScreen']) {
-        el['mozRequestFullScreen']()
-      } else if (el['msRequestFullscreen']) {
-        el['msRequestFullscreen']()
+      // Fallback: open first image in new tab if nothing else works (iOS Safari limitation)
+      if (this.images && this.images.length > 0) {
+        window.open(this.images[this.carouselIndex], '_blank')
       }
     }
     // Show close button in fullscreen
     setTimeout(() => {
       const btn = this.shadowRoot.querySelector('.close-btn')
-      if (btn) btn.style.display = 'flex'
+      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'flex'
     }, 200)
   }
 
@@ -266,7 +274,7 @@ export class CustomCarousel extends LiteElement {
     // Hide close button after exit
     setTimeout(() => {
       const btn = this.shadowRoot.querySelector('.close-btn')
-      if (btn) btn.style.display = 'none'
+      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'none'
     }, 200)
   }
 
