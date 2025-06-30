@@ -14,6 +14,7 @@ export class CustomCarousel extends LiteElement {
   })
 
   carouselPaused = false
+  isFullscreen = false
 
   setTimeout() {
     clearInterval(this.carouselTimeout)
@@ -61,7 +62,7 @@ export class CustomCarousel extends LiteElement {
 
   _togglePause = (e) => {
     // Only toggle pause if in fullscreen and not clicking on controls
-    if (!document.fullscreenElement) return
+    if (!this.isFullscreen) return
     if (e.target.closest('.close-btn, .arrow-btn')) return
     this.carouselPaused = !this.carouselPaused
     if (this.carouselPaused) {
@@ -69,6 +70,27 @@ export class CustomCarousel extends LiteElement {
     } else {
       this.setTimeout()
     }
+  }
+
+  _fullscreen = (e) => {
+    // Only trigger fullscreen if the click is on the carousel container, not on indicators
+    if (e.target.closest('.close-btn, .arrow-btn, .indicator-wrapper')) return
+    this.isFullscreen = true
+    this.requestRender()
+    setTimeout(() => {
+      const btn = this.shadowRoot.querySelector('.close-btn')
+      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'flex'
+    }, 200)
+  }
+
+  _closeFullscreen = (e) => {
+    e.stopPropagation()
+    this.isFullscreen = false
+    this.requestRender()
+    setTimeout(() => {
+      const btn = this.shadowRoot.querySelector('.close-btn')
+      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'none'
+    }, 200)
   }
 
   render() {
@@ -197,8 +219,41 @@ export class CustomCarousel extends LiteElement {
         .arrow-btn:hover {
           opacity: 1;
         }
+        .fixed-fullscreen {
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          width: 100%;
+          height: 100%;
+          z-index: 9999 !important;
+          background: rgba(0,0,0,0.98) !important;
+          border-radius: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          box-sizing: border-box !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          transition: none !important;
+        }
+        .fixed-fullscreen img {
+          margin: auto;
+          border-radius: 8px;
+          box-sizing: border-box;
+          padding: 48px;
+        }
+        .fixed-fullscreen .close-btn,
+        .fixed-fullscreen .arrow-btn {
+          z-index: 10000 !important;
+        }
       </style>
-      <div class="carousel" @click=${this._fullscreen} @dblclick=${this._togglePause}>
+      <div class="carousel ${this.isFullscreen ? 'fixed-fullscreen' : ''}" @click=${(e) => {
+      if (this.isFullscreen && !e.target.closest('.close-btn, .arrow-btn, .indicator-wrapper')) this._togglePause(e)
+      else if (!this.isFullscreen && !e.target.closest('.close-btn, .arrow-btn, .indicator-wrapper'))
+        this._fullscreen(e)
+    }}>
         <button class="close-btn" @click=${this._closeFullscreen} title="Close" style="display:none">✕</button>
         <button class="arrow-btn left" @click=${this._prevImage} title="Previous">&#x2039;</button>
         <button class="arrow-btn right" @click=${this._nextImage} title="Next">&#x203A;</button>
@@ -209,8 +264,7 @@ export class CustomCarousel extends LiteElement {
               fetchpriority=${index === 0 ? 'high' : 'low'}
               src="${image}"
               class="${index === 0 ? 'first' : ''}"
-              alt="Carousel Image ${index + 1}"
-              @click=${this._togglePause} />
+              alt="Carousel Image ${index + 1}" />
           `
         )}
       </div>
@@ -227,55 +281,6 @@ export class CustomCarousel extends LiteElement {
         </div>
       </div>
     `
-  }
-
-  _fullscreen = (e) => {
-    // Only trigger fullscreen if the click is on the carousel container, not on indicators
-    const el = this.shadowRoot.querySelector('.carousel')
-    // Try element fullscreen first
-    if (el && el.requestFullscreen) {
-      el.requestFullscreen().catch(() => {
-        // fallback below
-      })
-    } else if (el && el['webkitRequestFullscreen']) {
-      el['webkitRequestFullscreen']()
-    } else if (el && el['msRequestFullscreen']) {
-      el['msRequestFullscreen']()
-    } else if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen()
-    } else if (document.documentElement['webkitRequestFullscreen']) {
-      document.documentElement['webkitRequestFullscreen']()
-    } else if (document.documentElement['msRequestFullscreen']) {
-      document.documentElement['msRequestFullscreen']()
-    } else {
-      // Fallback: open first image in new tab if nothing else works (iOS Safari limitation)
-      if (this.images && this.images.length > 0) {
-        window.open(this.images[this.carouselIndex], '_blank')
-      }
-    }
-    // Show close button in fullscreen
-    setTimeout(() => {
-      const btn = this.shadowRoot.querySelector('.close-btn')
-      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'flex'
-    }, 200)
-  }
-
-  _closeFullscreen = (e) => {
-    e.stopPropagation()
-    if (document.fullscreenElement) {
-      document.exitFullscreen()
-    } else if (document['webkitExitFullscreen']) {
-      document['webkitExitFullscreen']()
-    } else if (document['mozCancelFullScreen']) {
-      document['mozCancelFullScreen']()
-    } else if (document['msExitFullscreen']) {
-      document['msExitFullscreen']()
-    }
-    // Hide close button after exit
-    setTimeout(() => {
-      const btn = this.shadowRoot.querySelector('.close-btn')
-      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'none'
-    }, 200)
   }
 
   _prevImage = (e) => {
