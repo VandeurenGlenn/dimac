@@ -77,6 +77,11 @@ export class CustomCarousel extends LiteElement {
   }
 
   _closeFullscreen = (e) => {
+    if (this.paused) {
+      this.paused = false
+      clearTimeout(this.carouselTimeout)
+      this.setTimeout()
+    }
     e.stopPropagation()
     this.fullscreen = false
     this.requestRender()
