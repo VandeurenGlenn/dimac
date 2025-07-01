@@ -5,6 +5,7 @@ export class CustomCarousel extends LiteElement {
   @property({ type: Number }) accessor carouselIndex = 0
   @property({ type: Array }) accessor images
   @property({ type: Boolean, reflect: true }) accessor fullscreen = false
+  @property({ type: Boolean, reflect: true }) accessor paused = false
 
   @property({ type: Number, attribute: 'delay' }) accessor timeout = 4500
   carouselTimeout
@@ -14,8 +15,6 @@ export class CustomCarousel extends LiteElement {
   loaded = new Promise<boolean>((resolve) => {
     this.loadedResolve = resolve
   })
-
-  carouselPaused = false
 
   setTimeout() {
     clearTimeout(this.carouselTimeout)
@@ -62,8 +61,8 @@ export class CustomCarousel extends LiteElement {
   _togglePause = (e) => {
     // Only toggle pause if in fullscreen and not clicking on controls
     if (!this.fullscreen) return
-    this.carouselPaused = !this.carouselPaused
-    if (this.carouselPaused) {
+    this.paused = !this.paused
+    if (this.paused) {
       clearTimeout(this.carouselTimeout)
     } else {
       this.setTimeout()
@@ -81,6 +80,12 @@ export class CustomCarousel extends LiteElement {
     e.stopPropagation()
     this.fullscreen = false
     this.requestRender()
+  }
+
+  _resume = (e) => {
+    e.stopPropagation()
+    this.paused = false
+    this.setTimeout()
   }
 
   render() {
@@ -242,7 +247,15 @@ export class CustomCarousel extends LiteElement {
           transition: opacity 0.2s ease-in;
         }
 
-        :host([fullscreen]) custom-icon-button[icon="pause"] {
+        :host([fullscreen]:not([paused])) custom-icon-button[icon="pause"] {
+          bottom: 24px;
+          z-index: 10;
+          left: 50%;
+          transform: translateX(-50%);
+          opacity: 1;
+        }
+
+        :host([fullscreen][paused]) custom-icon-button[icon="resume"] {
           bottom: 24px;
           z-index: 10;
           left: 50%;
@@ -260,6 +273,7 @@ export class CustomCarousel extends LiteElement {
       <div class="carousel" @click=${this._fullscreen}>
         <custom-icon-button icon="close" @click=${this._closeFullscreen} type="tonal"></custom-icon-button>
         <custom-icon-button icon="pause" @click=${this._togglePause} type="tonal"></custom-icon-button>
+        <custom-icon-button icon="resume" @click=${this._resume} type="tonal"></custom-icon-button>
         <custom-icon-button icon="arrow_back" @click=${this._prevImage} type="tonal"></custom-icon-button>
         <custom-icon-button icon="arrow_forward" @click=${this._nextImage} type="tonal"></custom-icon-button>
         

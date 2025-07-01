@@ -12,6 +12,7 @@ export default html`
       <span name="pause">@symbol-pause</span>
       <span name="arrow_back">@symbol-arrow_back</span>
       <span name="arrow_forward">@symbol-arrow_forward</span>
+      <span name="resume">@symbol-resume</span>
       <span name="location_city">@symbol-location_city</span>
       <span name="settings">@symbol-settings</span>
       <span name="call">@symbol-call</span>
