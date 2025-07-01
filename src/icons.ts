@@ -7,6 +7,11 @@ export default html`
       <span name="home">@symbol-home</span>
       <span name="search">@symbol-search</span>
       <span name="road">@symbol-road</span>
+      <span name="directions">@symbol-directions</span>
+      <span name="close">@symbol-close</span>
+      <span name="pause">@symbol-pause</span>
+      <span name="arrow_back">@symbol-arrow_back</span>
+      <span name="arrow_forward">@symbol-arrow_forward</span>
       <span name="location_city">@symbol-location_city</span>
       <span name="settings">@symbol-settings</span>
       <span name="call">@symbol-call</span>

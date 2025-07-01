@@ -1,8 +1,10 @@
-import { html, property, LiteElement } from '@vandeurenglenn/lite'
-
+import { html, property, LiteElement, query } from '@vandeurenglenn/lite'
+import '@vandeurenglenn/lite-elements/icon-button.js'
 export class CustomCarousel extends LiteElement {
+  @query('img') accessor firstImage: HTMLImageElement
   @property({ type: Number }) accessor carouselIndex = 0
   @property({ type: Array }) accessor images
+  @property({ type: Boolean, reflect: true }) accessor fullscreen = false
 
   @property({ type: Number, attribute: 'delay' }) accessor timeout = 4500
   carouselTimeout
@@ -14,10 +16,9 @@ export class CustomCarousel extends LiteElement {
   })
 
   carouselPaused = false
-  isFullscreen = false
 
   setTimeout() {
-    clearInterval(this.carouselTimeout)
+    clearTimeout(this.carouselTimeout)
     this.carouselTimeout = setTimeout(() => {
       const prevIndex = this.carouselIndex
       this.carouselIndex = (this.carouselIndex + 1) % this.images.length
@@ -28,24 +29,23 @@ export class CustomCarousel extends LiteElement {
 
   _setTransitionClasses(prevIndex, currentIndex) {
     const images = this.shadowRoot.querySelectorAll('.carousel img')
-    images.forEach((img, idx) => {
-      img.classList.remove('active', 'previous', 'first')
-      if (idx === 0 && currentIndex === 0) {
-        img.classList.add('first', 'active')
+    for (let i = 0; i < images.length; i++) {
+      images[i].classList.remove('active', 'previous', 'first')
+      if (i === 0 && currentIndex === 0) {
+        images[i].classList.add('first', 'active')
       } else {
-        if (idx === prevIndex) {
-          img.classList.add('previous')
+        if (i === prevIndex) {
+          images[i].classList.add('previous')
         }
-        if (idx === currentIndex) {
-          img.classList.add('active')
+        if (i === currentIndex) {
+          images[i].classList.add('active')
         }
       }
-    })
+    }
   }
 
   firstRender() {
-    const img = this.shadowRoot.querySelector('img')
-    img?.addEventListener('load', () => {
+    this.firstImage?.addEventListener('load', () => {
       // Ensure the first image is fully loaded before starting the carousel
       this.loadedResolve(true)
       this._setTransitionClasses(0, 0)
@@ -54,19 +54,17 @@ export class CustomCarousel extends LiteElement {
   }
 
   _goToImage(index) {
-    const prevIndex = this.carouselIndex
+    this._setTransitionClasses(this.carouselIndex, index)
     this.carouselIndex = index
-    this._setTransitionClasses(prevIndex, index)
     this.setTimeout()
   }
 
   _togglePause = (e) => {
     // Only toggle pause if in fullscreen and not clicking on controls
-    if (!this.isFullscreen) return
-    if (e.target.closest('.close-btn, .arrow-btn')) return
+    if (!this.fullscreen) return
     this.carouselPaused = !this.carouselPaused
     if (this.carouselPaused) {
-      clearInterval(this.carouselTimeout)
+      clearTimeout(this.carouselTimeout)
     } else {
       this.setTimeout()
     }
@@ -75,22 +73,14 @@ export class CustomCarousel extends LiteElement {
   _fullscreen = (e) => {
     // Only trigger fullscreen if the click is on the carousel container, not on indicators
     if (e.target.closest('.close-btn, .arrow-btn, .indicator-wrapper')) return
-    this.isFullscreen = true
+    this.fullscreen = true
     this.requestRender()
-    setTimeout(() => {
-      const btn = this.shadowRoot.querySelector('.close-btn')
-      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'flex'
-    }, 200)
   }
 
   _closeFullscreen = (e) => {
     e.stopPropagation()
-    this.isFullscreen = false
+    this.fullscreen = false
     this.requestRender()
-    setTimeout(() => {
-      const btn = this.shadowRoot.querySelector('.close-btn')
-      if (btn && 'style' in btn) (btn as HTMLElement).style.display = 'none'
-    }, 200)
   }
 
   render() {
@@ -125,6 +115,8 @@ export class CustomCarousel extends LiteElement {
           transition: transform 2s cubic-bezier(.4,0,.2,1), opacity 2s cubic-bezier(.4,0,.2,1);
           pointer-events: none;
           will-change: transform, opacity;
+
+          border-radius: 16px;
         }
         .carousel img.previous {
           transform-origin: left;
@@ -169,94 +161,108 @@ export class CustomCarousel extends LiteElement {
         .indicator.active {
           background: white;
         }
-        .close-btn {
+        :host([fullscreen]) img {
+          margin: auto;
+          box-sizing: border-box;
+          padding: 48px;
+        }
+
+        custom-icon-button {
           position: absolute;
-          top: 12px;
-          right: 12px;
-          z-index: 10;
-          background: rgba(0,0,0,0.6);
-          color: white;
-          border: none;
-          border-radius: 50%;
+          opacity: 0;
+          transition: opacity 0.2s ease-out;
           width: 32px;
           height: 32px;
-          font-size: 20px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0.8;
-          transition: opacity 0.2s;
         }
-        .close-btn:hover {
+
+        custom-icon-button[icon="arrow_back"],
+        custom-icon-button[icon="arrow_forward"]
+        {
+          transition: opacity 0.2s ease-in;
           opacity: 1;
         }
-        .arrow-btn {
+
+        
+        custom-icon-button[icon="arrow_back"] {
+          left: 12px;
+        }
+        
+        custom-icon-button[icon="arrow_forward"] {
+          right: 12px;
+        }
+
+        custom-icon-button[icon="arrow_back"],
+        custom-icon-button[icon="arrow_forward"] {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
           z-index: 10;
-          background: rgba(0,0,0,0.6);
-          color: white;
-          border: none;
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-          font-size: 24px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0.8;
-          transition: opacity 0.2s;
         }
-        .arrow-btn.left {
-          left: 12px;
-        }
-        .arrow-btn.right {
-          right: 12px;
-        }
-        .arrow-btn:hover {
-          opacity: 1;
-        }
-        .fixed-fullscreen {
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          bottom: 0 !important;
+
+        :host([fullscreen]) .carousel {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
           width: 100%;
           height: 100%;
-          z-index: 9999 !important;
-          background: rgba(0,0,0,0.98) !important;
-          border-radius: 0 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          box-sizing: border-box !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          transition: none !important;
-        }
-        .fixed-fullscreen img {
-          margin: auto;
-          border-radius: 8px;
+          z-index: 9999;
+          padding: 0;
+          background: rgba(0, 0, 0, 0.98);
           box-sizing: border-box;
-          padding: 48px;
         }
-        .fixed-fullscreen .close-btn,
-        .fixed-fullscreen .arrow-btn {
-          z-index: 10000 !important;
+
+        :host([fullscreen]) .carousel img {
+          height: 100%;
+          width: 100%;
+          padding: 0;
+          box-sizing: border-box;
+          border-radius: 16px;
         }
+        :host([fullscreen]) custom-icon-button {
+          width: 48px;
+          height: 48px;
+        }
+
+        :host([fullscreen]) custom-icon-button[icon="arrow_back"] {
+          left: 48px;
+        }
+
+        :host([fullscreen]) custom-icon-button[icon="arrow_forward"] {
+          right: 48px;
+        }
+
+        :host([fullscreen]) custom-icon-button[icon="close"] {
+          top: 24px;
+          right: 48px;
+          z-index: 10;
+          opacity: 1;
+
+          transition: opacity 0.2s ease-in;
+        }
+
+        :host([fullscreen]) custom-icon-button[icon="pause"] {
+          bottom: 24px;
+          z-index: 10;
+          left: 50%;
+          transform: translateX(-50%);
+          opacity: 1;
+        }
+        
+        :host([fullscreen]) custom-icon-button[icon="arrow_back"], :host([fullscreen]) custom-icon-button[icon="arrow_forward"] {
+          bottom: 24px;
+          top: auto;
+          transform: translateY(0);
+        }
+
       </style>
-      <div class="carousel ${this.isFullscreen ? 'fixed-fullscreen' : ''}" @click=${(e) => {
-      if (this.isFullscreen && !e.target.closest('.close-btn, .arrow-btn, .indicator-wrapper')) this._togglePause(e)
-      else if (!this.isFullscreen && !e.target.closest('.close-btn, .arrow-btn, .indicator-wrapper'))
-        this._fullscreen(e)
-    }}>
-        <button class="close-btn" @click=${this._closeFullscreen} title="Close" style="display:none">✕</button>
-        <button class="arrow-btn left" @click=${this._prevImage} title="Previous">&#x2039;</button>
-        <button class="arrow-btn right" @click=${this._nextImage} title="Next">&#x203A;</button>
+      <div class="carousel" @click=${this._fullscreen}>
+        <custom-icon-button icon="close" @click=${this._closeFullscreen} type="tonal"></custom-icon-button>
+        <custom-icon-button icon="pause" @click=${this._togglePause} type="tonal"></custom-icon-button>
+        <custom-icon-button icon="arrow_back" @click=${this._prevImage} type="tonal"></custom-icon-button>
+        <custom-icon-button icon="arrow_forward" @click=${this._nextImage} type="tonal"></custom-icon-button>
+        
         ${this.images?.map(
           (image, index) => html`
             <img
