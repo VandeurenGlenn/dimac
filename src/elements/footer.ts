@@ -46,7 +46,7 @@ export class CustomFooter extends LiteElement {
           display: flex;
         }
         custom-icon,
-        strong {
+        .tax {
           margin-right: 16px;
           font-size: 10px;
         }
@@ -85,8 +85,6 @@ export class CustomFooter extends LiteElement {
           padding: 8px 12px;
           margin-top: 48px;
           width: 100%;
-          background: var(--md-sys-color-primary-container);
-          color: var(--md-sys-color-on-primary-container);
         }
 
         small img {
@@ -141,7 +139,7 @@ export class CustomFooter extends LiteElement {
           <span class="footer-title">Adres</span>
           <span class="footer-contact"><custom-icon icon="road"></custom-icon>Beringenbaan 43</span>
           <span class="footer-contact"><custom-icon icon="location_city"></custom-icon>3290 Diest</span>
-          <span class="footer-contact"><strong>BTW</strong>BE 0479.917.693</span>
+          <span class="footer-contact"><strong class="tax">BTW</strong>BE 0479.917.693</span>
         </span>
 
         <span class="column">
