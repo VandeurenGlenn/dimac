@@ -131,6 +131,14 @@ export default customElements.define(
             flex-direction: column;
           }
 
+          iframe {
+            width: 100%;
+            min-height: 420px;
+            margin-top: 72px;
+            border: none;
+            border-radius: var(--md-sys-shape-corner-medium);
+          }
+
           md-outlined-text-field,
           md-outlined-select,
           data-input {
@@ -221,6 +229,10 @@ export default customElements.define(
               label="Verstuur"
               @click=${this.#send}></custom-button>
           </span>
+
+          <iframe
+            src="https://maps.google.com/maps?q=Dimac&t=&z=17&ie=UTF8&iwloc=&output=embed"
+            }></iframe>
         </main>
       `
     }
