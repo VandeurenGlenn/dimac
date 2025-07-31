@@ -28,7 +28,7 @@ export default customElements.define(
 
     startTyping() {
       var typed3 = new Typed(this.shadowRoot.querySelector('.typer'), {
-        strings: ['wij maken jouw droom', 'snel', 'betaalbaar', 'duurzaam', 'slim', 'met oog voor detail'],
+        strings: ['wij maken jouw droom', 'duurzaam', 'smart', 'met oog voor detail'],
         typeSpeed: 100,
         backSpeed: 25,
         cursorChar: '_',
