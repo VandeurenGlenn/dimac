@@ -33,7 +33,7 @@ export default customElements.define(
         backSpeed: 25,
         cursorChar: '_',
         smartBackspace: true, // this is a default
-        loop: true
+        loop: false
       })
     }
 
