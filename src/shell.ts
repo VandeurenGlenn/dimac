@@ -131,6 +131,13 @@ export class DimacShell extends LiteElement {
           <a href="#!/realizations" data-route="realizations">Realisaties <custom-icon icon="cheer"></custom-icon></a>
           <a href="#!/contact" data-route="contact">Contact<custom-icon icon="phone_in_talk"></custom-icon></a>
         </custom-selector>
+
+        <a aria-label="Chat on WhatsApp" class="wa-button" href="https://wa.me/32473711123">
+        
+        <custom-icon icon="whatsapp"></custom-icon>
+        Chat on WhatsApp
+        
+</a>
       </span>
 
         

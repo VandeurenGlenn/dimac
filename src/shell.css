@@ -83,3 +83,13 @@ main[slot='content'] {
   height: 100%;
   flex-direction: column;
 }
+
+.wa-button {
+  padding: 12px;
+  box-sizing: border-box;
+  max-height: 48px;
+  background: #24d366;
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto;
+}
