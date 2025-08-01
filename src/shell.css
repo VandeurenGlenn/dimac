@@ -84,12 +84,19 @@ main[slot='content'] {
   flex-direction: column;
 }
 
-:host([narrow]) .wa-mobile-button {
+.wa-mobile-button {
   position: fixed;
   bottom: 16px;
   left: 16px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+:host([narrow]) .wa-mobile-button {
   z-index: 1000;
   background: rgb(36, 211, 102);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .wa-button {
