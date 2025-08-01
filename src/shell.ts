@@ -16,6 +16,8 @@ export class DimacShell extends LiteElement {
 
   @property({ type: Boolean }) accessor loaded
 
+  @property({ type: Boolean, reflect: true }) accessor narrow
+
   @property({ type: Object, provides: 'realizationsManifest' }) accessor realizationsManifest
 
   #hashBang = '#!/'
@@ -31,6 +33,7 @@ export class DimacShell extends LiteElement {
     onhashchange = this.#onhashchange.bind(this)
 
     this.#onhashchange()
+    
   }
 
   #validView(hash) {
@@ -82,11 +85,9 @@ export class DimacShell extends LiteElement {
 
   #onqueryChange({ matches }) {
     if (matches) {
-      // this.setAttribute('desktop', '')
-      // this.drawerShown = false
+      this.narrow = false
     } else {
-      // this.removeAttribute('desktop')
-      // this.drawerShown = false
+      this.narrow = true
     }
   }
 
@@ -120,7 +121,7 @@ export class DimacShell extends LiteElement {
   render() {
     return html`
     ${icons}
-      <custom-drawer-layout>
+      <custom-drawer-layout .narrow=${this.narrow} >
       <span  slot="drawer-content">
 
         <img src="./assets/dimac.svg" alt="Dimac Logo" class="logo" style="width: 272px; height: 177.02px;">
@@ -148,6 +149,11 @@ export class DimacShell extends LiteElement {
         
       </main>
       </custom-drawer-layout>
+
+       <a aria-label="Chat on WhatsApp" href="https://wa.me/32473711123">
+       <custom-icon-button class="wa-mobile-button" icon="whatsapp"></custom-icon-button>
+       </a>
+      
     `
   }
 }
