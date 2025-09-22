@@ -147,8 +147,8 @@ export class CustomFooter extends LiteElement {
 
           <a
             class="footer-contact"
-            href="tel:+32 473 71 11 23"
-            ><custom-icon icon="call"></custom-icon>+32 473 71 11 23</a
+            href="tel:013335335"
+            ><custom-icon icon="call"></custom-icon>013335335</a
           >
           <a
             class="footer-contact"
