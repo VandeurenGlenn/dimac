@@ -286,7 +286,7 @@ export class CustomCarousel extends LiteElement {
           (image, index) => html`
             <img
               loading=${index === 0 ? 'eager' : 'lazy'}
-              fetch-priority=${index === 0 ? 'high' : 'low'}
+              fetchPriority=${index === 0 ? 'high' : 'low'}
               src="${image}"
               class="${index === 0 ? 'first' : ''}"
               alt="Carousel Image ${index + 1}" />
