@@ -137,7 +137,7 @@ export class CustomFooter extends LiteElement {
         </span>
         <span class="column">
           <span class="footer-title">Adres</span>
-          <span class="footer-contact"><custom-icon icon="road"></custom-icon>Beringenbaan 43</span>
+          <span class="footer-contact"><custom-icon icon="road"></custom-icon>Schansstraat 8</span>
           <span class="footer-contact"><custom-icon icon="location_city"></custom-icon>3290 Diest</span>
           <span class="footer-contact"><strong class="tax">BTW</strong>BE 0479.917.693</span>
         </span>

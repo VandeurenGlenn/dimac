@@ -231,7 +231,7 @@ export default customElements.define(
           </span>
 
           <iframe
-            src="https://maps.google.com/maps?q=Dimac beringenbaan&t=&z=17&ie=UTF8&iwloc=&output=embed"
+            src="https://maps.google.com/maps?q=Dimac schansstraat&t=&z=17&ie=UTF8&iwloc=&output=embed"
             }></iframe>
         </main>
       `
