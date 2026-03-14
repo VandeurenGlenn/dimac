@@ -1,4 +1,4 @@
-import { html, LiteElement, property } from '@vandeurenglenn/lite'
+import { html, LiteElement } from '@vandeurenglenn/lite'
 
 import './../elements/carousel-card.js'
 export default customElements.define(
@@ -89,138 +89,196 @@ export default customElements.define(
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
+            padding-bottom: 48px;
           }
 
-          a {
-            display: inline-block;
-            background: var(--accent-color);
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-weight: 700;
-            text-decoration: none;
-            margin-top: 24px;
-          }
-          h4 {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 16px 0;
-            text-align: center;
-            width: 100%;
-          }
-          h5 {
-            font-size: 20px;
-            font-weight: 600;
-            width: 100%;
-            text-align: center;
-          }
-          h6 {
-            font-size: 16px;
-            font-weight: 500;
-            width: 100%;
-            text-align: center;
-          }
           main {
-            max-width: 1000px;
-            align-items: center;
+            width: 100%;
+            max-width: var(--page-max-width);
+            display: grid;
+            gap: 28px;
           }
 
-          img {
-            position: absolute;
-            top: 54px;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: calc(100% - 54px);
-            opacity: 0.2;
-            z-index: -1;
-            pointer-events: none;
+          .intro,
+          .process {
+            background: var(--md-sys-color-surface);
+            border: var(--surface-border);
+            border-radius: var(--panel-radius);
+            box-shadow: var(--card-shadow);
+          }
+
+          .intro {
+            padding: clamp(32px, 4vw, 52px);
+            display: grid;
+            gap: 16px;
+          }
+
+          .eyebrow {
+            display: inline-flex;
+            width: fit-content;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(168, 84, 39, 0.1);
+            color: var(--md-sys-color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 12px;
+            font-weight: 800;
+          }
+
+          h4 {
+            font-family: var(--font-display);
+            font-size: var(--hero-title-size);
+            line-height: var(--hero-title-line-height);
+            margin: 0;
+            color: var(--md-sys-color-on-surface);
+          }
+
+          p {
+            margin: 0;
+            max-width: 60ch;
+            line-height: 1.8;
+            color: var(--md-sys-color-on-surface-variant);
+          }
+
+          .process {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            padding: 28px 32px;
+          }
+
+          .process article {
+            display: grid;
+            gap: 8px;
+          }
+
+          .process strong {
+            color: var(--md-sys-color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 12px;
           }
 
           .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 28px;
             width: 100%;
-            gap: 16px;
           }
+
           custom-carousel-card {
-            max-width: calc(33% - 8px);
             box-sizing: border-box;
-            margin-bottom: 16px;
+            max-width: none;
+            width: 100%;
+          }
+
+          @media (max-width: 1500px) {
+            .card-container {
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
           }
 
           @media (max-width: 1200px) {
-            main {
-              box-sizing: border-box;
-              padding: 0 16px;
-            }
-            custom-carousel {
-              max-width: 100%;
+            .card-container {
+              grid-template-columns: repeat(2, minmax(0, 1fr));
             }
           }
 
-          @media (max-width: 1300px) {
-            custom-carousel-card {
-              max-width: calc(50% - 8px);
-            }
-          }
-
-          @media (max-width: 680px) {
-            custom-carousel-card {
-              max-width: 100%;
+          @media (max-width: 800px) {
+            .process,
+            .card-container {
+              grid-template-columns: 1fr;
             }
           }
         </style>
         <main>
-          <img
-            src="./assets/sketch.svg"
-            alt="Sketch" />
+          <section class="intro">
+            <span class="eyebrow">Onze diensten</span>
+            <h4>Technische oplossingen met structuur in voorbereiding, uitvoering en afwerking.</h4>
+            <p>
+              Dimac focust op technische installaties, automatisatie en dakwerken, aangevuld met sanitair en afwerking
+              waar nodig. Zo blijft het proces overzichtelijk en het resultaat technisch correct uitgevoerd.
+            </p>
+          </section>
+
+          <section class="process">
+            <article>
+              <strong>Analyse</strong>
+              <span
+                >We vertalen uw technische vraag naar een haalbare aanpak met aandacht voor gebruik en
+                betrouwbaarheid.</span
+              >
+            </article>
+            <article>
+              <strong>Uitvoering</strong>
+              <span
+                >Eigen vakkennis en betrouwbare partners houden de uitvoering consequent en correct van begin tot
+                einde.</span
+              >
+            </article>
+            <article>
+              <strong>Afwerking</strong>
+              <span
+                >Ook de afregeling en afwerking krijgen evenveel aandacht als de technische kern van het project.</span
+              >
+            </article>
+          </section>
 
           <span class="card-container">
             <custom-carousel-card
               title="Badkamers"
-              description="Wij ontwerpen en installeren uw droom badkamer, van modern tot klassiek."
+              kicker="Interieur"
+              description="Badkamers met logische indeling, degelijk sanitair en een afwerking die rust uitstraalt."
               .images=${this.bathroomImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Keukens"
-              description="Wij ontwerpen en installeren uw droom keuken, van modern tot klassiek."
+              kicker="Interieur"
+              description="Keukens waarin materiaalkeuze, gebruiksgemak en technische integratie samenkomen."
               .images=${this.kitchenImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Elektriciteit"
-              description="Wij verzorgen de elektriciteit in uw woning, van installatie tot herstelling."
+              kicker="Technieken"
+              description="Van nieuwe installaties tot vernieuwing en uitbreiding, helder en veilig uitgevoerd."
+              .images=${this.electricityImages}></custom-carousel-card>
+
+            <custom-carousel-card
+              title="Automatisatie"
+              kicker="Smart Control"
+              description="Slimme sturingen en automatisatie die comfort, overzicht en gebruiksgemak tastbaar verbeteren."
               .images=${this.electricityImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Sanitair"
-              description="Wij installeren en renoveren uw sanitair, van leidingen tot toestellen."
+              kicker="Technieken"
+              description="Sanitaire installaties en renovaties met aandacht voor comfort, detail en betrouwbare werking."
               .images=${this.sanitairImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Hernieuwbare energie"
-              description="Wij installeren zonnepanelen, warmtepompen en andere hernieuwbare energie systemen."
+              kicker="Duurzaamheid"
+              description="Energieoplossingen die rendement combineren met een nette technische integratie in het geheel."
               .images=${this.renewingEnergyImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Dakwerken"
-              description="Wij verzorgen al uw dakwerken, van hellende daken tot platte daken."
+              kicker="Buitenschil"
+              description="Dakwerken die structuur, waterdichtheid en afwerking correct samenbrengen in één verzorgd geheel."
               .images=${this.carousel1Images}></custom-carousel-card>
 
             <custom-carousel-card
               title="Afwerking"
-              description="Wij zorgen voor de afwerking van uw woning, van gyproc tot schilderwerken en vloeren."
+              kicker="Afwerking"
+              description="Gyproc, schilderwerken, vloeren en interieurelementen die het project visueel samenbrengen."
               .images=${this.finishingImages}></custom-carousel-card>
 
             <custom-carousel-card
-              title="Bouwadvies"
-              description="Wij geven u advies over uw bouwproject, van vergunning tot uitvoering."
-              .images=${this.carousel1Images}></custom-carousel-card>
-
-            <custom-carousel-card
               title="Verhuur"
-              description="Wij verhuren bouwmachines en -materialen, van kranen tot steigers."
+              kicker="Ondersteuning"
+              description="Materieel en ondersteuning voor werven die tijdelijk extra capaciteit nodig hebben."
               .images=${this.carousel1Images}></custom-carousel-card>
           </span>
         </main>

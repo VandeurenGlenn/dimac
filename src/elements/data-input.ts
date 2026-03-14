@@ -1,12 +1,15 @@
-import { html, css, LiteElement, property, query } from '@vandeurenglenn/lite'
+import { html, LiteElement, property, query } from '@vandeurenglenn/lite'
+import styles from './styles/data-input.css' with { type: 'css' }
+
 import '@vandeurenglenn/lite-elements/dropdown.js'
 import { CustomDropdown } from '@vandeurenglenn/lite-elements/dropdown.js'
-
 import '@vandeurenglenn/lite-elements/icon.js'
 import '@vandeurenglenn/lite-elements/list-item.js'
 import { CustomSelector } from '@vandeurenglenn/lite-elements/selector'
 import '@vandeurenglenn/lite-elements/selector.js'
 import '@material/web/textfield/outlined-text-field.js'
+
+declare const google: any
 
 export class DataInput extends LiteElement {
   @property({ type: String }) accessor label = ''
@@ -17,6 +20,9 @@ export class DataInput extends LiteElement {
 
   @property({ type: Object }) accessor place: { formattedAddress: string; displayName: string }
   @property({ type: Boolean }) accessor required
+
+  timeout?: ReturnType<typeof setTimeout>
+  suggestions: any[] = []
 
   @query('custom-dropdown') accessor dropdown: CustomDropdown
   @query('custom-selector') accessor selector: CustomSelector
@@ -41,53 +47,7 @@ export class DataInput extends LiteElement {
     return true
   }
 
-  static styles = [
-    css`
-      :host {
-        display: flex;
-        height: 56px;
-        width: 100%;
-        flex: 1;
-        position: relative;
-      }
-      li {
-        appearance: none;
-        display: flex;
-        flex-direction: row;
-        padding: 16px;
-        box-sizing: border-box;
-        border-bottom: 1px solid var(--md-sys-color-outline);
-        cursor: pointer;
-      }
-
-      li * {
-        pointer-events: none;
-      }
-
-      custom-icon {
-        margin-right: 12px;
-      }
-
-      custom-dropdown {
-        overflow-y: auto;
-        max-height: 300px;
-        margin-top: 64px;
-        max-width: 320px;
-        min-width: 200px;
-        width: fit-content;
-        border-radius: 8px;
-        border: 2px solid var(--md-sys-color-outline);
-      }
-
-      md-outlined-text-field {
-        flex: 1;
-        width: 100%;
-      }
-      custom-icon {
-        margin-left: 12px;
-      }
-    `
-  ]
+  static styles = [styles]
 
   _change = (e: Event) => {
     const value = (e.target as HTMLInputElement).value

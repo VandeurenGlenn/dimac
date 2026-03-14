@@ -1,138 +1,25 @@
 import { html, css, LiteElement } from '@vandeurenglenn/lite'
+import styles from './styles/footer.css' with { type: 'css' }
 export class CustomFooter extends LiteElement {
-  static get styles() {
-    return [
-      css`
-        :host {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          box-sizing: border-box;
-          margin-top: 86px;
-          align-items: center;
-        }
-        .column {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          flex: 1;
-          height: 100%;
-          padding-left: 48px;
-          box-sizing: border-box;
-        }
-        .column img {
-          height: 100%;
-        }
-        footer {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          background: var(--md-sys-color-surface);
-          box-sizing: border-box;
-          padding: 32px 24px 16px 24px;
-          color: #fff;
-          font-size: 16px;
-          font-weight: 500;
-          margin-top: 128px;
-          border-top: 1px solid var(--md-sys-color-outline);
-          color: var(--md-sys-color-on-surface);
-
-          /* border-radius: 12px 12px 0 0; */
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-          display: flex;
-        }
-        custom-icon,
-        .tax {
-          margin-right: 16px;
-          font-size: 10px;
-        }
-        .footer-content {
-          margin-top: 48px;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          gap: 8px;
-          width: 100%;
-          max-width: 820px;
-        }
-        .footer-contact {
-          margin-top: 8px;
-          font-size: 15px;
-          height: 24px;
-          display: flex;
-          align-items: center;
-        }
-
-        .footer-title {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 8px;
-          flex: 1;
-          display: flex;
-          align-items: flex-start;
-          color: var(--md-sys-color-on-surface);
-        }
-
-        small {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          box-sizing: border-box;
-          padding: 8px 12px;
-          margin-top: 48px;
-          width: 100%;
-        }
-
-        small img {
-          width: 24px;
-          height: 24px;
-          padding: 0 8px;
-        }
-        @media (max-width: 1000px) {
-          .footer-content {
-            flex-direction: column;
-            align-items: center;
-          }
-          .column {
-            padding-left: 0;
-            padding-right: 0;
-            width: 100%;
-            align-items: center;
-          }
-          .footer-title {
-            margin-top: 32px;
-          }
-
-          .footer-contact {
-            max-width: 190px;
-            width: 100%;
-            margin-top: 4px;
-          }
-          img {
-            width: 100%;
-            max-width: 180px;
-          }
-
-          .footer-title {
-            text-align: start;
-            justify-content: start;
-            width: 100%;
-            max-width: 180px;
-          }
-        }
-      `
-    ]
-  }
+  static styles = [styles]
 
   render() {
-    return html`<div class="footer-content">
+    return html`<footer>
+      <div class="footer-intro">
+        <div>
+          <span class="footer-kicker">Dimac BV</span>
+          <div class="footer-title">Professioneel bouwen zonder ruis.</div>
+        </div>
+        <div class="footer-copy">
+          Van technieken en automatisatie tot dakwerken: Dimac werkt met duidelijke afspraken, verzorgde uitvoering en
+          oplossingen die technisch blijven kloppen.
+        </div>
+      </div>
+
+      <div class="footer-content">
         <span class="column img-column">
           <img
-            src="https://dimac.be/assets/dimac.svg"
+            src="./assets/dimac.svg"
             alt="Dimac Logo" />
         </span>
         <span class="column">
@@ -148,7 +35,7 @@ export class CustomFooter extends LiteElement {
           <a
             class="footer-contact"
             href="tel:013335335"
-            ><custom-icon icon="call"></custom-icon>013335335</a
+            ><custom-icon icon="call"></custom-icon>013 33 53 35</a
           >
           <a
             class="footer-contact"
@@ -168,18 +55,13 @@ export class CustomFooter extends LiteElement {
             <custom-icon
               icon="instagram"
               alt="Instagram"></custom-icon>
-            Instagram
+            @dimac_bv
           </a>
         </span>
       </div>
 
-      <small
-        >Made with
-        <img
-          alt="love"
-          src="https://leofcoin.org/sources/icons/heart.svg" />
-        by team <strong style="padding-left: 4px;">Dimac</strong></small
-      >`
+      <small>Dimac BV</small>
+    </footer>`
   }
 }
 customElements.define('custom-footer', CustomFooter)

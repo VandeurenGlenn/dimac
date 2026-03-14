@@ -11,6 +11,7 @@ import sharp from 'sharp'
 import terser from '@rollup/plugin-terser'
 
 const isProduction = process.env.NODE_ENV === 'production'
+const adminPasswordHash = (process.env.DIMAC_ADMIN_PASSWORD_HASH || 'generated_admin_password').trim().toLowerCase()
 
 try {
   await Promise.all((await Array.fromAsync(glob('www/**/*'))).map((file) => unlink(file)))
@@ -18,6 +19,12 @@ try {
 } catch (error) {
   await mkdir('www', { recursive: true })
 }
+
+await mkdir('src/generated', { recursive: true })
+await writeFile(
+  'src/generated/admin-config.ts',
+  `export const adminPasswordHash = '${adminPasswordHash.replaceAll('\\', '\\\\').replaceAll("'", "\\'")}';\n`
+)
 
 const assets = await Array.fromAsync(glob('src/assets/**/*.{png,jpg,heic,JPG,HEIC}'))
 

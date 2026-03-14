@@ -1,16 +1,22 @@
-import '@vandeurenglenn/lite-elements/drawer-layout.js'
 import '@vandeurenglenn/lite-elements/icon.js'
+import '@vandeurenglenn/lite-elements/icon-button.js'
 import '@vandeurenglenn/lite-elements/icon-set.js'
 import '@vandeurenglenn/lite-elements/selector.js'
 import { LiteElement, html, property, query } from '@vandeurenglenn/lite'
-import style from './shell.css' with {type: 'css'}
+import style from './shell.css' with { type: 'css' }
 import icons from './icons.js'
+import './elements/drawer.js'
 import './elements/footer.js'
+import { DimacDrawer } from './elements/drawer.js'
 
 export class DimacShell extends LiteElement {
+  static #views = new Set(['', 'home', 'about', 'services', 'realizations', 'contact', 'admin'])
+
   @query('custom-selector') accessor selector
 
   @query('main') accessor main
+
+  @query('dimac-drawer') accessor drawer: DimacDrawer
 
   @property({ type: String }) accessor selected
 
@@ -19,6 +25,8 @@ export class DimacShell extends LiteElement {
   @property({ type: Boolean, reflect: true }) accessor narrow
 
   @property({ type: Object, provides: 'realizationsManifest' }) accessor realizationsManifest
+
+  declare shadowRoot: ShadowRoot
 
   #hashBang = '#!/'
 
@@ -33,11 +41,10 @@ export class DimacShell extends LiteElement {
     onhashchange = this.#onhashchange.bind(this)
 
     this.#onhashchange()
-    
   }
 
   #validView(hash) {
-    return hash
+    return DimacShell.#views.has(hash)
   }
 
   #removeHashBang(hash = location.hash) {
@@ -48,28 +55,41 @@ export class DimacShell extends LiteElement {
     return this.#hashBang + hash
   }
 
+  #renderNavLink(route, label, icon) {
+    return html`
+      <a
+        href="#!/${route}"
+        data-route=${route}
+        @click=${() => this.drawer?.closeDrawer()}
+        class="nav-link ${this.selected === route ? 'active' : ''}">
+        <span>${label}</span>
+        <custom-icon icon=${icon}></custom-icon>
+      </a>
+    `
+  }
+
   async #onhashchange() {
     let hash = location.hash
     hash = this.#removeHashBang()
     if (!location.hash || !this.#validView(hash)) return (location.hash = this.#addHashBang('home'))
     if (!customElements.get(`${hash}-view`)) await import(`./${hash}.js`)
     this.selected = hash
+    this.drawer?.closeDrawer()
 
     this.main?.scrollTo(0, 0)
 
-    
     if (hash === 'about') {
       document.title = 'Dimac - Over ons'
     }
     if (hash === 'services') {
       document.title = 'Dimac - Onze diensten'
     }
-    if (hash === 'realizations') {
+    if (hash === 'realizations' || hash === 'admin') {
       const response = await fetch('./realizations-manifest.json')
       if (response.ok) {
         this.realizationsManifest = await response.json()
       }
-      document.title = 'Dimac - Realisaties'
+      document.title = hash === 'admin' ? 'Dimac - Admin' : 'Dimac - Realisaties'
     }
     if (hash === 'contact') {
       document.title = 'Dimac - Contact'
@@ -78,7 +98,7 @@ export class DimacShell extends LiteElement {
       document.title = 'Dimac - Home'
     }
 
-    await this.shadowRoot.querySelector(`${hash}-view`).loaded
+    await (this.shadowRoot.querySelector(`${hash}-view`) as { loaded?: Promise<boolean> })?.loaded
 
     this.loaded = true
   }
@@ -93,67 +113,113 @@ export class DimacShell extends LiteElement {
 
   #renderSelected(selected) {
     if (selected === 'services') {
-      return html`
-      <services-view></services-view>
-      `
+      return html` <services-view></services-view> `
     }
 
     if (selected === 'about') {
-      return html`
-      <about-view></about-view>
-      `
+      return html` <about-view></about-view> `
     }
     if (selected === 'realizations') {
-      return html`
-      <realizations-view></realizations-view>
-      `
+      return html` <realizations-view></realizations-view> `
+    }
+    if (selected === 'admin') {
+      return html` <admin-view></admin-view> `
     }
     if (selected === 'contact') {
-      return html`
-      <contact-view></contact-view>
-      `
-    }   
-    return html`
-    <home-view></home-view>
-    `
+      return html` <contact-view></contact-view> `
+    }
+    return html` <home-view></home-view> `
   }
 
   render() {
     return html`
-    ${icons}
-      <custom-drawer-layout .narrow=${this.narrow} >
-      <span  slot="drawer-content">
+      ${icons}
+      <dimac-drawer .narrow=${this.narrow}>
+        <span slot="mobile-mark">D</span>
+        <span slot="mobile-brand">Dimac</span>
+        <span slot="mobile-status">Technieken in Diest</span>
+        <div
+          slot="drawer-content"
+          class="drawer-content">
+          <div class="brand-stack">
+            <div class="brand-panel">
+              <img
+                src="./assets/dimac.svg"
+                alt="Dimac Logo"
+                class="logo" />
+              <span class="eyebrow">Aannemer in en rond Diest</span>
+            </div>
 
-        <img src="./assets/dimac.svg" alt="Dimac Logo" class="logo" style="width: 272px; height: 177.02px;">
-        <custom-selector .selected=${this.selected} attr-for-selected="data-route">
-          <a href="#!/home" data-route="home">Home<custom-icon icon="home"></custom-icon></a>
-          <a href="#!/about" data-route="about">Over Dimac <custom-icon icon="info"></custom-icon></a>
-          <a href="#!/services" data-route="services">Onze diensten <custom-icon icon="home_repair_service"></custom-icon></a>
-          <a href="#!/realizations" data-route="realizations">Realisaties <custom-icon icon="cheer"></custom-icon></a>
-          <a href="#!/contact" data-route="contact">Contact<custom-icon icon="phone_in_talk"></custom-icon></a>
-        </custom-selector>
+            <div class="intro-panel">
+              <h2>Technieken, automatisatie en dakwerken in regio Diest.</h2>
+              <p>Heldere opvolging, degelijke uitvoering en technische oplossingen die correct en duurzaam werken.</p>
+            </div>
+          </div>
 
-        <a aria-label="Chat on WhatsApp" class="wa-button" href="https://wa.me/32473711123">
-        
-        <custom-icon icon="whatsapp"></custom-icon>
-        Chat on WhatsApp
-        
-</a>
-      </span>
+          <nav
+            class="nav-panel"
+            aria-label="Hoofdnavigatie">
+            <custom-selector
+              .selected=${this.selected}
+              attr-for-selected="data-route">
+              ${this.#renderNavLink('home', 'Home', 'home')} ${this.#renderNavLink('about', 'Over Dimac', 'info')}
+              ${this.#renderNavLink('services', 'Onze diensten', 'home_repair_service')}
+              ${this.#renderNavLink('realizations', 'Realisaties', 'cheer')}
+              ${this.#renderNavLink('contact', 'Contact', 'phone_in_talk')}
+            </custom-selector>
+          </nav>
 
-        
-      <main slot="content">
-         ${this.#renderSelected(this.selected)}
-        ${this.loaded?
-          html`<custom-footer></custom-footer>`: ''}
-        
-      </main>
-      </custom-drawer-layout>
+          <div class="contact-panel">
+            <div class="contact-panel-header">
+              <span class="panel-label">Snel contact</span>
+              <p class="panel-note">Bel of mail rechtstreeks voor een snelle afstemming van uw project.</p>
+            </div>
+            <a
+              class="contact-link"
+              href="tel:013335335">
+              <custom-icon icon="call"></custom-icon>
+              <span class="contact-copy">
+                <span class="contact-kicker">Telefonisch</span>
+                <span class="contact-value">013 33 53 35</span>
+              </span>
+            </a>
+            <a
+              class="contact-link"
+              href="mailto:info@dimac.be">
+              <custom-icon icon="mail"></custom-icon>
+              <span class="contact-copy">
+                <span class="contact-kicker">E-mail</span>
+                <span class="contact-value">info@dimac.be</span>
+              </span>
+            </a>
 
-       <a aria-label="Chat on WhatsApp" href="https://wa.me/32473711123">
-       <custom-icon-button class="wa-mobile-button" icon="whatsapp"></custom-icon-button>
-       </a>
-      
+            <a
+              aria-label="Chat on WhatsApp"
+              class="contact-link contact-link--whatsapp"
+              href="https://wa.me/32473711123">
+              <custom-icon icon="whatsapp"></custom-icon>
+              <span class="contact-copy">
+                <span class="contact-kicker">WhatsApp</span>
+                <span class="contact-value">Stel uw vraag direct</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <main
+          slot="content"
+          class="page-content">
+          ${this.#renderSelected(this.selected)} ${this.loaded ? html`<custom-footer></custom-footer>` : ''}
+        </main>
+      </dimac-drawer>
+
+      <a
+        aria-label="Chat on WhatsApp"
+        href="https://wa.me/32473711123">
+        <custom-icon-button
+          class="wa-mobile-button"
+          icon="whatsapp"></custom-icon-button>
+      </a>
     `
   }
 }

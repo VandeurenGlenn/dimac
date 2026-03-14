@@ -1,0 +1,219 @@
+:host {
+  --carousel-glow-rgb: ${DEFAULT_GLOW_RGB};
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow:
+    0 22px 46px rgba(0, 0, 0, 0.28),
+    0 0 64px -24px rgba(var(--carousel-glow-rgb), 0.52);
+  height: auto;
+  display: block;
+  background:
+    radial-gradient(circle at top, rgba(var(--carousel-glow-rgb), 0.16), transparent 58%),
+    linear-gradient(180deg, rgba(35, 26, 22, 0.96), rgba(22, 16, 13, 0.98));
+  margin: 0;
+  transition:
+    box-shadow 240ms ease,
+    background 240ms ease;
+}
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 75%; /* 4:3 aspect ratio */
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top, rgba(var(--carousel-glow-rgb), 0.18), transparent 60%), rgba(43, 32, 27, 0.82);
+}
+.carousel::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 28%;
+  background: linear-gradient(180deg, transparent, rgba(20, 12, 9, 0.42));
+  z-index: 2;
+  pointer-events: none;
+}
+.carousel img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  background-color: var(--md-sys-color-surface, #232323);
+  opacity: 0;
+  transform: translateX(100%);
+  transition:
+    transform 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  will-change: transform, opacity;
+  border-radius: 22px;
+}
+.carousel img.previous {
+  transform-origin: left;
+  transform: translateX(-100%);
+  opacity: 0;
+  z-index: 1;
+}
+.carousel img.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 2;
+}
+.carousel img.first {
+  transform: none !important;
+  opacity: 1 !important;
+}
+.indicators {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  z-index: 3;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(11, 8, 6, 0.56);
+  backdrop-filter: blur(10px);
+}
+.counter {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(11, 8, 6, 0.62);
+  color: var(--md-sys-color-on-surface);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(10px);
+}
+.indicator-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.indicator-wrapper:hover .indicator,
+.indicator-wrapper:focus .indicator {
+  background: var(--md-sys-color-primary, #ffb693);
+}
+.indicator {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 239, 227, 0.34);
+  border-radius: 50%;
+  transition:
+    background 0.3s,
+    box-shadow 0.2s;
+}
+.indicator.active {
+  background: var(--md-sys-color-on-surface);
+  box-shadow: 0 0 0 4px rgba(var(--carousel-glow-rgb), 0.28);
+}
+:host([fullscreen]) img {
+  margin: auto;
+  box-sizing: border-box;
+  padding: 48px;
+}
+custom-icon-button {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  width: 32px;
+  height: 32px;
+}
+custom-icon-button[icon='arrow_back'],
+custom-icon-button[icon='arrow_forward'] {
+  transition: opacity 0.2s ease-in;
+  opacity: 1;
+}
+custom-icon-button[icon='arrow_back'] {
+  left: 12px;
+}
+custom-icon-button[icon='arrow_forward'] {
+  right: 12px;
+}
+custom-icon-button[icon='arrow_back'],
+custom-icon-button[icon='arrow_forward'] {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+:host([fullscreen]) .carousel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  padding: 0;
+  background: rgba(28, 19, 15, 0.98);
+  box-sizing: border-box;
+}
+:host([fullscreen]) .carousel img {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 22px;
+}
+:host([fullscreen]) custom-icon-button {
+  width: 48px;
+  height: 48px;
+}
+:host([fullscreen]) custom-icon-button[icon='arrow_back'] {
+  left: 48px;
+}
+:host([fullscreen]) custom-icon-button[icon='arrow_forward'] {
+  right: 48px;
+}
+:host([fullscreen]) custom-icon-button[icon='close'] {
+  top: 24px;
+  right: 48px;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+:host([fullscreen]:not([paused])) custom-icon-button[icon='pause'] {
+  bottom: 24px;
+  z-index: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+}
+:host([fullscreen][paused]) custom-icon-button[icon='resume'] {
+  bottom: 24px;
+  z-index: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+}
+:host([fullscreen]) custom-icon-button[icon='arrow_back'],
+:host([fullscreen]) custom-icon-button[icon='arrow_forward'] {
+  bottom: 24px;
+  top: auto;
+  transform: translateY(0);
+}

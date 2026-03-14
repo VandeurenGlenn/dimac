@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-labelledby="title desc">
+	<title id="title">Dimac logo</title>
+	<desc id="desc">Modern Dimac logo met geometrisch monogram en strak woordmerk.</desc>
+	<defs>
+		<style>
+			.accent { fill: #a85427; }
+			.ink { fill: #f3e8de; }
+			.stroke { fill: none; stroke: #f3e8de; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+			.wordmark {
+				fill: #f3e8de;
+				font-family: Avenir Next, Helvetica Neue, Arial, sans-serif;
+				font-size: 64px;
+				font-weight: 800;
+				letter-spacing: 8px;
+			}
+			.tagline {
+				fill: #b89683;
+				font-family: Avenir Next, Helvetica Neue, Arial, sans-serif;
+				font-size: 13px;
+				font-weight: 700;
+				letter-spacing: 3.2px;
+			}
+		</style>
+	</defs>
+
+	<g transform="translate(28 24)">
+		<rect class="accent" x="0" y="0" width="18" height="112" rx="9"/>
+		<path class="stroke" d="M32 10h38c23 0 41 8.1 54 24.2 11.3 14 17 31.1 17 51.3 0 20.5-5.7 37.8-17 51.8-13 15.8-31 23.7-54 23.7H32"/>
+		<path class="accent" d="M44 34h24c10.5 0 19.4 2.5 26.7 7.6 7.2 5 12.3 12.1 15.3 21.4H44V34Z"/>
+		<rect class="accent" x="44" y="79" width="53" height="10" rx="5"/>
+	</g>
+
+	<text class="wordmark" x="206" y="83">DIMAC</text>
+	<text class="tagline" x="208" y="113">TECHNIEKEN · AUTOMATISATIE · DAKWERKEN</text>
+</svg>

@@ -1,0 +1,45 @@
+:host {
+  display: flex;
+  min-height: 56px;
+  width: 100%;
+  flex: 1;
+  position: relative;
+}
+li {
+  appearance: none;
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--md-sys-color-outline);
+  cursor: pointer;
+}
+
+li * {
+  pointer-events: none;
+}
+
+custom-icon {
+  margin-right: 12px;
+}
+
+custom-dropdown {
+  overflow-y: auto;
+  max-height: 300px;
+  margin-top: 64px;
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid rgba(204, 173, 150, 0.12);
+  background: rgba(24, 18, 15, 0.98);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+md-outlined-text-field {
+  flex: 1;
+  width: 100%;
+}
+custom-icon {
+  margin-left: 12px;
+}

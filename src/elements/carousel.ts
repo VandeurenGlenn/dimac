@@ -1,5 +1,10 @@
 import { html, property, LiteElement, query } from '@vandeurenglenn/lite'
 import '@vandeurenglenn/lite-elements/icon-button.js'
+import styles from './styles/carousel.css' with { type: 'css' }
+
+const DEFAULT_GLOW_RGB = '168, 84, 39'
+const dominantColorCache = new Map<string, string>()
+
 export class CustomCarousel extends LiteElement {
   @query('img') accessor firstImage: HTMLImageElement
   @property({ type: Number }) accessor carouselIndex = 0
@@ -16,12 +21,123 @@ export class CustomCarousel extends LiteElement {
     this.loadedResolve = resolve
   })
 
+  static styles = [styles]
+
+  #emitDominantColorChange(rgb: string) {
+    this.dispatchEvent(
+      new CustomEvent('dominant-color-change', {
+        detail: { rgb, color: `rgb(${rgb})` },
+        bubbles: true,
+        composed: true
+      })
+    )
+  }
+
+  #applyDominantColor(rgb = DEFAULT_GLOW_RGB) {
+    this.style.setProperty('--carousel-glow-rgb', rgb)
+    this.#emitDominantColorChange(rgb)
+  }
+
+  #extractDominantColor(image: HTMLImageElement) {
+    const cacheKey = image.currentSrc || image.src
+    if (dominantColorCache.has(cacheKey)) return dominantColorCache.get(cacheKey)
+
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d', { willReadFrequently: true })
+    if (!context) return DEFAULT_GLOW_RGB
+
+    const sampleSize = 24
+    canvas.width = sampleSize
+    canvas.height = sampleSize
+    context.drawImage(image, 0, 0, sampleSize, sampleSize)
+
+    const { data } = context.getImageData(0, 0, sampleSize, sampleSize)
+    const buckets = new Map<string, { weight: number; red: number; green: number; blue: number }>()
+
+    for (let index = 0; index < data.length; index += 4) {
+      const alpha = data[index + 3]
+      if (alpha < 160) continue
+
+      const red = data[index]
+      const green = data[index + 1]
+      const blue = data[index + 2]
+
+      const maxChannel = Math.max(red, green, blue)
+      const minChannel = Math.min(red, green, blue)
+      const brightness = (red + green + blue) / 3
+      const saturation = maxChannel - minChannel
+      if (brightness < 16) continue
+
+      const bucketKey = `${red >> 4}-${green >> 4}-${blue >> 4}`
+      const weight = 0.45 + saturation / 140 + brightness / 480
+      const bucket = buckets.get(bucketKey) || { weight: 0, red: 0, green: 0, blue: 0 }
+      bucket.weight += weight
+      bucket.red += red * weight
+      bucket.green += green * weight
+      bucket.blue += blue * weight
+      buckets.set(bucketKey, bucket)
+    }
+
+    if (!buckets.size) return DEFAULT_GLOW_RGB
+
+    const [, dominant] = [...buckets.entries()].sort((left, right) => right[1].weight - left[1].weight)[0]
+
+    let red = Math.round(dominant.red / dominant.weight)
+    let green = Math.round(dominant.green / dominant.weight)
+    let blue = Math.round(dominant.blue / dominant.weight)
+
+    const saturation = Math.max(red, green, blue) - Math.min(red, green, blue)
+    if (saturation < 28) {
+      red = Math.round(red * 0.72 + 168 * 0.28)
+      green = Math.round(green * 0.72 + 84 * 0.28)
+      blue = Math.round(blue * 0.72 + 39 * 0.28)
+    }
+
+    red = Math.min(235, Math.round(red * 0.92 + 14))
+    green = Math.min(235, Math.round(green * 0.92 + 14))
+    blue = Math.min(235, Math.round(blue * 0.92 + 14))
+
+    const rgb = `${red}, ${green}, ${blue}`
+    dominantColorCache.set(cacheKey, rgb)
+    return rgb
+  }
+
+  #updateDominantColor(index = this.carouselIndex) {
+    const image = this.shadowRoot?.querySelectorAll('.carousel img')?.[index] as HTMLImageElement | undefined
+    if (!image) return
+
+    if (!image.complete || !image.naturalWidth) {
+      image.addEventListener(
+        'load',
+        () => {
+          if (this.carouselIndex === index) this.#updateDominantColor(index)
+        },
+        { once: true }
+      )
+      return
+    }
+
+    this.#applyDominantColor(this.#extractDominantColor(image))
+  }
+
+  #emitSlideChange() {
+    this.dispatchEvent(
+      new CustomEvent('slide-change', {
+        detail: { index: this.carouselIndex },
+        bubbles: true,
+        composed: true
+      })
+    )
+  }
+
   setTimeout() {
     clearTimeout(this.carouselTimeout)
     this.carouselTimeout = setTimeout(() => {
       const prevIndex = this.carouselIndex
       this.carouselIndex = (this.carouselIndex + 1) % this.images.length
       this._setTransitionClasses(prevIndex, this.carouselIndex)
+      this.#updateDominantColor(this.carouselIndex)
+      this.#emitSlideChange()
       this.setTimeout()
     }, this.timeout)
   }
@@ -48,13 +164,25 @@ export class CustomCarousel extends LiteElement {
       // Ensure the first image is fully loaded before starting the carousel
       this.loadedResolve(true)
       this._setTransitionClasses(0, 0)
+      this.#updateDominantColor(0)
+      this.#emitSlideChange()
       this.setTimeout()
     })
+
+    if (this.firstImage?.complete && this.firstImage.naturalWidth) {
+      this.loadedResolve(true)
+      this._setTransitionClasses(0, 0)
+      this.#updateDominantColor(0)
+      this.#emitSlideChange()
+      this.setTimeout()
+    }
   }
 
   _goToImage(index) {
     this._setTransitionClasses(this.carouselIndex, index)
     this.carouselIndex = index
+    this.#updateDominantColor(index)
+    this.#emitSlideChange()
     this.setTimeout()
   }
 
@@ -95,198 +223,36 @@ export class CustomCarousel extends LiteElement {
 
   render() {
     return html`
-      <style>
-        :host {
-          position: relative;
-          overflow: hidden;
-          border-radius: 16px;
-          height: auto;
-          display: block;
-        }
-        .carousel {
-          position: relative;
-          width: 100%;
-          height: 0;
-          padding-bottom: 75%; /* 4:3 aspect ratio */
-        }
-        .carousel img {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          width: 100%;
-          height: 100%;
-          flex-shrink: 0;
-          aspect-ratio: 4/3;
-          object-fit: scale-down;
-          background-color: var(--md-sys-color-surface);
-          opacity: 0;
-          transform: translateX(100%);
-          transition: transform 2s cubic-bezier(.4,0,.2,1), opacity 2s cubic-bezier(.4,0,.2,1);
-          pointer-events: none;
-          will-change: transform, opacity;
+      <div
+        class="carousel"
+        @click=${this._fullscreen}>
+        <div class="counter">${(this.carouselIndex || 0) + 1}/${this.images?.length || 0}</div>
+        <custom-icon-button
+          icon="close"
+          @click=${this._closeFullscreen}
+          type="tonal"></custom-icon-button>
+        <custom-icon-button
+          icon="pause"
+          @click=${this._togglePause}
+          type="tonal"></custom-icon-button>
+        <custom-icon-button
+          icon="resume"
+          @click=${this._resume}
+          type="tonal"></custom-icon-button>
+        <custom-icon-button
+          icon="arrow_back"
+          @click=${this._prevImage}
+          type="tonal"></custom-icon-button>
+        <custom-icon-button
+          icon="arrow_forward"
+          @click=${this._nextImage}
+          type="tonal"></custom-icon-button>
 
-          border-radius: 16px;
-        }
-        .carousel img.previous {
-          transform-origin: left;
-          transform: translateX(-100%);
-          opacity: 0;
-          z-index: 1;
-        }
-        .carousel img.active {
-          opacity: 1;
-          transform: translateX(0);
-          pointer-events: auto;
-          z-index: 2;
-        }
-        .carousel img.first {
-          transform: none !important;
-          opacity: 1 !important;
-        }
-        .indicators {
-          position: absolute;
-          bottom: 10px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          z-index: 3;
-        }
-        .indicator-wrapper {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          box-sizing: border-box;
-          padding: 4px;
-          cursor: pointer;
-        }
-        .indicator {
-          width: 10px;
-          height: 10px;
-          background: gray;
-          border-radius: 50%;
-          transition: background 0.3s;
-        }
-        .indicator.active {
-          background: white;
-        }
-        :host([fullscreen]) img {
-          margin: auto;
-          box-sizing: border-box;
-          padding: 48px;
-        }
-
-        custom-icon-button {
-          position: absolute;
-          opacity: 0;
-          transition: opacity 0.2s ease-out;
-          width: 32px;
-          height: 32px;
-        }
-
-        custom-icon-button[icon="arrow_back"],
-        custom-icon-button[icon="arrow_forward"]
-        {
-          transition: opacity 0.2s ease-in;
-          opacity: 1;
-        }
-
-        
-        custom-icon-button[icon="arrow_back"] {
-          left: 12px;
-        }
-        
-        custom-icon-button[icon="arrow_forward"] {
-          right: 12px;
-        }
-
-        custom-icon-button[icon="arrow_back"],
-        custom-icon-button[icon="arrow_forward"] {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 10;
-        }
-
-        :host([fullscreen]) .carousel {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 9999;
-          padding: 0;
-          background: rgba(0, 0, 0, 0.98);
-          box-sizing: border-box;
-        }
-
-        :host([fullscreen]) .carousel img {
-          height: 100%;
-          width: 100%;
-          padding: 0;
-          box-sizing: border-box;
-          border-radius: 16px;
-        }
-        :host([fullscreen]) custom-icon-button {
-          width: 48px;
-          height: 48px;
-        }
-
-        :host([fullscreen]) custom-icon-button[icon="arrow_back"] {
-          left: 48px;
-        }
-
-        :host([fullscreen]) custom-icon-button[icon="arrow_forward"] {
-          right: 48px;
-        }
-
-        :host([fullscreen]) custom-icon-button[icon="close"] {
-          top: 24px;
-          right: 48px;
-          z-index: 10;
-          opacity: 1;
-
-          transition: opacity 0.2s ease-in;
-        }
-
-        :host([fullscreen]:not([paused])) custom-icon-button[icon="pause"] {
-          bottom: 24px;
-          z-index: 10;
-          left: 50%;
-          transform: translateX(-50%);
-          opacity: 1;
-        }
-
-        :host([fullscreen][paused]) custom-icon-button[icon="resume"] {
-          bottom: 24px;
-          z-index: 10;
-          left: 50%;
-          transform: translateX(-50%);
-          opacity: 1;
-        }
-        
-        :host([fullscreen]) custom-icon-button[icon="arrow_back"], :host([fullscreen]) custom-icon-button[icon="arrow_forward"] {
-          bottom: 24px;
-          top: auto;
-          transform: translateY(0);
-        }
-
-      </style>
-      <div class="carousel" @click=${this._fullscreen}>
-        <custom-icon-button icon="close" @click=${this._closeFullscreen} type="tonal"></custom-icon-button>
-        <custom-icon-button icon="pause" @click=${this._togglePause} type="tonal"></custom-icon-button>
-        <custom-icon-button icon="resume" @click=${this._resume} type="tonal"></custom-icon-button>
-        <custom-icon-button icon="arrow_back" @click=${this._prevImage} type="tonal"></custom-icon-button>
-        <custom-icon-button icon="arrow_forward" @click=${this._nextImage} type="tonal"></custom-icon-button>
-        
         ${this.images?.map(
           (image, index) => html`
             <img
               loading=${index === 0 ? 'eager' : 'lazy'}
-              fetchPriority=${index === 0 ? 'high' : 'low'}
+              fetchpriority=${index === 0 ? 'high' : 'low'}
               src="${image}"
               class="${index === 0 ? 'first' : ''}"
               alt="Carousel Image ${index + 1}" />
@@ -303,7 +269,6 @@ export class CustomCarousel extends LiteElement {
             </div>
           `
         )}
-        </div>
       </div>
     `
   }
@@ -314,6 +279,8 @@ export class CustomCarousel extends LiteElement {
     const newIndex = (this.carouselIndex - 1 + this.images.length) % this.images.length
     this.carouselIndex = newIndex
     this._setTransitionClasses(prevIndex, newIndex)
+    this.#updateDominantColor(newIndex)
+    this.#emitSlideChange()
     this.setTimeout()
   }
 
@@ -323,6 +290,8 @@ export class CustomCarousel extends LiteElement {
     const newIndex = (this.carouselIndex + 1) % this.images.length
     this.carouselIndex = newIndex
     this._setTransitionClasses(prevIndex, newIndex)
+    this.#updateDominantColor(newIndex)
+    this.#emitSlideChange()
     this.setTimeout()
   }
 }
