@@ -2,6 +2,7 @@ import { html, LiteElement, property } from '@vandeurenglenn/lite'
 
 import './../elements/carousel-card.js'
 import { CustomCarouselCard } from './../elements/carousel-card.js'
+import './../elements/section.js'
 export default customElements.define(
   'realizations-view',
   class extends LiteElement {
@@ -12,13 +13,15 @@ export default customElements.define(
       this.loadedResolve = resolve
     })
     async firstRender(): Promise<void> {
-      await (this.shadowRoot.querySelector('custom-carousel-card') as CustomCarouselCard | null)?.loaded
+      await (this.shadowRoot.querySelector('custom-carousel-card') as CustomCarouselCard | null)
+        ?.loaded
       this.loadedResolve(true)
     }
 
     async onChange(propertyKey: string, value: any): Promise<void> {
       if (propertyKey === 'manifest') {
-        await (this.shadowRoot.querySelector('custom-carousel-card') as CustomCarouselCard | null)?.loaded
+        await (this.shadowRoot.querySelector('custom-carousel-card') as CustomCarouselCard | null)
+          ?.loaded
         this.loadedResolve(true)
       }
     }
@@ -35,12 +38,12 @@ export default customElements.define(
 
     #projectKicker(value: string) {
       const lower = value.toLowerCase()
-      if (lower.includes('diest')) return 'Project in Diest'
-      if (lower.includes('schulen')) return 'Project in Schulen'
-      if (lower.includes('paal')) return 'Project in Paal'
-      if (lower.includes('herk')) return 'Project in Herk-de-Stad'
-      if (lower.includes('okselaar')) return 'Project in Okselaar'
-      if (lower.includes('schaffen')) return 'Project in Schaffen'
+      if (lower.includes('diest')) return 'Diest'
+      if (lower.includes('schulen')) return 'Schulen'
+      if (lower.includes('paal')) return 'Paal'
+      if (lower.includes('herk')) return 'Herk-de-Stad'
+      if (lower.includes('okselaar')) return 'Okselaar'
+      if (lower.includes('schaffen')) return 'Schaffen'
       return 'Uitgevoerd project'
     }
 
@@ -63,7 +66,9 @@ export default customElements.define(
     }
 
     #sortedProjects() {
-      return Object.entries(this.manifest || {}).sort(([left], [right]) => left.localeCompare(right, 'nl'))
+      return Object.entries(this.manifest || {}).sort(([left], [right]) =>
+        left.localeCompare(right, 'nl')
+      )
     }
 
     render() {
@@ -154,15 +159,12 @@ export default customElements.define(
           }
         </style>
         <main>
-          <section class="intro">
-            <span class="eyebrow">Realisaties</span>
-            <h4>Projecten die overtuigen door materiaalkeuze, uitvoering en technische samenhang.</h4>
-            <p>
-              Een selectie van uitgevoerde werken die toont hoe Dimac ruimtes opwaardeert: helder opgebouwd, zorgvuldig
-              gedetailleerd en professioneel afgewerkt. Geen losse snapshots, maar projectbeelden die de kwaliteit van
-              de uitvoering tastbaar maken.
-            </p>
-          </section>
+          <custom-section
+            type="hero"
+            eyebrow="Realisaties"
+            title="Projecten die overtuigen door materiaalkeuze, uitvoering en technische samenhang."
+            description="Een selectie van uitgevoerde werken die toont hoe Dimac ruimtes opwaardeert: helder opgebouwd, zorgvuldig gedetailleerd en professioneel afgewerkt. Geen losse snapshots, maar projectbeelden die de kwaliteit van de uitvoering tastbaar maken.">
+          </custom-section>
 
           <span class="card-container">
             ${this.#sortedProjects().map(

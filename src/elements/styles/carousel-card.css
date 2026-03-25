@@ -9,9 +9,7 @@
     radial-gradient(circle at top, rgba(var(--card-glow-rgb), 0.14), transparent 58%),
     linear-gradient(180deg, rgba(35, 26, 22, 0.94), rgba(22, 16, 13, 0.96));
   color: var(--md-sys-color-on-surface, #fff);
-  box-shadow:
-    var(--card-shadow, 0 4px 24px 0 rgba(0, 0, 0, 0.1)),
-    0 0 82px -42px rgba(var(--card-glow-rgb), 0.7);
+  box-shadow: none;
   border: 1px solid rgba(var(--card-glow-rgb), 0.22);
   transition:
     transform 180ms ease,
@@ -22,9 +20,7 @@
 
 :host(:hover) {
   transform: translateY(-4px);
-  box-shadow:
-    0 24px 44px rgba(0, 0, 0, 0.3),
-    0 0 96px -38px rgba(var(--card-glow-rgb), 0.82);
+  box-shadow: none;
 }
 
 custom-carousel {

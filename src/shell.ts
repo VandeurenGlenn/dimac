@@ -10,7 +10,7 @@ import './elements/footer.js'
 import { DimacDrawer } from './elements/drawer.js'
 
 export class DimacShell extends LiteElement {
-  static #views = new Set(['', 'home', 'about', 'services', 'realizations', 'contact', 'admin'])
+  static #views = new Set(['', 'home', 'about', 'services', 'realizations', 'contact', 'admin', 'keepit-preview'])
 
   @query('custom-selector') accessor selector
 
@@ -26,21 +26,34 @@ export class DimacShell extends LiteElement {
 
   @property({ type: Object, provides: 'realizationsManifest' }) accessor realizationsManifest
 
+  @property({ type: Object, provides: 'keepitPreview' }) accessor keepitPreview
+
   declare shadowRoot: ShadowRoot
 
   #hashBang = '#!/'
 
+  #onPreviewMessage = (event: MessageEvent<{ type?: string; payload?: unknown }>) => {
+    if (event.data?.type !== 'keepit-preview') return
+    this.keepitPreview = event.data.payload
+  }
+
   static styles = [style]
 
   firstRender(): void {
-    const mediaQuery = globalThis.matchMedia('(min-width: 1200px)')
+    const mediaQuery = globalThis.matchMedia('(min-width: 1700px)')
 
     mediaQuery.onchange = this.#onqueryChange.bind(this)
     this.#onqueryChange(mediaQuery)
     this.setAttribute('shown', '')
     onhashchange = this.#onhashchange.bind(this)
+    globalThis.addEventListener('message', this.#onPreviewMessage)
 
     this.#onhashchange()
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback()
+    globalThis.removeEventListener('message', this.#onPreviewMessage)
   }
 
   #validView(hash) {
@@ -62,8 +75,8 @@ export class DimacShell extends LiteElement {
         data-route=${route}
         @click=${() => this.drawer?.closeDrawer()}
         class="nav-link ${this.selected === route ? 'active' : ''}">
-        <span>${label}</span>
-        <custom-icon icon=${icon}></custom-icon>
+        <span class="nav-icon"><custom-icon .icon=${icon}></custom-icon></span>
+        <span class="nav-label">${label}</span>
       </a>
     `
   }
@@ -90,6 +103,9 @@ export class DimacShell extends LiteElement {
         this.realizationsManifest = await response.json()
       }
       document.title = hash === 'admin' ? 'Dimac - Admin' : 'Dimac - Realisaties'
+    }
+    if (hash === 'keepit-preview') {
+      document.title = 'Dimac - Preview'
     }
     if (hash === 'contact') {
       document.title = 'Dimac - Contact'
@@ -125,6 +141,9 @@ export class DimacShell extends LiteElement {
     if (selected === 'admin') {
       return html` <admin-view></admin-view> `
     }
+    if (selected === 'keepit-preview') {
+      return html` <keepit-preview-view></keepit-preview-view> `
+    }
     if (selected === 'contact') {
       return html` <contact-view></contact-view> `
     }
@@ -135,9 +154,8 @@ export class DimacShell extends LiteElement {
     return html`
       ${icons}
       <dimac-drawer .narrow=${this.narrow}>
-        <span slot="mobile-mark">D</span>
         <span slot="mobile-brand">Dimac</span>
-        <span slot="mobile-status">Technieken in Diest</span>
+        <span slot="mobile-status">Technieken en meer</span>
         <div
           slot="drawer-content"
           class="drawer-content">
@@ -148,11 +166,6 @@ export class DimacShell extends LiteElement {
                 alt="Dimac Logo"
                 class="logo" />
               <span class="eyebrow">Aannemer in en rond Diest</span>
-            </div>
-
-            <div class="intro-panel">
-              <h2>Technieken, automatisatie en dakwerken in regio Diest.</h2>
-              <p>Heldere opvolging, degelijke uitvoering en technische oplossingen die correct en duurzaam werken.</p>
             </div>
           </div>
 

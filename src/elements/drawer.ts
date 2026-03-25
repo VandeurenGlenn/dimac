@@ -178,7 +178,6 @@ export class DimacDrawer extends LiteElement {
           </button>
 
           <span class="mobile-brand">
-            <span class="mobile-mark"><slot name="mobile-mark">D</slot></span>
             <span class="mobile-copy">
               <span class="mobile-name"><slot name="mobile-brand">DIMAC</slot></span>
               <span class="mobile-status"><slot name="mobile-status">Regio Diest</slot></span>

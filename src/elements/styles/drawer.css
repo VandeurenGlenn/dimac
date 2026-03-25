@@ -57,7 +57,7 @@
   cursor: pointer;
   color: var(--md-sys-color-on-surface);
   background: linear-gradient(180deg, rgba(42, 31, 26, 0.95), rgba(25, 18, 15, 0.95));
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+  box-shadow: none;
 }
 
 .mobile-bar {
@@ -76,39 +76,22 @@
   border: 1px solid rgba(204, 173, 150, 0.16);
   background: linear-gradient(180deg, rgba(31, 22, 18, 0.92), rgba(17, 12, 10, 0.9));
   backdrop-filter: blur(22px);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+  box-shadow: none;
 }
 
 .mobile-brand {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  display: flex;
   min-width: 0;
   flex: 1;
   align-items: center;
-  gap: 10px;
   justify-content: center;
-}
-
-.mobile-mark {
-  display: inline-flex;
-  width: 32px;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(168, 84, 39, 0.95), rgba(126, 58, 24, 0.9));
-  color: #fff6f0;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  box-shadow: 0 10px 22px rgba(168, 84, 39, 0.22);
 }
 
 .mobile-copy {
   display: grid;
   min-width: 0;
   gap: 1px;
+  justify-items: center;
 }
 
 .mobile-name {
@@ -130,7 +113,6 @@
   text-transform: uppercase;
 }
 
-.mobile-mark ::slotted(*),
 .mobile-name ::slotted(*),
 .mobile-status ::slotted(*) {
   min-width: 0;
@@ -172,7 +154,7 @@
   justify-content: center;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1699px) {
   .layout {
     display: block;
   }
@@ -232,5 +214,14 @@
 
   .content-region {
     width: 100%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .drawer-region {
+    inset: 0;
+    width: auto;
+    max-width: none;
+    transform: translateX(-100%);
   }
 }

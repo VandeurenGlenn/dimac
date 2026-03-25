@@ -15,13 +15,15 @@
   transition:
     box-shadow 240ms ease,
     background 240ms ease;
+  touch-action: pan-y pinch-zoom;
 }
 .carousel {
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 75%; /* 4:3 aspect ratio */
+  padding-bottom: 66%;
   border-radius: 22px;
+  touch-action: pan-y pinch-zoom;
   background:
     radial-gradient(circle at top, rgba(var(--carousel-glow-rgb), 0.18), transparent 60%), rgba(43, 32, 27, 0.82);
 }
@@ -42,7 +44,7 @@
   width: 100%;
   height: 100%;
   flex-shrink: 0;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/2;
   object-fit: cover;
   background-color: var(--md-sys-color-surface, #232323);
   opacity: 0;
@@ -77,8 +79,8 @@
   transform: translateX(-50%);
   display: flex;
   z-index: 3;
-  gap: 8px;
-  padding: 8px 10px;
+  gap: 6px;
+  padding: 8px;
   border-radius: 999px;
   background: rgba(11, 8, 6, 0.56);
   backdrop-filter: blur(10px);
@@ -91,7 +93,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 58px;
+  min-width: 64px;
   min-height: 34px;
   padding: 0 12px;
   border-radius: 999px;
@@ -106,11 +108,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: auto;
   box-sizing: border-box;
-  padding: 4px;
+  padding: 5px 4px;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 999px;
   transition: background 0.2s;
 }
 .indicator-wrapper:hover .indicator,
@@ -118,16 +120,18 @@
   background: var(--md-sys-color-primary, #ffb693);
 }
 .indicator {
-  width: 10px;
-  height: 10px;
+  width: 18px;
+  height: 8px;
   background: rgba(255, 239, 227, 0.34);
-  border-radius: 50%;
+  border-radius: 999px;
   transition:
     background 0.3s,
-    box-shadow 0.2s;
+    box-shadow 0.2s,
+    width 0.24s ease;
 }
 .indicator.active {
   background: var(--md-sys-color-on-surface);
+  width: 40px;
   box-shadow: 0 0 0 4px rgba(var(--carousel-glow-rgb), 0.28);
 }
 :host([fullscreen]) img {
@@ -138,14 +142,24 @@
 custom-icon-button {
   position: absolute;
   opacity: 0;
-  transition: opacity 0.2s ease-out;
-  width: 32px;
-  height: 32px;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(14, 10, 8, 0.46);
+  backdrop-filter: blur(10px);
+  touch-action: manipulation;
 }
 custom-icon-button[icon='arrow_back'],
 custom-icon-button[icon='arrow_forward'] {
   transition: opacity 0.2s ease-in;
   opacity: 1;
+}
+.carousel:hover custom-icon-button[icon='arrow_back'],
+.carousel:hover custom-icon-button[icon='arrow_forward'] {
+  transform: translateY(-50%) scale(1.04);
 }
 custom-icon-button[icon='arrow_back'] {
   left: 12px;
@@ -179,6 +193,28 @@ custom-icon-button[icon='arrow_forward'] {
   padding: 0;
   box-sizing: border-box;
   border-radius: 22px;
+}
+
+@media (max-width: 800px) {
+  .carousel {
+    padding-bottom: 74%;
+  }
+
+  .counter {
+    top: 14px;
+    right: 14px;
+    min-width: 58px;
+  }
+
+  .indicators {
+    bottom: 14px;
+    max-width: calc(100% - 28px);
+    overflow-x: auto;
+  }
+
+  .indicator.active {
+    width: 30px;
+  }
 }
 :host([fullscreen]) custom-icon-button {
   width: 48px;

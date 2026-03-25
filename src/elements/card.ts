@@ -1,11 +1,25 @@
 import { html, LiteElement, property } from '@vandeurenglenn/lite'
 import styles from './styles/card.css' with { type: 'css' }
 export class CustomCard extends LiteElement {
-  @property({ type: String }) accessor title = ''
-  @property({ type: String }) accessor description = ''
-  @property({ type: String }) accessor image = ''
+  @property({ type: String }) accessor title = 'hello world'
+  @property({ type: String }) accessor description = undefined
+  @property({ type: String }) accessor image = undefined
 
   static styles = [styles]
+
+  #renderDescription() {
+    if (this.description) {
+      return html`<p>${this.description}</p>`
+    }
+    return null
+  }
+
+  #renderTitle() {
+    if (this.title) {
+      return html`<h3>${this.title}</h3>`
+    }
+    return null
+  }
 
   render() {
     return html`
@@ -14,8 +28,9 @@ export class CustomCard extends LiteElement {
             src="${this.image}"
             alt="${this.title}" />`
         : ''}
-      <h3>${this.title}</h3>
-      <p>${this.description}</p>
+      ${this.#renderTitle()} ${this.#renderDescription()}
+      <slot name="content"></slot>
+      <slot name="footer"></slot>
     `
   }
 }

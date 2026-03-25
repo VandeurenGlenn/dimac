@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "jsproject --serve www",
+    "start": "npx serve www",
     "watch": "rollup -c -w",
     "build": "cross-env NODE_ENV=production rollup -c"
   },
@@ -13,21 +13,21 @@
   "repository": "https://github.com/vandeurenglenn/dimac",
   "author": "vandeurenglenn <vandeurenglenn@gmail.com>",
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.4",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@rollup/plugin-typescript": "^12.3.0",
     "image-size": "^2.0.2",
-    "rollup": "^4.52.2",
-    "rollup-plugin-css-modules": "^0.1.2",
-    "rollup-plugin-workbox": "^8.1.2",
-    "sharp": "^0.34.4"
+    "rollup": "^4.60.0",
+    "rollup-plugin-css-modules": "^0.2.0",
+    "rollup-plugin-workbox": "^8.1.3",
+    "sharp": "^0.34.5"
   },
   "dependencies": {
     "@vandeurenglenn/flex-elements": "^1.3.2",
-    "@vandeurenglenn/lite": "^0.3.1",
-    "@vandeurenglenn/lite-elements": "^0.3.78",
-    "cross-env": "^10.0.0",
+    "@vandeurenglenn/lite": "^1.0.0",
+    "@vandeurenglenn/lite-elements": "^0.3.84",
+    "cross-env": "^10.1.0",
     "rollup-plugin-material-symbols": "^2.1.6",
-    "typed.js": "^2.1.0"
+    "typed.js": "^3.0.0"
   }
 }

@@ -6,9 +6,10 @@ export class CustomFooter extends LiteElement {
   render() {
     return html`<footer>
       <div class="footer-intro">
-        <div>
+        <div class="footer-brand-copy footer-brand-copy--lead">
           <span class="footer-kicker">Dimac BV</span>
-          <div class="footer-title">Professioneel bouwen zonder ruis.</div>
+          <div class="footer-heading">Professioneel bouwen zonder ruis.</div>
+          <div class="footer-subtitle">Technisch juist, helder uitgewerkt en verzorgd afgewerkt.</div>
         </div>
         <div class="footer-copy">
           Van technieken en automatisatie tot dakwerken: Dimac werkt met duidelijke afspraken, verzorgde uitvoering en
@@ -17,50 +18,53 @@ export class CustomFooter extends LiteElement {
       </div>
 
       <div class="footer-content">
-        <span class="column img-column">
-          <img
-            src="./assets/dimac.svg"
-            alt="Dimac Logo" />
-        </span>
-        <span class="column">
+        <section class="footer-card">
           <span class="footer-title">Adres</span>
-          <span class="footer-contact"><custom-icon icon="road"></custom-icon>Schansstraat 8</span>
-          <span class="footer-contact"><custom-icon icon="location_city"></custom-icon>3290 Diest</span>
-          <span class="footer-contact"><strong class="tax">BTW</strong>BE 0479.917.693</span>
-        </span>
+          <div class="footer-stack">
+            <span class="footer-contact"><custom-icon icon="road"></custom-icon>Schansstraat 8</span>
+            <span class="footer-contact"><custom-icon icon="location_city"></custom-icon>3290 Diest</span>
+          </div>
+          <div class="footer-meta">
+            <span class="footer-contact footer-contact--meta"><strong class="tax">BTW</strong>BE 0479.917.693</span>
+          </div>
+        </section>
 
-        <span class="column">
+        <section class="footer-card footer-card--contact">
           <span class="footer-title">Contact</span>
 
-          <a
-            class="footer-contact"
-            href="tel:013335335"
-            ><custom-icon icon="call"></custom-icon>013 33 53 35</a
-          >
-          <a
-            class="footer-contact"
-            href="mailto:info@dimac.be"
-            target="_blank"
-            rel="noopener"
-            title="Email"
-            ><custom-icon icon="mail"></custom-icon>info@dimac.be</a
-          >
+          <div class="footer-stack">
+            <a
+              class="footer-contact"
+              href="tel:013335335"
+              ><custom-icon icon="call"></custom-icon>013 33 53 35</a
+            >
+            <a
+              class="footer-contact"
+              href="mailto:info@dimac.be"
+              target="_blank"
+              rel="noopener"
+              title="Email"
+              ><custom-icon icon="mail"></custom-icon>info@dimac.be</a
+            >
+          </div>
 
-          <a
-            class="footer-contact"
-            href="https://instagram.com/dimac_bv"
-            target="_blank"
-            rel="noopener"
-            title="Instagram">
-            <custom-icon
-              icon="instagram"
-              alt="Instagram"></custom-icon>
-            @dimac_bv
-          </a>
-        </span>
+          <div class="footer-meta">
+            <a
+              class="footer-contact footer-contact--meta"
+              href="https://instagram.com/dimac_bv"
+              target="_blank"
+              rel="noopener"
+              title="Instagram">
+              <custom-icon
+                icon="instagram"
+                alt="Instagram"></custom-icon>
+              @dimac_bv
+            </a>
+          </div>
+        </section>
       </div>
 
-      <small>Dimac BV</small>
+      <small>Dimac BV · Algemene technieken, renovatie en afwerking.</small>
     </footer>`
   }
 }

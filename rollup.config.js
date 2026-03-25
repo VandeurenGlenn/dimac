@@ -11,7 +11,9 @@ import sharp from 'sharp'
 import terser from '@rollup/plugin-terser'
 
 const isProduction = process.env.NODE_ENV === 'production'
-const adminPasswordHash = (process.env.DIMAC_ADMIN_PASSWORD_HASH || 'generated_admin_password').trim().toLowerCase()
+const adminPasswordHash = (process.env.DIMAC_ADMIN_PASSWORD_HASH || 'generated_admin_password')
+  .trim()
+  .toLowerCase()
 
 try {
   await Promise.all((await Array.fromAsync(glob('www/**/*'))).map((file) => unlink(file)))
@@ -43,12 +45,17 @@ await Promise.all(
       return null
     }
     if (size.height <= 0 || size.width <= 0) {
-      console.warn(`Skipping asset ${asset} due to invalid dimensions: ${size.width}x${size.height}`)
+      console.warn(
+        `Skipping asset ${asset} due to invalid dimensions: ${size.width}x${size.height}`
+      )
       return null
     }
     console.log(`Processing asset ${asset} with size ${size.width}x${size.height}`)
     // Calculate target size maintaining aspect ratio
-    const target = { width: target_width, height: Math.round((size.height / size.width) * target_width) }
+    const target = {
+      width: target_width,
+      height: Math.round((size.height / size.width) * target_width)
+    }
     const mobileTarget = { width: 600, height: Math.round((size.height / size.width) * 600) }
     const tabletTarget = { width: 960, height: Math.round((size.height / size.width) * 960) }
     const info = execSync(`exiftool ${asset}`).toString()
@@ -74,7 +81,12 @@ await Promise.all(
       .withMetadata()
       .rotate() // Automatically rotate based on EXIF orientation
       .webp({ quality: 100, effort: 6 })
-      .toFile(asset.replace(`.${asset.split('.').pop()}`, `_${mobileTarget.width}x${mobileTarget.height}.webp`))
+      .toFile(
+        asset.replace(
+          `.${asset.split('.').pop()}`,
+          `_${mobileTarget.width}x${mobileTarget.height}.webp`
+        )
+      )
 
     await sharp(buffer)
       .resize({ width: tabletTarget.width })
@@ -82,7 +94,12 @@ await Promise.all(
       .withMetadata()
       .rotate() // Automatically rotate based on EXIF orientation
       .webp({ quality: 100, effort: 6 })
-      .toFile(asset.replace(`.${asset.split('.').pop()}`, `_${tabletTarget.width}x${tabletTarget.height}.webp`))
+      .toFile(
+        asset.replace(
+          `.${asset.split('.').pop()}`,
+          `_${tabletTarget.width}x${tabletTarget.height}.webp`
+        )
+      )
 
     console.log(`Processed asset ${asset} to ${target.width}x${target.height}`)
     // Return the asset with its size and target dimensions
@@ -112,21 +129,24 @@ try {
 }
 
 await copyFile('src/assets/favicon.ico', 'www/favicon.ico')
-await cp('node_modules/@vandeurenglenn/lite-elements/exports/themes', 'www/themes', { recursive: true })
+await cp('node_modules/@vandeurenglenn/lite-elements/exports/themes', 'www/themes', {
+  recursive: true
+})
 await cp('src/assets', 'www/assets', { recursive: true })
 await cp('src/manifest.json', 'www/manifest.json')
 
-const buildAssets = await Array.fromAsync(glob('www/assets/**/*.webp'))
+const buildAssets = await Array.fromAsync(glob('www/assets/__realizations/**/*.webp'))
 
 const realizationsManifest = {}
 
 for (const asset of buildAssets) {
   const parts = asset.split('/')
   console.log({ parts })
-  if (parts.length < 4) continue // Skip if not in the expected format
+  if (parts.length < 5) continue // Skip if not in the expected format
   const filename = parts[parts.length - 1]
   const target = parts[parts.length - 2]
-  const targetPath = `./assets/${target}/${filename}`
+  const folder = parts[parts.length - 3]
+  const targetPath = `./assets/${folder}/${target}/${filename}`
 
   realizationsManifest[target] = realizationsManifest[target] || []
   realizationsManifest[target].push(targetPath)
@@ -136,7 +156,12 @@ await writeFile('www/realizations-manifest.json', JSON.stringify(realizationsMan
 
 const views = await Array.fromAsync(glob('src/views/*.ts'))
 
-const plugins = [cssModules(), nodeResolve(), typescript(), materialSymbols({ placeholderPrefix: 'symbol' })]
+const plugins = [
+  cssModules(),
+  nodeResolve(),
+  typescript(),
+  materialSymbols({ placeholderPrefix: 'symbol' })
+]
 
 if (isProduction) {
   plugins.push([

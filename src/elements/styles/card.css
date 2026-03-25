@@ -1,26 +1,30 @@
 :host {
-  display: block;
-  background: var(--md-sys-color-surface, #232323);
-  color: var(--md-sys-color-on-surface, #fff);
-  border-radius: var(--card-radius, 16px);
-  box-shadow: var(--card-shadow, 0 4px 24px 0 rgba(0, 0, 0, 0.1));
-  padding: 24px;
-  margin: 16px 0;
-  max-width: 420px;
-  font-family: var(--font-main, 'Inter', 'Roboto', 'Open Sans', Arial, sans-serif);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(44, 32, 27, 0.76), rgba(30, 22, 18, 0.9));
+  border: 1px solid rgba(204, 173, 150, 0.08);
+  align-items: start;
 }
 img {
   width: 100%;
   border-radius: 12px;
   margin-bottom: 16px;
-  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: none;
 }
 h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0;
+  color: var(--md-sys-color-primary);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 p {
+  color: var(--md-sys-color-on-surface-variant);
   font-size: 1rem;
+  line-height: 1.72;
   margin: 0;
 }

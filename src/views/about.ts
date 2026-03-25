@@ -138,6 +138,7 @@ export default customElements.define(
           }
 
           .stat-card {
+            box-sizing: border-box;
             display: grid;
             gap: 14px;
             align-content: start;

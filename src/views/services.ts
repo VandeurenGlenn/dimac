@@ -1,6 +1,9 @@
 import { html, LiteElement } from '@vandeurenglenn/lite'
 
 import './../elements/carousel-card.js'
+import './../elements/section.js'
+import './../elements/panel.js'
+import './../elements/card.js'
 export default customElements.define(
   'services-view',
   class extends LiteElement {
@@ -65,16 +68,14 @@ export default customElements.define(
 
     get electricityImages() {
       return [
-        './assets/oudebaan schulen/IMG-20201207-WA0013_1200x900.webp',
         './assets/IMG_20211104_154440_1200x547.webp',
-        './assets/IMG_20200910_105958_1200x547.webp',
         './assets/IMG_20200910_172445_1200x547.webp',
         './assets/IMG_1030_1200x900.webp'
       ]
     }
 
     get sanitairImages() {
-      return ['./assets/oudebaan schulen/IMG-20201207-WA0011_1200x900.webp']
+      return ['./assets/sanitair/IMG_3102_1200x900.webp']
     }
     get renewingEnergyImages() {
       return ['./assets/IMG_6168_1200x900.webp']
@@ -194,37 +195,27 @@ export default customElements.define(
           }
         </style>
         <main>
-          <section class="intro">
-            <span class="eyebrow">Onze diensten</span>
-            <h4>Technische oplossingen met structuur in voorbereiding, uitvoering en afwerking.</h4>
-            <p>
-              Dimac focust op technische installaties, automatisatie en dakwerken, aangevuld met sanitair en afwerking
-              waar nodig. Zo blijft het proces overzichtelijk en het resultaat technisch correct uitgevoerd.
-            </p>
-          </section>
+          <custom-section
+            type="hero"
+            title="Technische oplossingen met structuur in voorbereiding, uitvoering en afwerking."
+            description="Dimac focust op technische installaties, automatisatie en dakwerken, aangevuld met
+              sanitair en afwerking waar nodig. Zo blijft het proces overzichtelijk en het resultaat
+              technisch correct uitgevoerd."
+            eyebrow="onze diensten">
+            <custom-panel slot="content">
+              <custom-card
+                title="Analyse"
+                description="We vertalen uw technische vraag naar een haalbare aanpak met aandacht voor gebruik en betrouwbaarheid."></custom-card>
 
-          <section class="process">
-            <article>
-              <strong>Analyse</strong>
-              <span
-                >We vertalen uw technische vraag naar een haalbare aanpak met aandacht voor gebruik en
-                betrouwbaarheid.</span
-              >
-            </article>
-            <article>
-              <strong>Uitvoering</strong>
-              <span
-                >Eigen vakkennis en betrouwbare partners houden de uitvoering consequent en correct van begin tot
-                einde.</span
-              >
-            </article>
-            <article>
-              <strong>Afwerking</strong>
-              <span
-                >Ook de afregeling en afwerking krijgen evenveel aandacht als de technische kern van het project.</span
-              >
-            </article>
-          </section>
+              <custom-card
+                title="Uitvoering"
+                description="Eigen vakkennis en betrouwbare partners houden de uitvoering consequent en correct van begin tot einde."></custom-card>
+
+              <custom-card
+                title="Afwerking"
+                description="Ook de afregeling en afwerking krijgen evenveel aandacht als de technische kern van het project."></custom-card>
+            </custom-panel>
+          </custom-section>
 
           <span class="card-container">
             <custom-carousel-card
