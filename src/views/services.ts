@@ -15,54 +15,54 @@ export default customElements.define(
       this.loadedResolve(true)
     }
     get carousel1Images() {
-      return ['./assets/postbaan schaffen/IMG_0474_1200x900.webp']
+      return ['./assets/__realizations/postbaan schaffen/IMG_0474_1200x900.webp']
     }
 
     get bathroomImages() {
       return [
-        './assets/postbaan schaffen/badkamer_lot2_1200x900.webp',
-        './assets/postbaan schaffen/badkamer_lot3_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0018_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0019_1200x900.webp'
+        './assets/__realizations/postbaan schaffen/badkamer_lot2_1200x900.webp',
+        './assets/__realizations/postbaan schaffen/badkamer_lot3_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0018_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0019_1200x900.webp'
       ]
     }
 
     get kitchenImages() {
       return [
-        './assets/postbaan schaffen/keuken_lot3_1200x900.webp',
-        './assets/postbaan schaffen/keuken_lot4_1200x900.webp',
-        './assets/sintjansstraat diest/IMG_1345_1200x900.webp',
-        './assets/postbaan schaffen/keuken_lot1_1200x900.webp',
-        './assets/bosbessenstraat paal/3d5f1cc3-6869-494d-ae28-e3436c192e07_1200x1600.webp',
-        './assets/oudebaan schulen/IMG_20201205_144603_1200x550.webp',
-        './assets/oudebaan schulen/IMG_20201205_144617_1200x550.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0016_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0017_1200x900.webp'
+        './assets/__realizations/postbaan schaffen/keuken_lot3_1200x900.webp',
+        './assets/__realizations/postbaan schaffen/keuken_lot4_1200x900.webp',
+        './assets/__realizations/sintjansstraat diest/IMG_1345_1200x900.webp',
+        './assets/__realizations/postbaan schaffen/keuken_lot1_1200x900.webp',
+        './assets/__realizations/bosbessenstraat paal/3d5f1cc3-6869-494d-ae28-e3436c192e07_1200x1600.webp',
+        './assets/__realizations/oudebaan schulen/IMG_20201205_144603_1200x550.webp',
+        './assets/__realizations/oudebaan schulen/IMG_20201205_144617_1200x550.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0016_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0017_1200x900.webp'
       ]
     }
 
     get renovationImages() {
       return [
-        './assets/oudebaan schulen/IMG_7616_1200x900.webp',
-        './assets/oudebaan schulen/IMG_7618_1200x900.webp',
-        './assets/turnhoutsebaan okselaar/IMG_8025_1200x900.webp',
-        './assets/turnhoutsebaan okselaar/IMG_8026_1200x900.webp'
+        './assets/__realizations/oudebaan schulen/IMG_7616_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG_7618_1200x900.webp',
+        './assets/__realizations/turnhoutsebaan okselaar/IMG_8025_1200x900.webp',
+        './assets/__realizations/turnhoutsebaan okselaar/IMG_8026_1200x900.webp'
       ]
     }
 
     get finishingImages() {
       return [
-        './assets/postbaan schaffen/IMG_0474_1200x900.webp',
-        './assets/IMG_0681_1200x900.webp',
-        './assets/oudebaan schulen/IMG_8033_1200x900.webp',
-        './assets/sintjansstraat diest/IMG_1343_1200x900.webp',
-        './assets/koning albertstraat diest/IMG_2283_1200x900.webp',
-        './assets/koning albertstraat diest/IMG_2285_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0002_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0003_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0009_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0010_1200x900.webp',
-        './assets/oudebaan schulen/IMG-20201207-WA0007_1200x1600.webp'
+        './assets/__realizations/postbaan schaffen/IMG_0474_1200x900.webp',
+        './assets/__realizations/IMG_0681_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG_8033_1200x900.webp',
+        './assets/__realizations/sintjansstraat diest/IMG_1343_1200x900.webp',
+        './assets/__realizations/koning albertstraat diest/IMG_2283_1200x900.webp',
+        './assets/__realizations/koning albertstraat diest/IMG_2285_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0002_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0003_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0009_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0010_1200x900.webp',
+        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0007_1200x1600.webp'
       ]
     }
 
@@ -75,7 +75,7 @@ export default customElements.define(
     }
 
     get sanitairImages() {
-      return ['./assets/sanitair/IMG_3102_1200x900.webp']
+      return ['./assets/__services/sanitair/IMG_3102_1200x900.webp']
     }
     get renewingEnergyImages() {
       return ['./assets/IMG_6168_1200x900.webp']
