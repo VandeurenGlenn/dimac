@@ -64,6 +64,15 @@ export class CustomSection extends LiteElement {
 
   static styles = [
     css`
+            @media (max-width: 600px) {
+              :host,
+              :host([type='hero']) {
+                padding: 24px !important;
+              }
+              .container {
+                padding: 24px !important;
+              }
+            }
       :host {
         display: flex;
         flex-direction: column;
