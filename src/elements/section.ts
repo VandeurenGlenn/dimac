@@ -64,15 +64,6 @@ export class CustomSection extends LiteElement {
 
   static styles = [
     css`
-            @media (max-width: 600px) {
-              :host,
-              :host([type='hero']) {
-                padding: 24px !important;
-              }
-              .container {
-                padding: 24px !important;
-              }
-            }
       :host {
         display: flex;
         flex-direction: column;
@@ -153,6 +144,25 @@ export class CustomSection extends LiteElement {
 
       slot::slotted(*) {
         margin-top: 44px;
+      }
+      @media (max-width: 600px) {
+        :host,
+        :host([type='hero']) {
+          padding: 6px;
+          background: none;
+          border: none;
+          box-shadow: none;
+          backdrop-filter: none;
+        }
+        :host::before {
+          display: none;
+        }
+        .container {
+          padding: 12px;
+          background: none;
+          border: none;
+          box-shadow: none;
+        }
       }
     `
   ]
