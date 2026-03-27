@@ -1,4 +1,5 @@
 import { html, LiteElement } from '@vandeurenglenn/lite'
+import './../elements/section.js'
 
 export default customElements.define(
   'about-view',
@@ -36,7 +37,6 @@ export default customElements.define(
             gap: 28px;
           }
 
-          .hero,
           .story,
           .reasons {
             background: var(--md-sys-color-surface);
@@ -50,19 +50,8 @@ export default customElements.define(
             grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
             align-items: start;
             gap: 28px;
-            padding: clamp(28px, 3vw, 44px);
             overflow: hidden;
             position: relative;
-          }
-
-          .hero::after {
-            content: '';
-            position: absolute;
-            inset: auto -80px -80px auto;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(168, 84, 39, 0.18), transparent 68%);
           }
 
           .eyebrow {
@@ -181,50 +170,65 @@ export default customElements.define(
           }
         </style>
         <main>
-          <section class="hero">
-            <div>
-              <span class="eyebrow">Over Dimac</span>
-              <h4>Een bouwpartner die technische kennis, verzorgde uitvoering en betrouwbaar overleg samenbrengt.</h4>
-              <h5>Van vastgoed tot vakmanschap</h5>
-              <p>
-                Dimac BV groeide vanuit een duidelijke voorkeur voor degelijk werk, correcte uitvoering en duurzame
-                keuzes.
-              </p>
-              <p>
-                Vanuit vastgoed groeiden we door naar het realiseren van betaalbare, hoogwaardig afgewerkte
-                bouwprojecten waarin planning en afwerking even belangrijk zijn.
-              </p>
-              <p>
-                Wat ons drijft is eenvoudig: oog voor detail, sterke uitvoering en klanten die achteraf met overtuiging
-                terugkijken.
-              </p>
-              <a href="#!/contact">Bespreek uw project</a>
+          <custom-section
+            type="hero"
+            eyebrow="Over Dimac"
+            title="Een bouwpartner die technische kennis, verzorgde uitvoering en betrouwbaar overleg samenbrengt."
+            subtitle="Van vastgoed tot vakmanschap">
+            <div
+              slot="content"
+              class="hero">
+              <div>
+                <p>
+                  Dimac BV groeide vanuit een duidelijke voorkeur voor degelijk werk, correcte
+                  uitvoering en duurzame keuzes.
+                </p>
+                <p>
+                  Vanuit vastgoed groeiden we door naar het realiseren van betaalbare, hoogwaardig
+                  afgewerkte bouwprojecten waarin planning en afwerking even belangrijk zijn.
+                </p>
+                <p>
+                  Wat ons drijft is eenvoudig: oog voor detail, sterke uitvoering en klanten die
+                  achteraf met overtuiging terugkijken.
+                </p>
+                <a href="#!/contact">Bespreek uw project</a>
+              </div>
+              <aside
+                class="stat-card"
+                slot="content">
+                <strong>1 partner</strong>
+                <span
+                  >Voor technieken, automatisatie en dakwerken zonder versnipperde
+                  communicatie.</span
+                >
+                <strong>Tijdloze uitvoering</strong>
+                <span
+                  >Geen vluchtige trends, wel oplossingen die technisch kloppen en esthetisch rustig
+                  blijven.</span
+                >
+              </aside>
             </div>
-            <aside class="stat-card">
-              <strong>1 partner</strong>
-              <span>Voor technieken, automatisatie en dakwerken zonder versnipperde communicatie.</span>
-              <strong>Tijdloze uitvoering</strong>
-              <span>Geen vluchtige trends, wel oplossingen die technisch kloppen en esthetisch rustig blijven.</span>
-            </aside>
-          </section>
+          </custom-section>
+          <section class="hero"></section>
 
           <section class="story">
             <div>
               <h6>Wat doen we?</h6>
               <p>
-                We ontwikkelen en realiseren onze eigen projecten, maar zetten onze kennis en vakmanschap ook in voor
-                particuliere klanten.
+                We ontwikkelen en realiseren onze eigen projecten, maar zetten onze kennis en
+                vakmanschap ook in voor particuliere klanten.
               </p>
               <p>
-                Met een focus op technieken, automatisatie en dakwerken staat Dimac voor heldere planning, consequente
-                uitvoering en samenwerking met betrouwbare vakmensen en leveranciers.
+                Met een focus op technieken, automatisatie en dakwerken staat Dimac voor heldere
+                planning, consequente uitvoering en samenwerking met betrouwbare vakmensen en
+                leveranciers.
               </p>
             </div>
             <div>
               <h6>Samenwerken?</h6>
               <p>
-                Neem vrijblijvend contact op. We bekijken graag hoe uw project technisch en esthetisch juist kan worden
-                aangepakt.
+                Neem vrijblijvend contact op. We bekijken graag hoe uw project technisch en
+                esthetisch juist kan worden aangepakt.
               </p>
             </div>
           </section>
