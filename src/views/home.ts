@@ -349,7 +349,6 @@ export default customElements.define(
           .svc-label {
             font-size: 0.88rem;
             font-weight: 600;
-            text-align: center;
             line-height: 1.3;
           }
 
@@ -363,12 +362,16 @@ export default customElements.define(
             .hero-media {
               order: -1;
             }
+
+            .services-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
           }
 
           @media (max-width: 600px) {
             .trust-bar {
               flex-wrap: wrap;
-              gap: 20px;
+              gap: 16px;
             }
 
             main {
@@ -378,6 +381,27 @@ export default customElements.define(
             .hero {
               padding-top: 24px;
               gap: 28px;
+            }
+
+            .svc-tile {
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+              padding: 12px 6px;
+              gap: 6px;
+            }
+
+            .svc-icon {
+              width: 44px;
+              height: 44px;
+            }
+
+            .svc-label {
+              font-size: 0.8rem;
+            }
+
+            h1 {
+              font-size: clamp(1.75rem, 7vw, 2.4rem);
             }
           }
         </style>

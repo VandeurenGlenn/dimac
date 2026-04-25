@@ -1,5 +1,30 @@
 import { html, LiteElement } from '@vandeurenglenn/lite'
 
+// ── Elfsight widget-ID ──────────────────────────────────────────────────────
+// Ga naar https://elfsight.com, maak een Google Reviews-widget aan,
+// koppel uw Google-locatie en vervang de string hieronder door uw widget-ID.
+// Het ID staat in de embed-code als class="elfsight-app-XXXXXXXX-..."
+// ───────────────────────────────────────────────────────────────────────────
+const ELFSIGHT_WIDGET_ID = 'JOUW-ELFSIGHT-WIDGET-ID'
+
+// De widget wordt in een srcdoc-iframe geladen zodat Elfsight's script
+// werkt buiten het Shadow DOM van deze component.
+const widgetDoc = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://static.elfsight.com/platform/platform.js" async><\/script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; overflow: hidden; }
+</style>
+</head>
+<body>
+<div class="elfsight-app-${ELFSIGHT_WIDGET_ID}" data-elfsight-app-lazy></div>
+</body>
+</html>`
+
 export default customElements.define(
   'reviews-view',
   class extends LiteElement {
@@ -8,23 +33,26 @@ export default customElements.define(
       this.loadedResolve = resolve
     })
 
-    reviews = [
-      {
-        title: 'Heldere communicatie',
-        text: 'Zeer tevreden over de communicatie en het eindresultaat. Alles verliep volgens afspraak.'
-      },
-      {
-        title: 'Correcte planning',
-        text: 'Correcte planning, duidelijke offerte en mooie afwerking. Aanrader.'
-      },
-      {
-        title: 'Professioneel uitgevoerd',
-        text: 'Goede opvolging en professioneel uitgevoerd werk. Wij zijn zeer tevreden.'
-      }
-    ]
-
     async firstRender(): Promise<void> {
       this.loadedResolve(true)
+
+      // Auto-resize iframe as Elfsight renders (srcdoc = same-origin, so
+      // contentDocument is accessible)
+      const iframe = this.shadowRoot?.querySelector<HTMLIFrameElement>('iframe.reviews-widget')
+      if (!iframe) return
+
+      const autoResize = () => {
+        const doc = iframe.contentDocument
+        if (!doc?.body) return
+        const h = doc.documentElement.scrollHeight
+        if (h > 100) iframe.style.height = h + 'px'
+      }
+
+      iframe.addEventListener('load', () => {
+        autoResize()
+        const ro = new ResizeObserver(autoResize)
+        ro.observe(iframe.contentDocument!.documentElement)
+      })
     }
 
     render() {
@@ -120,24 +148,12 @@ export default customElements.define(
             line-height: 1.75;
           }
 
-          .grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
-          }
-
-          .card {
-            border-radius: 16px;
-            padding: 22px;
-            background: rgba(41, 30, 25, 0.5);
-            display: grid;
-            gap: 10px;
-          }
-
-          .stars {
-            color: var(--md-sys-color-primary);
-            letter-spacing: 0.16em;
-            font-weight: 800;
+          .reviews-widget {
+            width: 100%;
+            border: none;
+            min-height: 120px;
+            height: 600px;
+            display: block;
           }
 
           .cta-row {
@@ -170,9 +186,6 @@ export default customElements.define(
           }
 
           @media (max-width: 900px) {
-            .grid {
-              grid-template-columns: 1fr;
-            }
           }
         </style>
 
@@ -187,18 +200,15 @@ export default customElements.define(
           </section>
 
           <section>
-            <h2>Ervaringen uit echte trajecten</h2>
-            <div class="grid">
-              ${this.reviews.map(
-                (item) => html`
-                  <article class="card">
-                    <span class="stars">★★★★★</span>
-                    <h3>${item.title}</h3>
-                    <p>${item.text}</p>
-                  </article>
-                `
-              )}
-            </div>
+            <h2>Ervaringen van klanten</h2>
+            <iframe
+              class="reviews-widget"
+              .srcdoc=${widgetDoc}
+              title="Google Reviews Dimac"
+              scrolling="no"
+              loading="lazy"
+              allow="autoplay; camera; microphone; payment">
+            </iframe>
           </section>
 
           <section>
