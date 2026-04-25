@@ -5,6 +5,7 @@
         "target": "ES2022",
         "moduleResolution": "nodenext",
         "declaration": false,
+        "rootDir": "src",
         "outDir": "www",
         "types": [
             "@vandeurenglenn/lite",
