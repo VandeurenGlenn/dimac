@@ -1,7 +1,7 @@
 import { LiteElement, property, html, css } from '@vandeurenglenn/lite'
 export class CustomPanel extends LiteElement {
-  @property({ type: String }) accessor title = 'hello world'
-  @property({ type: String }) accessor description = undefined
+  @property({ type: String }) accessor title
+  @property({ type: String }) accessor description
 
   static styles = [
     css`

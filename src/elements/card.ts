@@ -1,9 +1,9 @@
 import { html, LiteElement, property } from '@vandeurenglenn/lite'
 import styles from './styles/card.css' with { type: 'css' }
 export class CustomCard extends LiteElement {
-  @property({ type: String }) accessor title = 'hello world'
-  @property({ type: String }) accessor description = undefined
-  @property({ type: String }) accessor image = undefined
+  @property({ type: String }) accessor title
+  @property({ type: String }) accessor description
+  @property({ type: String }) accessor image
 
   static styles = [styles]
 
