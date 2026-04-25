@@ -26,6 +26,9 @@ export default html`
       <span name="location_on">@symbol-location_on</span>
       <span name="mail">@symbol-mail</span>
       <span name="cheer">@symbol-cheer</span>
+      <span name="checklist">@symbol-checklist</span>
+      <span name="star">@symbol-star</span>
+      <span name="home_health">@symbol-home_health</span>
       <span name="instagram">
         <svg
           version="1.1"

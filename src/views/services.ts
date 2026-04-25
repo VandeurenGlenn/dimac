@@ -7,7 +7,7 @@ import './../elements/card.js'
 export default customElements.define(
   'services-view',
   class extends LiteElement {
-    private loadedResolve: (value: boolean) => void
+    private loadedResolve!: (value: boolean) => void
     loaded = new Promise<boolean>((resolve) => {
       this.loadedResolve = resolve
     })
@@ -197,80 +197,87 @@ export default customElements.define(
         <main>
           <custom-section
             type="hero"
-            title="Technische oplossingen met structuur in voorbereiding, uitvoering en afwerking."
-            description="Dimac focust op technische installaties, automatisatie en dakwerken, aangevuld met
-              sanitair en afwerking waar nodig. Zo blijft het proces overzichtelijk en het resultaat
-              technisch correct uitgevoerd."
+            title="Renovatie en bouw in regio Diest"
+            description="Van technieken tot afwerking. Dimac begeleidt uw project van A tot Z met één aanspreekpunt en duidelijke opvolging."
             eyebrow="onze diensten">
             <custom-panel slot="content">
               <custom-card
                 title="Analyse"
-                description="We vertalen uw technische vraag naar een haalbare aanpak met aandacht voor gebruik en betrouwbaarheid."></custom-card>
+                description="We luisteren naar uw project en vertalen het naar een haalbare aanpak met aandacht voor gebruik en kwaliteit."></custom-card>
 
               <custom-card
                 title="Uitvoering"
-                description="Eigen vakkennis en betrouwbare partners houden de uitvoering consequent en correct van begin tot einde."></custom-card>
+                description="Eigen vakkennis en betrouwbare partners houden de uitvoering consequent en correct, van begin tot einde."></custom-card>
 
               <custom-card
-                title="Afwerking"
-                description="Ook de afregeling en afwerking krijgen evenveel aandacht als de technische kern van het project."></custom-card>
+                title="Oplevering"
+                description="Alles wordt correct afgewerkt en opgeleverd. U heeft één aanspreekpunt doorheen het hele traject."></custom-card>
             </custom-panel>
           </custom-section>
 
           <span class="card-container">
             <custom-carousel-card
-              title="Badkamers"
+              title="Totaalrenovatie"
+              kicker="Renovatie"
+              description="Volledige renovatie van A tot Z, van afbraak en technieken tot afwerking — met één aanspreekpunt."
+              href="#!/totaalrenovatie"
+              .images=${this.finishingImages}></custom-carousel-card>
+
+            <custom-carousel-card
+              title="Badkamer renovatie"
               kicker="Interieur"
               description="Badkamers met logische indeling, degelijk sanitair en een afwerking die rust uitstraalt."
+              href="#!/badkamerrenovatie"
               .images=${this.bathroomImages}></custom-carousel-card>
 
             <custom-carousel-card
-              title="Keukens"
+              title="Keuken renovatie"
               kicker="Interieur"
               description="Keukens waarin materiaalkeuze, gebruiksgemak en technische integratie samenkomen."
+              href="#!/keukenrenovatie"
               .images=${this.kitchenImages}></custom-carousel-card>
+
+            <custom-carousel-card
+              title="Uitbreidingen & aanbouw"
+              kicker="Renovatie"
+              description="Meer ruimte creëren met een doordachte uitbreiding die logisch aansluit op uw woning."
+              href="#!/totaalrenovatie"
+              .images=${this.renovationImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Elektriciteit"
               kicker="Technieken"
               description="Van nieuwe installaties tot vernieuwing en uitbreiding, helder en veilig uitgevoerd."
-              .images=${this.electricityImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Automatisatie"
-              kicker="Smart Control"
-              description="Slimme sturingen en automatisatie die comfort, overzicht en gebruiksgemak tastbaar verbeteren."
+              href="#!/elektriciteit"
               .images=${this.electricityImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Sanitair"
               kicker="Technieken"
               description="Sanitaire installaties en renovaties met aandacht voor comfort, detail en betrouwbare werking."
+              href="#!/sanitair"
               .images=${this.sanitairImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Hernieuwbare energie"
               kicker="Duurzaamheid"
               description="Energieoplossingen die rendement combineren met een nette technische integratie in het geheel."
+              href="#!/hernieuwbare-energie"
               .images=${this.renewingEnergyImages}></custom-carousel-card>
 
             <custom-carousel-card
               title="Dakwerken"
               kicker="Buitenschil"
               description="Dakwerken die structuur, waterdichtheid en afwerking correct samenbrengen in één verzorgd geheel."
+              href="#!/dakwerken"
               .images=${this.carousel1Images}></custom-carousel-card>
 
             <custom-carousel-card
               title="Afwerking"
               kicker="Afwerking"
               description="Gyproc, schilderwerken, vloeren en interieurelementen die het project visueel samenbrengen."
+              href="#!/afwerking"
               .images=${this.finishingImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Verhuur"
-              kicker="Ondersteuning"
-              description="Materieel en ondersteuning voor werven die tijdelijk extra capaciteit nodig hebben."
-              .images=${this.carousel1Images}></custom-carousel-card>
           </span>
         </main>
       `

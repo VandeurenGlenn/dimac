@@ -6,6 +6,7 @@ export class CustomCarouselCard extends LiteElement {
   @property({ type: String }) accessor title
   @property({ type: String }) accessor kicker
   @property({ type: String }) accessor description
+  @property({ type: String }) accessor href
   @property({ type: Array }) accessor images
 
   @query('custom-carousel') accessor carousel: CustomCarousel
@@ -33,7 +34,7 @@ export class CustomCarouselCard extends LiteElement {
   }
 
   render() {
-    return html`
+    const content = html`
       <custom-carousel
         .images=${this.images}
         @dominant-color-change=${this.#onDominantColorChange}></custom-carousel>
@@ -44,6 +45,17 @@ export class CustomCarouselCard extends LiteElement {
       <h4>${this.title}</h4>
       <p>${this.description}</p>
     `
+
+    if (this.href) {
+      return html`<a
+        class="card-link"
+        href=${this.href}
+        aria-label=${this.title}
+        >${content}</a
+      >`
+    }
+
+    return html` ${content} `
   }
 }
 

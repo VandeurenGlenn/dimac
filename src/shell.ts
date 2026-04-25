@@ -8,9 +8,38 @@ import icons from './icons.js'
 import './elements/drawer.js'
 import './elements/footer.js'
 import { DimacDrawer } from './elements/drawer.js'
+import { routeMeta } from './route-meta.js'
 
 export class DimacShell extends LiteElement {
-  static #views = new Set(['', 'home', 'about', 'services', 'realizations', 'contact', 'admin', 'keepit-preview'])
+  static #views = new Set([
+    '',
+    'home',
+    'about',
+    'services',
+    'woningscan',
+    'totaalrenovatie',
+    'nieuwbouw',
+    'badkamerrenovatie',
+    'keukenrenovatie',
+    'elektriciteit',
+    'sanitair',
+    'werkwijze',
+    'reviews',
+    'dakwerken',
+    'hernieuwbare-energie',
+    'afwerking',
+    'gyprocwerken',
+    'schilderwerken',
+    'vloerwerken',
+    'technieken',
+    'aannemer-diest',
+    'aannemer-herk-de-stad',
+    'aannemer-paal',
+    'realizations',
+    'contact',
+    'admin',
+    'keepit-preview'
+  ])
 
   @query('custom-selector') accessor selector
 
@@ -68,6 +97,32 @@ export class DimacShell extends LiteElement {
     return this.#hashBang + hash
   }
 
+  #updateHeadMeta(hash: string) {
+    const metaKey = hash || 'home'
+    const meta = routeMeta[metaKey]
+
+    if (!meta) return
+
+    document.title = meta.title
+
+    const updateMetaTag = (selector: string, value: string) => {
+      const element = document.head.querySelector(selector)
+      if (element) {
+        element.setAttribute('content', value)
+      }
+    }
+
+    updateMetaTag('meta[name="title"]', meta.title)
+    updateMetaTag('meta[name="description"]', meta.description)
+    updateMetaTag('meta[property="og:title"]', meta.title)
+    updateMetaTag('meta[property="og:description"]', meta.description)
+    updateMetaTag('meta[name="twitter:title"]', meta.title)
+    updateMetaTag('meta[name="twitter:description"]', meta.description)
+
+    const canonical = document.head.querySelector('link[rel="canonical"]')
+    canonical?.setAttribute('href', `https://dimac.be${meta.path}`)
+  }
+
   #renderNavLink(route, label, icon) {
     return html`
       <a
@@ -91,28 +146,14 @@ export class DimacShell extends LiteElement {
 
     this.main?.scrollTo(0, 0)
 
-    if (hash === 'about') {
-      document.title = 'Dimac - Over ons'
-    }
-    if (hash === 'services') {
-      document.title = 'Dimac - Onze diensten'
-    }
     if (hash === 'realizations' || hash === 'admin') {
       const response = await fetch('./realizations-manifest.json')
       if (response.ok) {
         this.realizationsManifest = await response.json()
       }
-      document.title = hash === 'admin' ? 'Dimac - Admin' : 'Dimac - Realisaties'
     }
-    if (hash === 'keepit-preview') {
-      document.title = 'Dimac - Preview'
-    }
-    if (hash === 'contact') {
-      document.title = 'Dimac - Contact'
-    }
-    if (hash === 'home' || hash === '') {
-      document.title = 'Dimac - Home'
-    }
+
+    this.#updateHeadMeta(hash)
 
     await (this.shadowRoot.querySelector(`${hash}-view`) as { loaded?: Promise<boolean> })?.loaded
 
@@ -130,6 +171,63 @@ export class DimacShell extends LiteElement {
   #renderSelected(selected) {
     if (selected === 'services') {
       return html` <services-view></services-view> `
+    }
+    if (selected === 'woningscan') {
+      return html` <woningscan-view></woningscan-view> `
+    }
+    if (selected === 'totaalrenovatie') {
+      return html` <totaalrenovatie-view></totaalrenovatie-view> `
+    }
+    if (selected === 'nieuwbouw') {
+      return html` <nieuwbouw-view></nieuwbouw-view> `
+    }
+    if (selected === 'badkamerrenovatie') {
+      return html` <badkamerrenovatie-view></badkamerrenovatie-view> `
+    }
+    if (selected === 'keukenrenovatie') {
+      return html` <keukenrenovatie-view></keukenrenovatie-view> `
+    }
+    if (selected === 'elektriciteit') {
+      return html` <elektriciteit-view></elektriciteit-view> `
+    }
+    if (selected === 'sanitair') {
+      return html` <sanitair-view></sanitair-view> `
+    }
+    if (selected === 'werkwijze') {
+      return html` <werkwijze-view></werkwijze-view> `
+    }
+    if (selected === 'reviews') {
+      return html` <reviews-view></reviews-view> `
+    }
+    if (selected === 'dakwerken') {
+      return html` <dakwerken-view></dakwerken-view> `
+    }
+    if (selected === 'hernieuwbare-energie') {
+      return html` <hernieuwbare-energie-view></hernieuwbare-energie-view> `
+    }
+    if (selected === 'afwerking') {
+      return html` <afwerking-view></afwerking-view> `
+    }
+    if (selected === 'gyprocwerken') {
+      return html` <gyprocwerken-view></gyprocwerken-view> `
+    }
+    if (selected === 'schilderwerken') {
+      return html` <schilderwerken-view></schilderwerken-view> `
+    }
+    if (selected === 'vloerwerken') {
+      return html` <vloerwerken-view></vloerwerken-view> `
+    }
+    if (selected === 'technieken') {
+      return html` <technieken-view></technieken-view> `
+    }
+    if (selected === 'aannemer-diest') {
+      return html` <aannemer-diest-view></aannemer-diest-view> `
+    }
+    if (selected === 'aannemer-herk-de-stad') {
+      return html` <aannemer-herk-de-stad-view></aannemer-herk-de-stad-view> `
+    }
+    if (selected === 'aannemer-paal') {
+      return html` <aannemer-paal-view></aannemer-paal-view> `
     }
 
     if (selected === 'about') {
@@ -175,9 +273,13 @@ export class DimacShell extends LiteElement {
             <custom-selector
               .selected=${this.selected}
               attr-for-selected="data-route">
-              ${this.#renderNavLink('home', 'Home', 'home')} ${this.#renderNavLink('about', 'Over Dimac', 'info')}
-              ${this.#renderNavLink('services', 'Onze diensten', 'home_repair_service')}
+              ${this.#renderNavLink('home', 'Home', 'home')}
+              ${this.#renderNavLink('about', 'Over Dimac', 'info')}
+              ${this.#renderNavLink('services', 'Diensten', 'home_repair_service')}
+              ${this.#renderNavLink('woningscan', 'Woningscan', 'home_health')}
+              ${this.#renderNavLink('werkwijze', 'Werkwijze', 'checklist')}
               ${this.#renderNavLink('realizations', 'Realisaties', 'cheer')}
+              ${this.#renderNavLink('reviews', 'Reviews', 'star')}
               ${this.#renderNavLink('contact', 'Contact', 'phone_in_talk')}
             </custom-selector>
           </nav>
@@ -185,7 +287,9 @@ export class DimacShell extends LiteElement {
           <div class="contact-panel">
             <div class="contact-panel-header">
               <span class="panel-label">Snel contact</span>
-              <p class="panel-note">Bel of mail rechtstreeks voor een snelle afstemming van uw project.</p>
+              <p class="panel-note">
+                Bel of mail rechtstreeks voor een snelle afstemming van uw project.
+              </p>
             </div>
             <a
               class="contact-link"
@@ -222,7 +326,8 @@ export class DimacShell extends LiteElement {
         <main
           slot="content"
           class="page-content">
-          ${this.#renderSelected(this.selected)} ${this.loaded ? html`<custom-footer></custom-footer>` : ''}
+          ${this.#renderSelected(this.selected)}
+          ${this.loaded ? html`<custom-footer></custom-footer>` : ''}
         </main>
       </dimac-drawer>
 
