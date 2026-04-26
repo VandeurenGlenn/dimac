@@ -1,5 +1,12 @@
 {
-  "updatedAt": null,
-  "source": "seed",
-  "reviews": []
+  "_comment": "Hand-curated reviews shown on /reviews. Edit this file to add or update entries — they ship with the build via rollup.config.js (copied to www/reviews.json). Public Google Maps shows only the aggregate rating to logged-out viewers and gates review text behind login, so reliable headless scraping is not possible. If you want full automation later, use the official Google Places API (requires API key with billing enabled) or a paid scraping service.",
+  "updatedAt": "2026-04-26T00:00:00.000Z",
+  "source": "manual",
+  "reviews": [
+    {
+      "name": "Voorbeeld klant",
+      "rating": 5,
+      "text": "Vervang deze tekst met een echte review uit Google. Plaats er meerdere onder elkaar."
+    }
+  ]
 }

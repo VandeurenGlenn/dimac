@@ -39,6 +39,7 @@ jobs:
       - run: npm ci
       - name: Refresh Google reviews
         env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
           DIMAC_PLACE_ID: ${{ secrets.DIMAC_PLACE_ID }}
         run: node scripts/fetch-reviews.js
         continue-on-error: true

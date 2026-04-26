@@ -370,17 +370,50 @@ export default customElements.define(
 
           @media (max-width: 600px) {
             .trust-bar {
-              flex-wrap: wrap;
-              gap: 16px;
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 8px;
+              padding-top: 20px;
+            }
+
+            .trust-item strong {
+              font-size: 0.92rem;
+            }
+
+            .trust-item span {
+              font-size: 0.72rem;
+              line-height: 1.3;
             }
 
             main {
-              gap: 48px;
+              gap: 36px;
             }
 
             .hero {
-              padding-top: 24px;
-              gap: 28px;
+              padding-top: 16px;
+              gap: 18px;
+            }
+
+            .hero-copy {
+              padding-top: 0;
+            }
+
+            .lead {
+              font-size: 0.98rem;
+              margin-bottom: 24px;
+            }
+
+            .cta-group {
+              margin-bottom: 24px;
+            }
+
+            custom-eyebrow {
+              margin-bottom: 14px;
+            }
+
+            .services-grid {
+              gap: 4px;
+              margin-top: 12px;
             }
 
             .svc-tile {
@@ -402,6 +435,7 @@ export default customElements.define(
 
             h1 {
               font-size: clamp(1.75rem, 7vw, 2.4rem);
+              margin-bottom: 14px;
             }
           }
         </style>
