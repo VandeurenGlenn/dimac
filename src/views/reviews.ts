@@ -1,6 +1,12 @@
 import { html, LiteElement, property } from '@vandeurenglenn/lite'
 
-type Review = { name: string; rating: number; text: string }
+type Review = {
+  name: string
+  rating: number
+  text: string
+  photo?: string | null
+  relativeTime?: string | null
+}
 type ReviewsPayload = { updatedAt: string | null; source: string; reviews: Review[] }
 
 export default customElements.define(
@@ -149,16 +155,18 @@ export default customElements.define(
 
           .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 16px;
+            align-items: stretch;
           }
 
           .card {
             border-radius: 16px;
             padding: 22px;
             background: rgba(41, 30, 25, 0.5);
-            display: grid;
-            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
           }
 
           .stars {
@@ -171,12 +179,51 @@ export default customElements.define(
           .card-text {
             font-size: 0.94rem;
             line-height: 1.6;
+            flex: 1;
+          }
+
+          .card-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(204, 173, 150, 0.08);
+          }
+
+          .card-author img,
+          .card-author .avatar-fallback {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: rgba(168, 84, 39, 0.2);
+            color: var(--md-sys-color-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+          }
+
+          .card-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;
+            min-width: 0;
           }
 
           .card-name {
-            font-size: 0.82rem;
+            font-size: 0.88rem;
+            color: var(--md-sys-color-on-surface);
+            font-weight: 700;
+          }
+
+          .card-time {
+            font-size: 0.78rem;
             color: var(--md-sys-color-on-surface-variant);
-            font-weight: 600;
+            opacity: 0.8;
           }
 
           .empty {
@@ -237,7 +284,23 @@ export default customElements.define(
                         <article class="card">
                           <span class="stars">${this.#stars(r.rating)}</span>
                           <p class="card-text">${r.text}</p>
-                          <span class="card-name">— ${r.name}</span>
+                          <div class="card-author">
+                            ${r.photo
+                              ? html`<img
+                                  src="${r.photo}"
+                                  alt="${r.name}"
+                                  loading="lazy"
+                                  referrerpolicy="no-referrer" />`
+                              : html`<span class="avatar-fallback"
+                                  >${(r.name || '?').charAt(0).toUpperCase()}</span
+                                >`}
+                            <div class="card-meta">
+                              <span class="card-name">${r.name}</span>
+                              ${r.relativeTime
+                                ? html`<span class="card-time">${r.relativeTime}</span>`
+                                : ''}
+                            </div>
+                          </div>
                         </article>
                       `
                     )}
