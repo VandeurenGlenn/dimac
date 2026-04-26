@@ -1,29 +1,7 @@
-import { html, LiteElement } from '@vandeurenglenn/lite'
+import { html, LiteElement, property } from '@vandeurenglenn/lite'
 
-// ── Elfsight widget-ID ──────────────────────────────────────────────────────
-// Ga naar https://elfsight.com, maak een Google Reviews-widget aan,
-// koppel uw Google-locatie en vervang de string hieronder door uw widget-ID.
-// Het ID staat in de embed-code als class="elfsight-app-XXXXXXXX-..."
-// ───────────────────────────────────────────────────────────────────────────
-const ELFSIGHT_WIDGET_ID = 'JOUW-ELFSIGHT-WIDGET-ID'
-
-// De widget wordt in een srcdoc-iframe geladen zodat Elfsight's script
-// werkt buiten het Shadow DOM van deze component.
-const widgetDoc = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<script src="https://static.elfsight.com/platform/platform.js" async><\/script>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { background: transparent; overflow: hidden; }
-</style>
-</head>
-<body>
-<div class="elfsight-app-${ELFSIGHT_WIDGET_ID}" data-elfsight-app-lazy></div>
-</body>
-</html>`
+type Review = { name: string; rating: number; text: string }
+type ReviewsPayload = { updatedAt: string | null; source: string; reviews: Review[] }
 
 export default customElements.define(
   'reviews-view',
@@ -33,29 +11,44 @@ export default customElements.define(
       this.loadedResolve = resolve
     })
 
+    @property({ type: Array }) accessor reviews: Review[] = []
+    @property({ type: String }) accessor updatedAt: string | null = null
+    @property({ type: Boolean }) accessor fetchFailed = false
+
     async firstRender(): Promise<void> {
       this.loadedResolve(true)
-
-      // Auto-resize iframe as Elfsight renders (srcdoc = same-origin, so
-      // contentDocument is accessible)
-      const iframe = this.shadowRoot?.querySelector<HTMLIFrameElement>('iframe.reviews-widget')
-      if (!iframe) return
-
-      const autoResize = () => {
-        const doc = iframe.contentDocument
-        if (!doc?.body) return
-        const h = doc.documentElement.scrollHeight
-        if (h > 100) iframe.style.height = h + 'px'
+      try {
+        const res = await fetch('./reviews.json', { cache: 'no-cache' })
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const data: ReviewsPayload = await res.json()
+        this.reviews = Array.isArray(data.reviews) ? data.reviews : []
+        this.updatedAt = data.updatedAt
+      } catch {
+        this.fetchFailed = true
       }
+    }
 
-      iframe.addEventListener('load', () => {
-        autoResize()
-        const ro = new ResizeObserver(autoResize)
-        ro.observe(iframe.contentDocument!.documentElement)
-      })
+    #stars(n: number) {
+      return '★★★★★'.slice(0, Math.max(0, Math.min(5, n)))
+    }
+
+    #formatDate(iso: string | null) {
+      if (!iso) return null
+      try {
+        return new Date(iso).toLocaleDateString('nl-BE', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        })
+      } catch {
+        return null
+      }
     }
 
     render() {
+      const updated = this.#formatDate(this.updatedAt)
+      const hasReviews = this.reviews.length > 0
+
       return html`
         <style>
           :host {
@@ -138,8 +131,8 @@ export default customElements.define(
           }
 
           h3 {
-            font-size: 1.05rem;
-            font-weight: 800;
+            font-size: 1rem;
+            font-weight: 700;
           }
 
           p {
@@ -148,12 +141,49 @@ export default customElements.define(
             line-height: 1.75;
           }
 
-          .reviews-widget {
-            width: 100%;
-            border: none;
-            min-height: 120px;
-            height: 600px;
-            display: block;
+          .updated {
+            font-size: 0.8rem;
+            color: var(--md-sys-color-on-surface-variant);
+            opacity: 0.7;
+          }
+
+          .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+          }
+
+          .card {
+            border-radius: 16px;
+            padding: 22px;
+            background: rgba(41, 30, 25, 0.5);
+            display: grid;
+            gap: 10px;
+          }
+
+          .stars {
+            color: var(--md-sys-color-primary);
+            letter-spacing: 0.16em;
+            font-weight: 800;
+            font-size: 1rem;
+          }
+
+          .card-text {
+            font-size: 0.94rem;
+            line-height: 1.6;
+          }
+
+          .card-name {
+            font-size: 0.82rem;
+            color: var(--md-sys-color-on-surface-variant);
+            font-weight: 600;
+          }
+
+          .empty {
+            padding: 24px;
+            border-radius: 16px;
+            background: rgba(41, 30, 25, 0.4);
+            color: var(--md-sys-color-on-surface-variant);
           }
 
           .cta-row {
@@ -184,9 +214,6 @@ export default customElements.define(
             color: var(--md-sys-color-on-surface);
             background: var(--surface-soft);
           }
-
-          @media (max-width: 900px) {
-          }
         </style>
 
         <main>
@@ -200,15 +227,28 @@ export default customElements.define(
           </section>
 
           <section>
-            <h2>Ervaringen van klanten</h2>
-            <iframe
-              class="reviews-widget"
-              .srcdoc=${widgetDoc}
-              title="Google Reviews Dimac"
-              scrolling="no"
-              loading="lazy"
-              allow="autoplay; camera; microphone; payment">
-            </iframe>
+            <h2>Google reviews</h2>
+            ${updated ? html`<span class="updated">Laatst bijgewerkt: ${updated}</span>` : ''}
+            ${hasReviews
+              ? html`
+                  <div class="grid">
+                    ${this.reviews.map(
+                      (r) => html`
+                        <article class="card">
+                          <span class="stars">${this.#stars(r.rating)}</span>
+                          <p class="card-text">${r.text}</p>
+                          <span class="card-name">— ${r.name}</span>
+                        </article>
+                      `
+                    )}
+                  </div>
+                `
+              : html`
+                  <div class="empty">
+                    Reviews worden binnenkort weergegeven. Bekijk in tussentijd onze Google-pagina
+                    voor de meest recente ervaringen.
+                  </div>
+                `}
           </section>
 
           <section>
