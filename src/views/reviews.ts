@@ -155,46 +155,53 @@ export default customElements.define(
 
           .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
             align-items: stretch;
           }
 
           .card {
-            border-radius: 16px;
-            padding: 22px;
+            border-radius: 14px;
+            padding: 16px;
             background: rgba(41, 30, 25, 0.5);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
           }
 
           .stars {
             color: var(--md-sys-color-primary);
-            letter-spacing: 0.16em;
+            letter-spacing: 0.14em;
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 0.9rem;
           }
 
           .card-text {
-            font-size: 0.94rem;
-            line-height: 1.6;
-            flex: 1;
+            font-size: 0.86rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--md-sys-color-on-surface-variant);
+            min-height: 0;
           }
 
           .card-author {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-top: 4px;
-            padding-top: 14px;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 10px;
             border-top: 1px solid rgba(204, 173, 150, 0.08);
           }
 
           .card-author img,
           .card-author .avatar-fallback {
-            width: 38px;
-            height: 38px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             object-fit: cover;
             background: rgba(168, 84, 39, 0.2);
@@ -203,7 +210,7 @@ export default customElements.define(
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             flex-shrink: 0;
           }
 
@@ -215,13 +222,16 @@ export default customElements.define(
           }
 
           .card-name {
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             color: var(--md-sys-color-on-surface);
             font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           .card-time {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: var(--md-sys-color-on-surface-variant);
             opacity: 0.8;
           }
