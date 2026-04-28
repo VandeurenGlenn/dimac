@@ -7,6 +7,8 @@ export default customElements.define(
   class extends LiteElement {
     @query('custom-carousel') accessor carousel: CustomCarousel
     @property({ type: Number }) accessor activeSlide = 0
+    @property({ type: Number }) accessor googleRating: number | null = null
+    @property({ type: Number }) accessor googleRatingCount: number | null = null
 
     private loadedResolve!: (value: boolean) => void
     loaded = new Promise<boolean>((resolve) => {
@@ -50,6 +52,17 @@ export default customElements.define(
     async firstRender() {
       await this.carousel.loaded
       this.loadedResolve(true)
+      // Pull live Google rating for the trust bar.
+      try {
+        const res = await fetch('./reviews.json', { cache: 'no-cache' })
+        if (res.ok) {
+          const data = await res.json()
+          if (typeof data.rating === 'number') this.googleRating = data.rating
+          if (typeof data.ratingCount === 'number') this.googleRatingCount = data.ratingCount
+        }
+      } catch {
+        /* silent — fall back to default trust item */
+      }
     }
 
     #icon(name: string) {
@@ -156,12 +169,19 @@ export default customElements.define(
             color: var(--md-sys-color-on-background);
           }
 
+          *,
+          *::before,
+          *::after {
+            box-sizing: border-box;
+          }
+
           main {
             display: flex;
             flex-direction: column;
             gap: 48px;
             width: 100%;
             max-width: var(--page-max-width);
+            min-width: 0;
           }
 
           /* ── Hero ─────────────────────────────────── */
@@ -169,7 +189,7 @@ export default customElements.define(
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: clamp(32px, 4vw, 56px);
-            align-items: start;
+            align-items: center;
             padding-top: 48px;
           }
 
@@ -257,6 +277,15 @@ export default customElements.define(
             font-size: 1.08rem;
             font-weight: 800;
             color: var(--md-sys-color-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+          }
+
+          .trust-item .stars {
+            color: var(--md-sys-color-primary);
+            font-size: 0.9em;
+            letter-spacing: 0.05em;
           }
 
           .trust-item span {
@@ -381,7 +410,7 @@ export default customElements.define(
             }
 
             .trust-item span {
-              font-size: 0.72rem;
+              font-size: 0.7rem;
               line-height: 1.3;
             }
 
@@ -405,6 +434,13 @@ export default customElements.define(
 
             .cta-group {
               margin-bottom: 24px;
+              flex-direction: column;
+              gap: 10px;
+            }
+
+            .cta,
+            .secondary-cta {
+              width: 100%;
             }
 
             custom-eyebrow {
@@ -466,10 +502,29 @@ export default customElements.define(
                   <strong>20+</strong>
                   <span>jaar ervaring</span>
                 </div>
-                <div class="trust-item">
-                  <strong>Regio Diest</strong>
-                  <span>lokale opvolging</span>
-                </div>
+                ${this.googleRating
+                  ? html`
+                      <a
+                        class="trust-item"
+                        href="#!/reviews"
+                        style="text-decoration:none;color:inherit">
+                        <strong
+                          >${this.googleRating.toLocaleString('nl-BE')}
+                          <span class="stars">★</span></strong
+                        >
+                        <span
+                          >${this.googleRatingCount
+                            ? `${this.googleRatingCount} Google reviews`
+                            : 'Google reviews'}</span
+                        >
+                      </a>
+                    `
+                  : html`
+                      <div class="trust-item">
+                        <strong>Regio Diest</strong>
+                        <span>lokale opvolging</span>
+                      </div>
+                    `}
                 <div class="trust-item">
                   <strong>Alles-in-één</strong>
                   <span>van ruwbouw tot afwerking</span>
