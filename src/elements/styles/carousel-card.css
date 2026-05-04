@@ -11,15 +11,16 @@
   color: var(--md-sys-color-on-surface, #fff);
   box-shadow: none;
   border: 1px solid rgba(var(--card-glow-rgb), 0.22);
+  top: 0;
   transition:
-    transform 180ms ease,
+    top 180ms ease,
     box-shadow 240ms ease,
     border-color 240ms ease,
     background 240ms ease;
 }
 
 :host(:hover) {
-  transform: translateY(-4px);
+  top: -4px;
   box-shadow: none;
 }
 

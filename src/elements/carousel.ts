@@ -80,7 +80,9 @@ export class CustomCarousel extends LiteElement {
 
     if (!buckets.size) return DEFAULT_GLOW_RGB
 
-    const [, dominant] = [...buckets.entries()].sort((left, right) => right[1].weight - left[1].weight)[0]
+    const [, dominant] = [...buckets.entries()].sort(
+      (left, right) => right[1].weight - left[1].weight
+    )[0]
 
     let red = Math.round(dominant.red / dominant.weight)
     let green = Math.round(dominant.green / dominant.weight)
@@ -103,7 +105,9 @@ export class CustomCarousel extends LiteElement {
   }
 
   #updateDominantColor(index = this.carouselIndex) {
-    const image = this.shadowRoot?.querySelectorAll('.carousel img')?.[index] as HTMLImageElement | undefined
+    const image = this.shadowRoot?.querySelectorAll('.carousel img')?.[index] as
+      | HTMLImageElement
+      | undefined
     if (!image) return
 
     if (!image.complete || !image.naturalWidth) {
@@ -200,6 +204,8 @@ export class CustomCarousel extends LiteElement {
   _fullscreen = (e) => {
     // Only trigger fullscreen if the click is on the carousel container, not on indicators
     if (e.target.closest('.close-btn, .arrow-btn, .indicator-wrapper')) return
+    e.preventDefault()
+    e.stopPropagation()
     this.fullscreen = true
     this.requestRender()
   }
