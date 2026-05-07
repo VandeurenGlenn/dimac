@@ -25,7 +25,8 @@
   border-radius: 22px;
   touch-action: pan-y pinch-zoom;
   background:
-    radial-gradient(circle at top, rgba(var(--carousel-glow-rgb), 0.18), transparent 60%), rgba(43, 32, 27, 0.82);
+    radial-gradient(circle at top, rgba(var(--carousel-glow-rgb), 0.18), transparent 60%),
+    rgba(43, 32, 27, 0.82);
 }
 .carousel::after {
   content: '';
@@ -174,8 +175,21 @@ custom-icon-button[icon='arrow_forward'] {
   transform: translateY(-50%);
   z-index: 10;
 }
-:host([fullscreen]) .carousel {
+:host([fullscreen]) {
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  border-radius: 0;
+  overflow: visible;
+  background: rgba(28, 19, 15, 0.98);
+}
+:host([fullscreen]) .carousel {
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -184,7 +198,8 @@ custom-icon-button[icon='arrow_forward'] {
   height: 100%;
   z-index: 9999;
   padding: 0;
-  background: rgba(28, 19, 15, 0.98);
+  padding-bottom: 0;
+  background: transparent;
   box-sizing: border-box;
 }
 :host([fullscreen]) .carousel img {
@@ -193,6 +208,7 @@ custom-icon-button[icon='arrow_forward'] {
   padding: 0;
   box-sizing: border-box;
   border-radius: 22px;
+  object-fit: contain;
 }
 
 @media (max-width: 800px) {
