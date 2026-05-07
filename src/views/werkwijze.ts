@@ -94,20 +94,30 @@ export default customElements.define(
             font-weight: 800;
           }
 
-          h1, h2, h3 {
+          h1,
+          h2,
+          h3 {
             margin: 0;
             color: var(--md-sys-color-on-surface);
           }
 
-          h1, h2 {
+          h1,
+          h2 {
             font-family: var(--font-display);
             line-height: 1.04;
             letter-spacing: var(--hero-title-letter-spacing);
           }
 
-          h1 { font-size: clamp(1.95rem, 2.8vw, 2.9rem); }
-          h2 { font-size: clamp(1.4rem, 2vw, 2rem); }
-          h3 { font-size: 1.05rem; font-weight: 700; }
+          h1 {
+            font-size: clamp(1.95rem, 2.8vw, 2.9rem);
+          }
+          h2 {
+            font-size: clamp(1.4rem, 2vw, 2rem);
+          }
+          h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+          }
 
           p {
             margin: 0;
@@ -130,10 +140,15 @@ export default customElements.define(
             padding: 0 22px;
             text-decoration: none;
             font-weight: 700;
-            transition: transform 160ms ease, opacity 160ms ease;
+            transition:
+              transform 160ms ease,
+              opacity 160ms ease;
           }
 
-          .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+          .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+          }
 
           .btn-primary {
             background: linear-gradient(135deg, var(--md-sys-color-primary), #8c421b);
@@ -163,23 +178,24 @@ export default customElements.define(
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: rgba(168, 84, 39, 0.12);
-            color: var(--md-sys-color-primary);
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.88rem;
+            font-size: 0.95rem;
             font-weight: 900;
             font-family: var(--font-display);
             flex-shrink: 0;
             position: relative;
             z-index: 1;
+            box-shadow: 0 4px 12px rgba(120, 57, 24, 0.35);
           }
 
           .tl-line {
-            width: 1px;
+            width: 2px;
             flex: 1;
-            background: rgba(168, 84, 39, 0.15);
+            background: rgba(168, 84, 39, 0.35);
             margin: 6px 0;
             min-height: 32px;
           }
@@ -252,8 +268,16 @@ export default customElements.define(
               wordt de scan verrekend als u met Dimac aan de slag gaat.
             </p>
             <div class="cta-row">
-              <a class="btn btn-primary" href="#!/woningscan">Plan uw woningscan</a>
-              <a class="btn btn-secondary" href="#!/contact">Vraag een offerte aan</a>
+              <a
+                class="btn btn-primary"
+                href="#!/woningscan"
+                >Plan uw woningscan</a
+              >
+              <a
+                class="btn btn-secondary"
+                href="#!/contact"
+                >Vraag een offerte aan</a
+              >
             </div>
           </section>
         </main>
