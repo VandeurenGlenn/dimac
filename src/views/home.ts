@@ -65,95 +65,7 @@ export default customElements.define(
       }
     }
 
-    #icon(name: string) {
-      if (name === 'house')
-        return html`<svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M3 12L12 3l9 9" />
-          <path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9" />
-        </svg>`
-      if (name === 'bath')
-        return html`<svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M4 12h16v4a4 4 0 01-4 4H8a4 4 0 01-4-4v-4z" />
-          <path d="M6 12V7a2 2 0 012-2h2a2 2 0 012 2v1" />
-          <line
-            x1="8"
-            y1="20"
-            x2="6"
-            y2="22" />
-          <line
-            x1="16"
-            y1="20"
-            x2="18"
-            y2="22" />
-        </svg>`
-      if (name === 'kitchen')
-        return html`<svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <rect
-            x="2"
-            y="3"
-            width="20"
-            height="18"
-            rx="2" />
-          <line
-            x1="2"
-            y1="9"
-            x2="22"
-            y2="9" />
-          <line
-            x1="12"
-            y1="9"
-            x2="12"
-            y2="21" />
-        </svg>`
-      if (name === 'bolt')
-        return html`<svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <polyline points="13 2 13 9 20 9 11 22 11 15 4 15 13 2" />
-        </svg>`
-      if (name === 'water')
-        return html`<svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M12 2C6 9 4 13 4 16a8 8 0 0016 0c0-3-2-7-8-14z" />
-        </svg>`
-      if (name === 'roof')
-        return html`<svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <polyline points="3 11 12 2 21 11" />
-          <path d="M5 9.5V20a1 1 0 001 1h12a1 1 0 001-1V9.5" />
-        </svg>`
+    #icon(_name: string) {
       return html``
     }
 
@@ -370,9 +282,9 @@ export default customElements.define(
             flex-shrink: 0;
           }
 
-          .svc-icon svg {
-            width: 26px;
-            height: 26px;
+          .svc-icon custom-icon {
+            --custom-icon-size: 26px;
+            font-size: 26px;
           }
 
           .svc-label {
@@ -532,18 +444,18 @@ export default customElements.define(
               </div>
               <div class="services-grid">
                 ${[
-                  { label: 'Totaalrenovatie', href: '#!/totaalrenovatie', icon: 'house' },
-                  { label: 'Badkamer', href: '#!/badkamerrenovatie', icon: 'bath' },
+                  { label: 'Totaalrenovatie', href: '#!/totaalrenovatie', icon: 'home' },
+                  { label: 'Badkamer', href: '#!/badkamerrenovatie', icon: 'bathtub' },
                   { label: 'Keuken', href: '#!/keukenrenovatie', icon: 'kitchen' },
                   { label: 'Elektriciteit', href: '#!/elektriciteit', icon: 'bolt' },
-                  { label: 'Sanitair', href: '#!/sanitair', icon: 'water' },
-                  { label: 'Dakwerken', href: '#!/dakwerken', icon: 'roof' }
+                  { label: 'Sanitair', href: '#!/sanitair', icon: 'water_drop' },
+                  { label: 'Dakwerken', href: '#!/dakwerken', icon: 'roofing' }
                 ].map(
                   (s) => html`
                     <a
                       class="svc-tile"
                       href="${s.href}">
-                      <span class="svc-icon">${this.#icon(s.icon)}</span>
+                      <span class="svc-icon"><custom-icon icon="${s.icon}"></custom-icon></span>
                       <span class="svc-label">${s.label}</span>
                     </a>
                   `

@@ -1,6 +1,5 @@
 import { html, LiteElement } from '@vandeurenglenn/lite'
 
-import './../elements/carousel-card.js'
 import './../elements/section.js'
 import './../elements/panel.js'
 import './../elements/card.js'
@@ -14,75 +13,82 @@ export default customElements.define(
     async firstRender(): Promise<void> {
       this.loadedResolve(true)
     }
-    get carousel1Images() {
-      return ['./assets/__realizations/postbaan schaffen/IMG_0474_1200x900.webp']
-    }
 
-    get bathroomImages() {
-      return [
-        './assets/__realizations/postbaan schaffen/badkamer_lot2_1200x900.webp',
-        './assets/__realizations/postbaan schaffen/badkamer_lot3_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0018_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0019_1200x900.webp'
-      ]
-    }
+    services = [
+      {
+        title: 'Totaalrenovatie',
+        kicker: 'Renovatie',
+        description:
+          'Volledige renovatie van A tot Z, van afbraak en technieken tot afwerking — met één aanspreekpunt.',
+        href: '#!/totaalrenovatie',
+        icon: 'engineering'
+      },
+      {
+        title: 'Badkamers',
+        kicker: 'Interieur',
+        description:
+          'Badkamers met logische indeling, degelijk sanitair en een afwerking die rust uitstraalt.',
+        href: '#!/badkamerrenovatie',
+        icon: 'bathtub'
+      },
+      {
+        title: 'Keukens',
+        kicker: 'Interieur',
+        description:
+          'Keukens waarin materiaalkeuze, gebruiksgemak en technische integratie samenkomen.',
+        href: '#!/keukenrenovatie',
+        icon: 'kitchen'
+      },
+      {
+        title: 'Uitbreidingen & aanbouw',
+        kicker: 'Renovatie',
+        description:
+          'Meer ruimte creëren met een doordachte uitbreiding die logisch aansluit op uw woning.',
+        href: '#!/totaalrenovatie',
+        icon: 'add_home'
+      },
+      {
+        title: 'Elektriciteit',
+        kicker: 'Technieken',
+        description:
+          'Van nieuwe installaties tot vernieuwing en uitbreiding, helder en veilig uitgevoerd.',
+        href: '#!/elektriciteit',
+        icon: 'bolt'
+      },
+      {
+        title: 'Sanitair',
+        kicker: 'Technieken',
+        description:
+          'Sanitaire installaties en renovaties met aandacht voor comfort, detail en betrouwbare werking.',
+        href: '#!/sanitair',
+        icon: 'water_drop'
+      },
+      {
+        title: 'Hernieuwbare energie',
+        kicker: 'Duurzaamheid',
+        description:
+          'Energieoplossingen die rendement combineren met een nette technische integratie in het geheel.',
+        href: '#!/hernieuwbare-energie',
+        icon: 'solar_power'
+      },
+      {
+        title: 'Dakwerken',
+        kicker: 'Buitenschil',
+        description:
+          'Dakwerken die structuur, waterdichtheid en afwerking correct samenbrengen in één verzorgd geheel.',
+        href: '#!/dakwerken',
+        icon: 'roofing'
+      },
+      {
+        title: 'Afwerking',
+        kicker: 'Afwerking',
+        description:
+          'Vloeren, schilderwerken en gyproc omkastingen — alle afwerking strak weggewerkt in één traject.',
+        href: '#!/afwerking',
+        icon: 'format_paint'
+      }
+    ]
 
-    get kitchenImages() {
-      return [
-        './assets/__realizations/postbaan schaffen/keuken_lot3_1200x900.webp',
-        './assets/__realizations/postbaan schaffen/keuken_lot4_1200x900.webp',
-        './assets/__realizations/sintjansstraat diest/IMG_1345_1200x900.webp',
-        './assets/__realizations/postbaan schaffen/keuken_lot1_1200x900.webp',
-        './assets/__realizations/bosbessenstraat paal/3d5f1cc3-6869-494d-ae28-e3436c192e07_1200x1600.webp',
-        './assets/__realizations/oudebaan schulen/IMG_20201205_144603_1200x550.webp',
-        './assets/__realizations/oudebaan schulen/IMG_20201205_144617_1200x550.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0016_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0017_1200x900.webp'
-      ]
-    }
-
-    get renovationImages() {
-      return [
-        './assets/__realizations/oudebaan schulen/IMG_7616_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG_7618_1200x900.webp',
-        './assets/__realizations/turnhoutsebaan okselaar/IMG_8025_1200x900.webp',
-        './assets/__realizations/turnhoutsebaan okselaar/IMG_8026_1200x900.webp'
-      ]
-    }
-
-    get finishingImages() {
-      return [
-        './assets/__realizations/postbaan schaffen/IMG_0474_1200x900.webp',
-        './assets/__realizations/IMG_0681_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG_8033_1200x900.webp',
-        './assets/__realizations/sintjansstraat diest/IMG_1343_1200x900.webp',
-        './assets/__realizations/koning albertstraat diest/IMG_2283_1200x900.webp',
-        './assets/__realizations/koning albertstraat diest/IMG_2285_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0002_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0003_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0009_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0010_1200x900.webp',
-        './assets/__realizations/oudebaan schulen/IMG-20201207-WA0007_1200x1600.webp'
-      ]
-    }
-
-    get electricityImages() {
-      return [
-        './assets/IMG_20211104_154440_1200x547.webp',
-        './assets/IMG_20200910_172445_1200x547.webp',
-        './assets/IMG_1030_1200x900.webp'
-      ]
-    }
-
-    get sanitairImages() {
-      return ['./assets/__services/sanitair/IMG_3102_1200x900.webp']
-    }
-    get renewingEnergyImages() {
-      return ['./assets/IMG_6168_1200x900.webp']
-    }
-    get insulationImages() {
-      return ['./assets/IMG_0658_1200x900.webp', './assets/IMG_5257_1200x900.webp']
-    }
     render() {
       return html`
         <style>
@@ -92,6 +98,12 @@ export default customElements.define(
             align-items: center;
             width: 100%;
             padding-bottom: 48px;
+          }
+
+          *,
+          *::before,
+          *::after {
+            box-sizing: border-box;
           }
 
           main {
@@ -164,24 +176,81 @@ export default customElements.define(
 
           .card-container {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 28px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
             width: 100%;
           }
 
-          custom-carousel-card {
-            box-sizing: border-box;
-            max-width: none;
-            width: 100%;
+          .svc-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 22px;
+            border-radius: 18px;
+            text-decoration: none;
+            color: inherit;
+            background:
+              radial-gradient(circle at top left, rgba(168, 84, 39, 0.1), transparent 60%),
+              linear-gradient(180deg, rgba(35, 26, 22, 0.94), rgba(22, 16, 13, 0.96));
+            border: 1px solid rgba(168, 84, 39, 0.2);
+            position: relative;
+            top: 0;
+            transition:
+              top 180ms ease,
+              border-color 220ms ease,
+              background 220ms ease;
           }
 
-          @media (max-width: 1500px) {
-            .card-container {
-              grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
+          .svc-card:hover {
+            top: -3px;
+            border-color: rgba(168, 84, 39, 0.5);
           }
 
-          @media (max-width: 1200px) {
+          .svc-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(168, 84, 39, 0.12);
+            color: var(--md-sys-color-primary);
+            margin-bottom: 4px;
+          }
+
+          .svc-icon custom-icon {
+            --custom-icon-size: 30px;
+            font-size: 30px;
+          }
+
+          .svc-kicker {
+            display: inline-flex;
+            width: fit-content;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(168, 84, 39, 0.14);
+            color: var(--md-sys-color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 10px;
+            font-weight: 800;
+          }
+
+          .svc-card h3 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            line-height: 1.15;
+            color: var(--md-sys-color-on-surface);
+          }
+
+          .svc-card p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+          }
+
+          @media (max-width: 1100px) {
             .card-container {
               grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -215,70 +284,20 @@ export default customElements.define(
             </custom-panel>
           </custom-section>
 
-          <span class="card-container">
-            <custom-carousel-card
-              title="Totaalrenovatie"
-              kicker="Renovatie"
-              description="Volledige renovatie van A tot Z, van afbraak en technieken tot afwerking — met één aanspreekpunt."
-              href="#!/totaalrenovatie"
-              .images=${this.finishingImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Badkamer renovatie"
-              kicker="Interieur"
-              description="Badkamers met logische indeling, degelijk sanitair en een afwerking die rust uitstraalt."
-              href="#!/badkamerrenovatie"
-              .images=${this.bathroomImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Keuken renovatie"
-              kicker="Interieur"
-              description="Keukens waarin materiaalkeuze, gebruiksgemak en technische integratie samenkomen."
-              href="#!/keukenrenovatie"
-              .images=${this.kitchenImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Uitbreidingen & aanbouw"
-              kicker="Renovatie"
-              description="Meer ruimte creëren met een doordachte uitbreiding die logisch aansluit op uw woning."
-              href="#!/totaalrenovatie"
-              .images=${this.renovationImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Elektriciteit"
-              kicker="Technieken"
-              description="Van nieuwe installaties tot vernieuwing en uitbreiding, helder en veilig uitgevoerd."
-              href="#!/elektriciteit"
-              .images=${this.electricityImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Sanitair"
-              kicker="Technieken"
-              description="Sanitaire installaties en renovaties met aandacht voor comfort, detail en betrouwbare werking."
-              href="#!/sanitair"
-              .images=${this.sanitairImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Hernieuwbare energie"
-              kicker="Duurzaamheid"
-              description="Energieoplossingen die rendement combineren met een nette technische integratie in het geheel."
-              href="#!/hernieuwbare-energie"
-              .images=${this.renewingEnergyImages}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Dakwerken"
-              kicker="Buitenschil"
-              description="Dakwerken die structuur, waterdichtheid en afwerking correct samenbrengen in één verzorgd geheel."
-              href="#!/dakwerken"
-              .images=${this.carousel1Images}></custom-carousel-card>
-
-            <custom-carousel-card
-              title="Afwerking"
-              kicker="Afwerking"
-              description="Gyproc, schilderwerken, vloeren en interieurelementen die het project visueel samenbrengen."
-              href="#!/afwerking"
-              .images=${this.finishingImages}></custom-carousel-card>
-          </span>
+          <div class="card-container">
+            ${this.services.map(
+              (s) => html`
+                <a
+                  class="svc-card"
+                  href="${s.href}">
+                  <span class="svc-icon"><custom-icon icon="${s.icon}"></custom-icon></span>
+                  <span class="svc-kicker">${s.kicker}</span>
+                  <h3>${s.title}</h3>
+                  <p>${s.description}</p>
+                </a>
+              `
+            )}
+          </div>
         </main>
       `
     }
