@@ -29,6 +29,17 @@ export default html`
       <span name="checklist">@symbol-checklist</span>
       <span name="star">@symbol-star</span>
       <span name="home_health">@symbol-home_health</span>
+      <span name="bathtub">@symbol-bathtub</span>
+      <span name="kitchen">@symbol-kitchen</span>
+      <span name="bolt">@symbol-bolt</span>
+      <span name="water_drop">@symbol-water_drop</span>
+      <span name="roofing">@symbol-roofing</span>
+      <span name="add_home">@symbol-add_home</span>
+      <span name="solar_power">@symbol-solar_power</span>
+      <span name="format_paint">@symbol-format_paint</span>
+      <span name="engineering">@symbol-engineering</span>
+      <span name="grid_view">@symbol-grid_view</span>
+      <span name="view_in_ar">@symbol-view_in_ar</span>
       <span name="instagram">
         <svg
           version="1.1"
