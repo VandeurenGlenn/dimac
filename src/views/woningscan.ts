@@ -90,22 +90,33 @@ export default customElements.define(
             font-weight: 800;
           }
 
-          h1, h2, h3 {
+          h1,
+          h2,
+          h3 {
             margin: 0;
             color: var(--md-sys-color-on-surface);
           }
 
-          h1, h2 {
+          h1,
+          h2 {
             font-family: var(--font-display);
             line-height: 1.04;
             letter-spacing: var(--hero-title-letter-spacing);
           }
 
-          h1 { font-size: clamp(1.95rem, 2.8vw, 2.9rem); }
-          h2 { font-size: clamp(1.4rem, 2vw, 2rem); }
-          h3 { font-size: 1rem; font-weight: 700; }
+          h1 {
+            font-size: clamp(1.95rem, 2.8vw, 2.9rem);
+          }
+          h2 {
+            font-size: clamp(1.4rem, 2vw, 2rem);
+          }
+          h3 {
+            font-size: 1rem;
+            font-weight: 700;
+          }
 
-          p, li {
+          p,
+          li {
             margin: 0;
             line-height: 1.75;
             color: var(--md-sys-color-on-surface-variant);
@@ -141,10 +152,15 @@ export default customElements.define(
             padding: 0 22px;
             text-decoration: none;
             font-weight: 700;
-            transition: transform 160ms ease, opacity 160ms ease;
+            transition:
+              transform 160ms ease,
+              opacity 160ms ease;
           }
 
-          .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+          .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+          }
 
           .btn-primary {
             background: linear-gradient(135deg, var(--md-sys-color-primary), #8c421b);
@@ -175,32 +191,43 @@ export default customElements.define(
           .steps {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 0;
+            gap: 14px;
           }
 
           .step {
             display: grid;
-            gap: 8px;
-            padding-right: 20px;
+            gap: 10px;
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(41, 30, 25, 0.6);
+            border: 1px solid rgba(168, 84, 39, 0.18);
             position: relative;
+            transition:
+              transform 180ms ease,
+              border-color 180ms ease,
+              background 180ms ease;
           }
 
-          .step:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: 0;
-            width: 1px;
-            height: 40px;
-            background: rgba(168, 84, 39, 0.2);
+          .step:hover {
+            transform: translateY(-3px);
+            border-color: rgba(168, 84, 39, 0.4);
+            background: rgba(41, 30, 25, 0.8);
           }
 
           .step-num {
-            font-size: 2.4rem;
-            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            font-size: 1rem;
+            font-weight: 800;
             font-family: var(--font-display);
-            color: rgba(168, 84, 39, 0.25);
             line-height: 1;
+            box-shadow: 0 4px 12px rgba(120, 57, 24, 0.35);
           }
 
           /* FAQ */
@@ -216,13 +243,19 @@ export default customElements.define(
           }
 
           @media (max-width: 900px) {
-            .two-col, .faq { grid-template-columns: 1fr; }
-            .steps { grid-template-columns: 1fr 1fr; }
+            .two-col,
+            .faq {
+              grid-template-columns: 1fr;
+            }
+            .steps {
+              grid-template-columns: 1fr 1fr;
+            }
           }
 
           @media (max-width: 560px) {
-            .steps { grid-template-columns: 1fr; }
-            .step::after { display: none; }
+            .steps {
+              grid-template-columns: 1fr;
+            }
           }
         </style>
 
@@ -235,8 +268,16 @@ export default customElements.define(
               woning en de beste aanpak in kaart — zodat u zonder verrassingen kan renoveren.
             </p>
             <div class="cta-row">
-              <a class="btn btn-primary" href="#!/contact">Plan uw woningscan</a>
-              <a class="btn btn-secondary" href="#!/contact">Vraag een offerte aan</a>
+              <a
+                class="btn btn-primary"
+                href="#!/contact"
+                >Plan uw woningscan</a
+              >
+              <a
+                class="btn btn-secondary"
+                href="#!/contact"
+                >Vraag een offerte aan</a
+              >
             </div>
           </section>
 
@@ -262,15 +303,18 @@ export default customElements.define(
                 </ul>
               </div>
             </div>
-            <p>
-              De scan wordt verrekend als u beslist de werken door Dimac te laten uitvoeren.
-            </p>
+            <p>De scan wordt verrekend als u beslist de werken door Dimac te laten uitvoeren.</p>
           </section>
 
           <section>
             <h2>Hoe verloopt een woningscan?</h2>
             <div class="steps">
-              ${['Afspraak inplannen', 'Analyse ter plaatse', 'Advies en bespreking', 'Volgende stap'].map(
+              ${[
+                'Afspraak inplannen',
+                'Analyse ter plaatse',
+                'Advies en bespreking',
+                'Volgende stap'
+              ].map(
                 (title, i) =>
                   html`<div class="step">
                     <span class="step-num">0${i + 1}</span>
@@ -298,8 +342,16 @@ export default customElements.define(
             <h2>Klaar om te starten?</h2>
             <p>Plan een woningscan en maak doordachte renovatiekeuzes van bij het begin.</p>
             <div class="cta-row">
-              <a class="btn btn-primary" href="#!/contact">Plan uw woningscan</a>
-              <a class="btn btn-secondary" href="#!/werkwijze">Bekijk onze werkwijze</a>
+              <a
+                class="btn btn-primary"
+                href="#!/contact"
+                >Plan uw woningscan</a
+              >
+              <a
+                class="btn btn-secondary"
+                href="#!/werkwijze"
+                >Bekijk onze werkwijze</a
+              >
             </div>
           </section>
         </main>
@@ -307,4 +359,3 @@ export default customElements.define(
     }
   }
 )
-
