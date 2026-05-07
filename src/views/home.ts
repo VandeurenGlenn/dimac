@@ -77,7 +77,6 @@ export default customElements.define(
             flex-direction: column;
             align-items: center;
             width: 100%;
-            padding-bottom: 72px;
             color: var(--md-sys-color-on-background);
           }
 
@@ -102,17 +101,17 @@ export default customElements.define(
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: clamp(32px, 4vw, 56px);
             align-items: center;
-            padding-top: 48px;
+            padding-top: 24px;
           }
 
           .hero-copy {
             display: flex;
             flex-direction: column;
-            padding-top: 8px;
+            padding-top: 0;
           }
 
           custom-eyebrow {
-            margin-bottom: 20px;
+            margin-bottom: 14px;
           }
 
           h1 {
@@ -173,25 +172,68 @@ export default customElements.define(
           }
 
           .trust-bar {
-            display: flex;
-            gap: 28px;
-            padding-top: 28px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            padding-top: 50px;
+
             border-top: 1px solid rgba(204, 173, 150, 0.1);
           }
 
           .trust-item {
             display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(168, 84, 39, 0.04);
+            border: 1px solid rgba(168, 84, 39, 0.1);
+            text-decoration: none;
+            color: inherit;
+            transition:
+              background 180ms ease,
+              border-color 180ms ease,
+              transform 180ms ease;
+          }
+
+          a.trust-item:hover {
+            background: rgba(168, 84, 39, 0.09);
+            border-color: rgba(168, 84, 39, 0.28);
+            transform: translateY(-2px);
+          }
+
+          .trust-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(168, 84, 39, 0.12);
+            color: var(--md-sys-color-primary);
+            flex-shrink: 0;
+          }
+
+          .trust-icon custom-icon {
+            --custom-icon-size: 20px;
+            font-size: 20px;
+          }
+
+          .trust-text {
+            display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
+            min-width: 0;
           }
 
           .trust-item strong {
-            font-size: 1.08rem;
+            font-size: 1rem;
             font-weight: 800;
             color: var(--md-sys-color-primary);
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            line-height: 1.1;
           }
 
           .trust-item .stars {
@@ -201,8 +243,12 @@ export default customElements.define(
           }
 
           .trust-item span {
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             color: var(--md-sys-color-on-surface-variant);
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           /* ── Media ─────────────────────────────────── */
@@ -309,16 +355,36 @@ export default customElements.define(
             }
           }
 
+          @media (max-width: 860px) {
+            .trust-bar {
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+          }
+
           @media (max-width: 600px) {
             .trust-bar {
-              display: grid;
-              grid-template-columns: repeat(3, 1fr);
               gap: 8px;
               padding-top: 20px;
             }
 
+            .trust-item {
+              padding: 10px 12px;
+              gap: 10px;
+            }
+
+            .trust-icon {
+              width: 34px;
+              height: 34px;
+              border-radius: 10px;
+            }
+
+            .trust-icon custom-icon {
+              --custom-icon-size: 18px;
+              font-size: 18px;
+            }
+
             .trust-item strong {
-              font-size: 0.92rem;
+              font-size: 0.9rem;
             }
 
             .trust-item span {
@@ -409,39 +475,7 @@ export default customElements.define(
                   >Plan uw woningscan</a
                 >
               </div>
-              <div class="trust-bar">
-                <div class="trust-item">
-                  <strong>20+</strong>
-                  <span>jaar ervaring</span>
-                </div>
-                ${this.googleRating
-                  ? html`
-                      <a
-                        class="trust-item"
-                        href="#!/reviews"
-                        style="text-decoration:none;color:inherit">
-                        <strong
-                          >${this.googleRating.toLocaleString('nl-BE')}
-                          <span class="stars">★</span></strong
-                        >
-                        <span
-                          >${this.googleRatingCount
-                            ? `${this.googleRatingCount} Google reviews`
-                            : 'Google reviews'}</span
-                        >
-                      </a>
-                    `
-                  : html`
-                      <div class="trust-item">
-                        <strong>Regio Diest</strong>
-                        <span>lokale opvolging</span>
-                      </div>
-                    `}
-                <div class="trust-item">
-                  <strong>Alles-in-één</strong>
-                  <span>van ruwbouw tot afwerking</span>
-                </div>
-              </div>
+
               <div class="services-grid">
                 ${[
                   { label: 'Totaalrenovatie', href: '#!/totaalrenovatie', icon: 'home' },
@@ -471,6 +505,59 @@ export default customElements.define(
                 <span class="media-kicker">${this.activeProject.kicker}</span>
                 <span class="media-location">${this.activeProject.location}</span>
               </div>
+            </div>
+          </div>
+          <div class="trust-bar">
+            <div class="trust-item">
+              <span class="trust-icon"><custom-icon icon="cheer"></custom-icon></span>
+              <span class="trust-text">
+                <strong>20+</strong>
+                <span>jaar ervaring</span>
+              </span>
+            </div>
+            ${this.googleRating
+              ? html`
+                  <a
+                    class="trust-item"
+                    href="#!/reviews">
+                    <span class="trust-icon"><custom-icon icon="star"></custom-icon></span>
+                    <span class="trust-text">
+                      <strong
+                        >${this.googleRating.toLocaleString('nl-BE')}
+                        <span class="stars">★</span></strong
+                      >
+                      <span
+                        >${this.googleRatingCount
+                          ? `${this.googleRatingCount} Google reviews`
+                          : 'Google reviews'}</span
+                      >
+                    </span>
+                  </a>
+                `
+              : html`
+                  <a
+                    class="trust-item"
+                    href="#!/reviews">
+                    <span class="trust-icon"><custom-icon icon="star"></custom-icon></span>
+                    <span class="trust-text">
+                      <strong>Google reviews</strong>
+                      <span>tevreden klanten</span>
+                    </span>
+                  </a>
+                `}
+            <div class="trust-item">
+              <span class="trust-icon"><custom-icon icon="location_on"></custom-icon></span>
+              <span class="trust-text">
+                <strong>Regio Diest</strong>
+                <span>lokale opvolging</span>
+              </span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon"><custom-icon icon="home_repair_service"></custom-icon></span>
+              <span class="trust-text">
+                <strong>Alles-in-één</strong>
+                <span>ruwbouw tot afwerking</span>
+              </span>
             </div>
           </div>
         </main>
