@@ -37,8 +37,7 @@ export default customElements.define(
             gap: 28px;
           }
 
-          .story,
-          .reasons {
+          .story {
             background: var(--md-sys-color-surface);
             border: var(--surface-border);
             border-radius: var(--panel-radius);
@@ -106,7 +105,19 @@ export default customElements.define(
           }
 
           .reasons {
-            padding: clamp(24px, 3vw, 34px);
+            padding: 16px 0 0;
+            display: grid;
+            gap: 18px;
+          }
+
+          .reasons h6 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--md-sys-color-on-surface);
           }
 
           ul {
@@ -115,15 +126,64 @@ export default customElements.define(
             list-style: none;
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
+            gap: 14px;
           }
 
           li {
-            padding: 16px 18px;
-            border-radius: 20px;
-            background: var(--surface-soft);
-            border: 1px solid rgba(204, 173, 150, 0.08);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px 20px;
+            border-radius: 22px;
+            background:
+              radial-gradient(circle at top left, rgba(168, 84, 39, 0.1), transparent 65%),
+              linear-gradient(180deg, rgba(35, 26, 22, 0.94), rgba(22, 16, 13, 0.96));
+            border: 1px solid rgba(168, 84, 39, 0.18);
+            transition:
+              transform 180ms ease,
+              border-color 180ms ease;
+          }
+
+          li:hover {
+            transform: translateY(-2px);
+            border-color: rgba(168, 84, 39, 0.4);
+          }
+
+          .reason-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: rgba(168, 84, 39, 0.14);
+            color: var(--md-sys-color-primary);
+            flex-shrink: 0;
+          }
+
+          .reason-icon custom-icon {
+            --custom-icon-size: 22px;
+            font-size: 22px;
+          }
+
+          .reason-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+          }
+
+          .reason-text strong {
+            font-size: 1rem;
+            color: var(--md-sys-color-on-surface);
+            font-weight: 800;
+            line-height: 1.25;
+          }
+
+          .reason-text span {
+            font-size: 0.88rem;
             color: var(--md-sys-color-on-surface-variant);
+            line-height: 1.5;
           }
 
           .stat-card {
@@ -236,11 +296,43 @@ export default customElements.define(
           <section class="reasons">
             <h6>Waarom kiezen voor Dimac?</h6>
             <ul>
-              <li>Eigen team van vaklui en vertrouwde uitvoerende partners.</li>
-              <li>Onberispelijke afwerking met aandacht voor proportie, materiaal en detail.</li>
-              <li>Heldere communicatie en opvolging van offerte tot oplevering.</li>
-              <li>Ervaring als ontwikkelaar én aannemer, met zicht op het volledige project.</li>
-              <li>Correcte prijzen zonder in te boeten op kwaliteit of duurzaamheid.</li>
+              ${[
+                {
+                  icon: 'engineering',
+                  title: 'Eigen team van vaklui',
+                  text: 'Vaste mensen en vertrouwde uitvoerende partners.'
+                },
+                {
+                  icon: 'cheer',
+                  title: 'Onberispelijke afwerking',
+                  text: 'Met aandacht voor proportie, materiaal en detail.'
+                },
+                {
+                  icon: 'phone_in_talk',
+                  title: 'Heldere communicatie',
+                  text: 'Korte opvolging van offerte tot oplevering.'
+                },
+                {
+                  icon: 'home_repair_service',
+                  title: 'Ontwikkelaar én aannemer',
+                  text: 'Met ervaring en zicht op het volledige project.'
+                },
+                {
+                  icon: 'checklist',
+                  title: 'Correcte prijzen',
+                  text: 'Zonder in te boeten op kwaliteit of duurzaamheid.'
+                }
+              ].map(
+                (r) => html`
+                  <li>
+                    <span class="reason-icon"><custom-icon icon="${r.icon}"></custom-icon></span>
+                    <span class="reason-text">
+                      <strong>${r.title}</strong>
+                      <span>${r.text}</span>
+                    </span>
+                  </li>
+                `
+              )}
             </ul>
           </section>
         </main>
